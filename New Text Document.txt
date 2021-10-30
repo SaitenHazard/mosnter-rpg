@@ -1,0 +1,14 @@
+On game,
+Status Effects
+Life bars (only bar, no text)
+Action Pionts (only numbers)
+
+Ally Selected,
+life (remaning / max)
+Actions
+
+Action Selected,
+Text
+type
+Action Points Requred
+Range (highlighed monster)
