@@ -12,3 +12,96 @@ Text
 type
 Action Points Requred
 Range (highlighed monster)
+
+AI
+----
+
+[all swaps are random]
+
+class use_action_target
+{
+	user, 
+	action,
+	target, 
+	weight,
+	cumulative_weight,
+
+	set_cumulative_weight()
+	{
+		sort_by_weight()
+		cumulate_weight()
+	}
+}
+
+function main()
+{
+	if(get_usable_actions().count> 0)
+		do_action()
+	else (enought_points_toswap())
+		random_swap()
+}
+
+function do_action()
+{
+	action_targets = get_action_targets(actions)
+	action_targets = set_action_target_weights(action_targets)
+
+	action_target = action_target.set_cumulative_weight()
+
+	max_cumulative_weight = action_target[last_index].cumulative_weight
+	min_cumulative_weight = action_target[first_index].cumulative_weight
+
+	random_cumulative_index = rand(min_cumulative_weight, max_cumulative_weight)
+}
+
+function get_usable_actions(actions)
+{
+	actions = get_all_actions();
+
+	actions = remove_actions_inactive_users(actions); 
+	actions = remove_actions_cost_unusable(actions);
+	actions = remove_actions_no_targets(actions);
+
+	return actions
+}
+
+function set_action_target_weights(action_targets)
+{
+	foreach(action_target in action_targets)
+	{
+		if(action_target.is_action_position_advantage())
+			action_target.weight++
+		
+		if(action_target.is_action_type_advantage())
+			action_target.weight++	
+
+		if(action_target.is_action_healing())
+			action_target.weight++
+
+			if(action_target.is_target_health_one_third())
+				action_target.weight++
+
+		if(action_target.is_target_lowest_HP())
+			action_weight++
+	}
+}
+
+function get_action_targets(actions) 
+{
+	action_targets
+
+	foreach(action in actions)
+	{
+		action_target.user = action->user
+		action_target.action = action
+		
+		foreach(target -> action.get_targets())
+		{
+			action_target.tareget = target
+			action_target.weight = 0
+			action_targets[] = action_target
+		}
+	}
+
+	return action_targets
+}
