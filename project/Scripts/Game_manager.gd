@@ -13,9 +13,6 @@ class Status_effect:
 	func _init(name : String, turns : int):
 		self.name = name
 		self.turns = turns
-		
-#	func _init(name : String):
-#		self.name = name
 
 class Action:
 	var name : String
@@ -23,57 +20,83 @@ class Action:
 	var _range : String
 	var cost : int
 	var damage: int
+	var elemental_type
+	
 	func _init(
-		name : String, status_effect : Status_effect, _range : String, cost : int, damage : int):
+		name : String, status_effect : Status_effect, _range : String, cost : int, 
+		damage : int, elemental_type):
 		 self.name = name
 		 self.status_effect = status_effect
 		 self._range = _range
 		 self.cost = cost
 		 self.damage = damage
 
-class Monster:
-	var name : String
-	var health_max : int
-	var health_current : int
-	var Action1 : Action
-	var Action2 : Action
-	var Action3 : Action
-	var Action4 : Action
-	
-	func _init(name : String, health_max: int, Action1 : Action, Action2 : Action, Action3: Action, Action4: Action):
-		self.name = name
-		self.health_max = health_max
-		self.health_current = health_max
+enum elemental_type {fire, water, grass, none}
 
-var Actions
-var status_effects
-var TeamA
-var TeamB
+var actions : Array
+var status_effects : Array
 
-var x = My_Class.new(8,8)
+onready var teamA : Array = get_node("/root/Control/TeamA").get_children()
+onready var teamB : Array = get_node('/root/Control/TeamB').get_children()
+
+enum action_set {action1, action2, action3, action4}
 
 func _ready():
 	_set_status_effects()
-#	_set_actions()
-#	_set_monsters()
-#	_assign_actions()
+	_set_actions()
+	_set_monsters()
+	
 	
 func _set_monsters():
-	var Monster = Monster.new('Mon1', 25, Actions[0], Actions[0], Actions[0], Actions[0])
-	TeamA.Append(Monster)
-	TeamA.Append(Monster)
-	TeamA.Append(Monster)
-	TeamB.Append(Monster)
-	TeamB.Append(Monster)
-	TeamB.Append(Monster)
+	_set_teamA()
+	_set_teamB()
+	_assign_health()
+	_assign_actions()
+
+func _set_teamA():
+	teamA[0].set_name('Mon1')
+	teamA[0].set_type(elemental_type.fire)
 	
+	teamA[1].set_name('Mon2')
+	teamA[1].set_type(elemental_type.water)
+	
+	teamA[2].set_name('Mon3')
+	teamA[2].set_type(elemental_type.grass)
+	
+func _set_teamB():
+	teamB[0].set_name('Mon1')
+	teamB[0].set_type(elemental_type.fire)
+	
+	teamB[1].set_name('Mon2')
+	teamB[1].set_type(elemental_type.water)
+	
+	teamB[2].set_name('Mon3')
+	teamB[2].set_type(elemental_type.grass)
+	
+func _assign_health():
+	for monster in teamA:
+		monster.set_health(10)
+		
+	for monster in teamB:
+		monster.set_health(10)
+
 func _assign_actions():
-	pass
+	action_set.action1 = actions[0]
+	action_set.action2 = actions[0]
+	action_set.action3 = actions[0]
+	action_set.action4 = actions[0]
+	
+	for monster in teamA:
+		monster.set_actions(action_set)
+		
+	for monster in teamB:
+		monster.set_actions(action_set)
 	
 func _set_status_effects():
 	var status_effect = Status_effect.new('null', 0)
-	status_effects.append(Status_effect)
+	status_effects.append(status_effect)
 	
 func _set_actions():
-	var Action = Action.new('Fire Ball', status_effects[0], 'adjacent_foe', 3, 3)
-	Actions.append(Action)
+	var action = Action.new('Fire Ball', status_effects[0], 'adjacent_foe', 3, 3, elemental_type.fire)
+	
+	actions.append(action)
