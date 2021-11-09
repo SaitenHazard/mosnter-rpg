@@ -1,0 +1,92 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scripts/LifeBar.gd" type="Script" id=1]
+[ext_resource path="res://styles/LifeBarBg.tres" type="StyleBox" id=2]
+[ext_resource path="res://styles/LifeBarFg.tres" type="StyleBox" id=3]
+[ext_resource path="res://font/Font.tres" type="DynamicFont" id=4]
+
+
+[node name="LifeBarTeamA" type="Node2D"]
+script = ExtResource( 1 )
+team = "TeamA"
+
+[node name="LifeBar1" type="ProgressBar" parent="."]
+margin_left = 150.0
+margin_top = 34.0
+margin_right = 424.0
+margin_bottom = 54.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/fg = ExtResource( 3 )
+custom_styles/bg = ExtResource( 2 )
+value = 50.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Health Text" type="Label" parent="LifeBar1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 1.0
+margin_bottom = 1.0
+custom_fonts/font = ExtResource( 4 )
+text = "15/25"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LifeBar2" type="ProgressBar" parent="."]
+margin_left = 100.0
+margin_top = 60.0
+margin_right = 374.0
+margin_bottom = 81.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/fg = ExtResource( 3 )
+custom_styles/bg = ExtResource( 2 )
+value = 50.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Health Text" type="Label" parent="LifeBar2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 1.0
+margin_bottom = 1.0
+custom_fonts/font = ExtResource( 4 )
+text = "15/25"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LifeBar3" type="ProgressBar" parent="."]
+margin_left = 50.0
+margin_top = 87.0
+margin_right = 324.0
+margin_bottom = 108.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/fg = ExtResource( 3 )
+custom_styles/bg = ExtResource( 2 )
+value = 50.0
+percent_visible = false
+
+[node name="Health Text" type="Label" parent="LifeBar3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 1.0
+margin_bottom = 1.0
+custom_fonts/font = ExtResource( 4 )
+text = "15/25"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

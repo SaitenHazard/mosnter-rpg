@@ -1,40 +1,37 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
-[ext_resource path="res://sprite/monster.png" type="Texture" id=1]
-[ext_resource path="res://font/Comfortaa-Bold.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://font/PressStart2P-Regular.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
+[ext_resource path="res://font/Montserrat-Bold.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://styles/LifeBarFg.tres" type="StyleBox" id=4]
 [ext_resource path="res://styles/LifeBarBg.tres" type="StyleBox" id=5]
-[ext_resource path="res://styles/LifeBarBgSelected.tres" type="StyleBox" id=6]
-[ext_resource path="res://font/Camera2D.tres" type="DynamicFont" id=7]
-[ext_resource path="res://font/actions.tres" type="DynamicFont" id=8]
+[ext_resource path="res://Scripts/UI_action_details.gd" type="Script" id=6]
+[ext_resource path="res://font/Font.tres" type="DynamicFont" id=7]
 [ext_resource path="res://Scripts/LifeBar.gd" type="Script" id=9]
 [ext_resource path="res://Scripts/Game_manager.gd" type="Script" id=10]
-[ext_resource path="res://Scripts/Monster.gd" type="Script" id=11]
+[ext_resource path="res://sprite/arrow.png" type="Texture" id=11]
+[ext_resource path="res://Scenes/Monster.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scripts/UI_actions.gd" type="Script" id=13]
+[ext_resource path="res://Scenes/UI_Actions.tscn" type="PackedScene" id=14]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://font/Comfortaa-Bold.ttf"
+
+[sub_resource type="DynamicFont" id=2]
 size = 30
-font_data = ExtResource( 2 )
-
-[sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 1, 1, 1, 1 )
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+font_data = SubResource( 1 )
 
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="DynamicFont" id=4]
-size = 14
 font_data = ExtResource( 3 )
 
 [node name="Control" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+margin_right = 70.0
+margin_bottom = 14.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -47,112 +44,95 @@ margin_left = 483.544
 margin_top = 65.8618
 margin_right = 523.544
 margin_bottom = 100.862
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "10"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Actions" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 27.1598
-margin_top = 227.74
-margin_right = -872.841
-margin_bottom = -232.26
+margin_left = 27.0
+margin_top = 228.0
+margin_right = 122.0
+margin_bottom = 373.0
 custom_constants/separation = 12
+script = ExtResource( 13 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Action" type="PanelContainer" parent="Actions"]
-margin_right = 123.0
-margin_bottom = 25.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/panel = SubResource( 2 )
+[node name="Action" parent="Actions" instance=ExtResource( 14 )]
+margin_right = 165.0
+margin_bottom = 30.0
 
-[node name="Label" type="Label" parent="Actions/Action"]
-margin_top = 5.0
-margin_right = 123.0
-margin_bottom = 19.0
-custom_fonts/font = ExtResource( 8 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Slash"
-align = 1
-valign = 1
+[node name="Action2" parent="Actions" instance=ExtResource( 14 )]
+margin_top = 42.0
+margin_right = 165.0
+margin_bottom = 73.0
 
-[node name="Action2" type="PanelContainer" parent="Actions"]
-margin_top = 37.0
-margin_right = 123.0
-margin_bottom = 63.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/panel = ExtResource( 6 )
+[node name="Action3" parent="Actions" instance=ExtResource( 14 )]
+margin_top = 85.0
+margin_right = 165.0
+margin_bottom = 116.0
 
-[node name="Label" type="Label" parent="Actions/Action2"]
-margin_top = 6.0
-margin_right = 123.0
-margin_bottom = 20.0
-custom_fonts/font = ExtResource( 8 )
-text = "Slash"
-align = 1
-valign = 1
+[node name="Action4" parent="Actions" instance=ExtResource( 14 )]
+margin_top = 128.0
+margin_right = 165.0
+margin_bottom = 159.0
 
-[node name="Action3" type="PanelContainer" parent="Actions"]
-margin_top = 75.0
-margin_right = 123.0
-margin_bottom = 101.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/panel = ExtResource( 6 )
-
-[node name="Label" type="Label" parent="Actions/Action3"]
-margin_top = 6.0
-margin_right = 123.0
-margin_bottom = 20.0
-custom_fonts/font = ExtResource( 8 )
-text = "Slash"
-align = 1
-valign = 1
-
-[node name="Action4" type="PanelContainer" parent="Actions"]
-margin_top = 113.0
-margin_right = 123.0
-margin_bottom = 139.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/panel = ExtResource( 6 )
-
-[node name="Label" type="Label" parent="Actions/Action4"]
-margin_top = 6.0
-margin_right = 123.0
-margin_bottom = 20.0
-custom_fonts/font = ExtResource( 8 )
-text = "Slash"
-align = 1
-valign = 1
-
-[node name="Action" type="PanelContainer" parent="."]
+[node name="ActionDetails" type="PanelContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 0.0604248
-margin_top = 549.652
-margin_right = 0.0604248
-margin_bottom = -0.348267
+margin_left = -2.49208
+margin_top = 560.664
+margin_right = 952.508
+margin_bottom = 586.664
 size_flags_horizontal = 3
 custom_styles/panel = SubResource( 3 )
+script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="Action"]
-margin_right = 1024.0
-margin_bottom = 49.9998
+[node name="HBoxContainer" type="HBoxContainer" parent="ActionDetails"]
+margin_right = 1025.0
+margin_bottom = 40.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 0.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label3" type="Label" parent="ActionDetails/HBoxContainer"]
+margin_right = 339.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 custom_fonts/font = SubResource( 4 )
-text = "Action Points:10    Type: Fire    Damage: 5"
+align = 1
+valign = 1
+
+[node name="Label4" type="Label" parent="ActionDetails/HBoxContainer"]
+margin_left = 343.0
+margin_right = 682.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 4 )
+align = 1
+valign = 1
+
+[node name="Label5" type="Label" parent="ActionDetails/HBoxContainer"]
+margin_left = 686.0
+margin_right = 1025.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 7 )
 align = 1
 valign = 1
 
@@ -175,7 +155,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Health Text" type="Label" parent="LifeBarTeamA/LifeBar1"]
+[node name="HealthText" type="Label" parent="LifeBarTeamA/LifeBar1"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 1.0
@@ -203,7 +183,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Health Text" type="Label" parent="LifeBarTeamA/LifeBar2"]
+[node name="HealthText" type="Label" parent="LifeBarTeamA/LifeBar2"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 1.0
@@ -228,7 +208,7 @@ custom_styles/bg = ExtResource( 5 )
 value = 50.0
 percent_visible = false
 
-[node name="Health Text" type="Label" parent="LifeBarTeamA/LifeBar3"]
+[node name="HealthText" type="Label" parent="LifeBarTeamA/LifeBar3"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 1.0
@@ -261,7 +241,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Health Text" type="Label" parent="LifeBarTeamB/LifeBarA"]
+[node name="HealthText" type="Label" parent="LifeBarTeamB/LifeBarA"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 273.341
@@ -290,7 +270,7 @@ custom_styles/bg = ExtResource( 5 )
 value = 50.0
 percent_visible = false
 
-[node name="Health Text" type="Label" parent="LifeBarTeamB/LifeBarB"]
+[node name="HealthText" type="Label" parent="LifeBarTeamB/LifeBarB"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 273.341
@@ -322,7 +302,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Health Text" type="Label" parent="LifeBarTeamB/LifeBarC"]
+[node name="HealthText" type="Label" parent="LifeBarTeamB/LifeBarC"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 273.341
@@ -340,49 +320,26 @@ __meta__ = {
 
 [node name="TeamA" type="Node2D" parent="."]
 
-[node name="Monster" type="Node2D" parent="TeamA"]
-script = ExtResource( 11 )
+[node name="Mon1" parent="TeamA" instance=ExtResource( 12 )]
+position = Vector2( 292.602, 230.306 )
 
-[node name="Sprite" type="Sprite" parent="TeamA/Monster"]
-position = Vector2( 250, 200 )
-texture = ExtResource( 1 )
+[node name="Monster2" parent="TeamA" instance=ExtResource( 12 )]
+position = Vector2( 380.382, 313.367 )
 
-[node name="Monster2" type="Node2D" parent="TeamA"]
-script = ExtResource( 11 )
-
-[node name="Sprite" type="Sprite" parent="TeamA/Monster2"]
-position = Vector2( 350, 300 )
-texture = ExtResource( 1 )
-
-[node name="Monster3" type="Node2D" parent="TeamA"]
-script = ExtResource( 11 )
-
-[node name="Sprite" type="Sprite" parent="TeamA/Monster3"]
-position = Vector2( 250, 400 )
-texture = ExtResource( 1 )
+[node name="Monster3" parent="TeamA" instance=ExtResource( 12 )]
+position = Vector2( 292.602, 420.025 )
 
 [node name="TeamB" type="Node2D" parent="."]
+position = Vector2( 60, 0 )
 
-[node name="Monster" type="Node2D" parent="TeamB"]
-position = Vector2( 300, 0 )
-script = ExtResource( 11 )
+[node name="Monster" parent="TeamB" instance=ExtResource( 12 )]
+position = Vector2( 661.658, 228.418 )
 
-[node name="Sprite" type="Sprite" parent="TeamB/Monster"]
-position = Vector2( 300, 200 )
-texture = ExtResource( 1 )
+[node name="Monster2" parent="TeamB" instance=ExtResource( 12 )]
+position = Vector2( 579.541, 309.592 )
 
-[node name="Monster2" type="Node2D" parent="TeamB"]
-position = Vector2( 300, 0 )
-script = ExtResource( 11 )
+[node name="Monster3" parent="TeamB" instance=ExtResource( 12 )]
+position = Vector2( 671.097, 408.699 )
 
-[node name="Sprite" type="Sprite" parent="TeamB/Monster2"]
-position = Vector2( 350, 300 )
-texture = ExtResource( 1 )
-
-[node name="Monster3" type="Node2D" parent="TeamB"]
-position = Vector2( 300, 0 )
-script = ExtResource( 11 )
-
-[node name="Sprite" type="Sprite" parent="TeamB/Monster3"]
-position = Vector2( 250, 400 )
-texture = ExtResource( 1 )
+[node name="Arrow" type="Sprite" parent="."]
+texture = ExtResource( 11 )
