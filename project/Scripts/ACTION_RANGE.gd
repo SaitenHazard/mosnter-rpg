@@ -1,3 +1,3 @@
 class_name ACTION_RANGE
 
-enum {FOE_ADJACENT, FOE_ALL, ALLY, ALLY_ALL}
+enum {FOE, FOE_ALL, ALLY, ALLY_ALL}

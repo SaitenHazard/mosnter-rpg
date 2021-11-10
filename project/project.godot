@@ -23,11 +23,17 @@ _global_script_classes=[ {
 "class": "Status_effect",
 "language": "GDScript",
 "path": "res://Scripts/Status_effect.gd"
+}, {
+"base": "Node",
+"class": "Targets",
+"language": "GDScript",
+"path": "res://Scripts/Target_manager.gd"
 } ]
 _global_script_class_icons={
 "ACTION_RANGE": "",
 "ELEMENTAL_TYPE": "",
-"Status_effect": ""
+"Status_effect": "",
+"Targets": ""
 }
 
 [application]

@@ -2,9 +2,13 @@ extends Control
 
 onready var arrow : Sprite = get_node('/root/Control/Arrow')
 
-onready var allies : Array = get_node('/root/Control/TeamA').get_children()
-onready var foes : Array = get_node('/root/Control/TeamB').get_children()
+onready var target_arrows : Array = get_node('/root/Control/TargetArrows').get_children()
+onready var target_selection_arrows : Array = get_node('/root/Control/TargetSelectArrows').get_children()
+onready var teamA : Array = get_node('/root/Control/TeamA').get_children()
+onready var teamB : Array = get_node('/root/Control/TeamB').get_children()
 onready var actions : Array = get_node('/root/Control/Actions').get_children()
+
+#onready var Target_manager = load('res://Scripts/Target_manager.gd')
 
 enum INPUT_GROUP {ALLY, ACTION, FOE}
 
@@ -13,26 +17,74 @@ var input_group = INPUT_GROUP.ALLY
 
 var monster_index : int = 0
 var action_index : int = 0
-
-#func _ready():
-#	print(actions[0].get_global_transform().origin)
 	
 func _process(delta):
 	_inputs()
-	_manage_arrow()
+	_manage_selection_arrow()
+	_manage_target_arraows()
+	_manage_target_selection_arrows()
 	
-func _manage_arrow():
+func _manage_target_selection_arrows():
+	for arrow in target_selection_arrows:
+		arrow.set_visible(false)
+	
+	if not input_group == INPUT_GROUP.FOE:
+		return
+		
+	var targets = _get_target()
+	var team = _get_target_team(targets)
+		
+	if targets.all == true:
+		for i in targets.indexes:
+			target_selection_arrows[i].global_position = team[i].global_position
+			target_selection_arrows[i].global_position.x = target_arrows[i].global_position.x + 50
+			target_selection_arrows[i].set_visible(true)
+		return
+		
+	
+
+func _manage_target_arraows():
+	for arrow in target_arrows:
+		arrow.set_visible(false)
+		
+	if not input_group == INPUT_GROUP.ACTION:
+		return
+		
+	var targets = _get_target();
+	var team = _get_target_team(targets)
+	
+	for i in targets.indexes:
+		target_arrows[i].global_position = team[i].global_position
+		target_arrows[i].global_position.x = target_arrows[i].global_position.x + 50
+		target_arrows[i].set_visible(true) 
+	
+func _get_target_team(targets):
+	if targets.ally:
+		return teamA
+	else:
+		return teamB
+	
+func _get_target():
+	var action_range = teamA[monster_index].get_action(action_index).action_range;
+	var targets = Targets.new(monster_index, action_range, teamA, teamB)
+	
+	return targets
+	
+func _manage_selection_arrow():
 	var global_position
 	
 	if input_group == INPUT_GROUP.ALLY:
-		global_position = allies[input_index].global_position
+		global_position = teamA[input_index].global_position
+		arrow.scale = Vector2(0.5,0.5)
 		
 	if input_group == INPUT_GROUP.ACTION:
 		global_position = actions[input_index].get_global_transform().origin
 		global_position.y = global_position.y + 13
+		arrow.scale = Vector2(1,1)
 		
-	if input_group == INPUT_GROUP.FOE:
-		global_position = foes[input_index].global_position
+#	if input_group == INPUT_GROUP.FOE:
+#		global_position = teamB[input_index].global_position
+#		arrow.scale = Vector2(0.5,0.5)
 	
 	arrow.global_position = global_position
 	arrow.global_position.x = arrow.global_position.x - 50

@@ -1,6 +1,7 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
+[ext_resource path="res://sprite/target_select_arrow.png" type="Texture" id=2]
 [ext_resource path="res://font/Montserrat-Bold.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://styles/LifeBarFg.tres" type="StyleBox" id=4]
 [ext_resource path="res://styles/LifeBarBg.tres" type="StyleBox" id=5]
@@ -342,4 +343,46 @@ position = Vector2( 579.541, 309.592 )
 position = Vector2( 671.097, 408.699 )
 
 [node name="Arrow" type="Sprite" parent="."]
+position = Vector2( -184.999, 124.591 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 11 )
+
+[node name="TargetSelectArrows" type="Node2D" parent="."]
+
+[node name="Arrow2" type="Sprite" parent="TargetSelectArrows"]
+visible = false
+rotation = 3.14159
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 2 )
+
+[node name="Arrow3" type="Sprite" parent="TargetSelectArrows"]
+visible = false
+rotation = 3.14159
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 2 )
+
+[node name="Arrow4" type="Sprite" parent="TargetSelectArrows"]
+visible = false
+rotation = 3.14159
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 2 )
+
+[node name="TargetArrows" type="Node2D" parent="."]
+
+[node name="Arrow2" type="Sprite" parent="TargetArrows"]
+visible = false
+rotation = 3.14159
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 11 )
+
+[node name="Arrow3" type="Sprite" parent="TargetArrows"]
+visible = false
+rotation = 3.14159
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 11 )
+
+[node name="Arrow4" type="Sprite" parent="TargetArrows"]
+visible = false
+rotation = 3.14159
+scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 11 )

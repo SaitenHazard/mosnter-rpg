@@ -106,14 +106,14 @@ func _set_actions():
 	
 #	STATUS_EFFECT.NULL
 	
-	action = Action.new('Fire Ball', 3, 3, Status_effect.NULL, ACTION_RANGE.FOE_ADJACENT, ELEMENTAL_TYPE.FIRE)
+	action = Action.new('Fire Ball', 3, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.FIRE)
 	actions.append(action)
 	action = Action.new('Fire Blitz', 1, 6, Status_effect.NULL, ACTION_RANGE.FOE_ALL, ELEMENTAL_TYPE.FIRE)
 	actions.append(action)
 	
-	action = Action.new('Sticky Sticks', 1, 3, Status_effect.PARALYZE, ACTION_RANGE.FOE_ADJACENT, ELEMENTAL_TYPE.GRASS)
+	action = Action.new('Sticky Sticks', 1, 3, Status_effect.PARALYZE, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS)
 	actions.append(action)
-	action = Action.new('Bamboo Bash', 1, 3, Status_effect.NULL, ACTION_RANGE.FOE_ADJACENT, ELEMENTAL_TYPE.GRASS)
+	action = Action.new('Bamboo Bash', 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS)
 	actions.append(action)
 	
 	action = Action.new('Protect', 0, 2, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.NULL)
@@ -123,12 +123,12 @@ func _set_actions():
 	action = Action.new('Healing Wave', -2, 6, Status_effect.NULL, ACTION_RANGE.ALLY_ALL, ELEMENTAL_TYPE.NULL)
 	actions.append(action)
 	
-	action = Action.new('Ice Punch', 1, 3, Status_effect.BLEED, ACTION_RANGE.FOE_ADJACENT, ELEMENTAL_TYPE.WATER)
+	action = Action.new('Ice Punch', 1, 3, Status_effect.BLEED, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER)
 	actions.append(action)
-	action = Action.new('Swift Surf', 1, 3, Status_effect.NULL, ACTION_RANGE.FOE_ADJACENT, ELEMENTAL_TYPE.WATER)
+	action = Action.new('Swift Surf', 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER)
 	actions.append(action)
 	
-	action_swap = Action.new('Swap', 0, 1, Status_effect.NULL, ACTION_RANGE.ALLY_ALL, ELEMENTAL_TYPE.NULL)
+	action_swap = Action.new('Swap', 0, 1, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.NULL)
 	
 #	print('in')
 #	print(actions[0])
