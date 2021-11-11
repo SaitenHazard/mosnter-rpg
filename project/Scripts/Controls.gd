@@ -34,20 +34,27 @@ func _manage_target_selection_arrows():
 	var targets = _get_target()
 	var team = _get_target_team(targets)
 		
-	if targets.all == true:
-		for i in targets.indexes:
-			target_selection_arrows[i].global_position = team[i].global_position
-			target_selection_arrows[i].global_position.x = target_arrows[i].global_position.x + 50
-			target_selection_arrows[i].set_visible(true)
-		return
+#	if targets.all == true:
+#		for i in targets.indexes:
+#			target_selection_arrows[i].global_position = team[i].global_position
+#			target_selection_arrows[i].global_position.x = target_arrows[i].global_position.x + 50
+#			target_selection_arrows[i].set_visible(true)
+#		return
 		
+#	print(team[0].parent.name)
 	
+	var global_position = team[input_index].global_position
+		
+	target_selection_arrows[0].global_position = global_position
+	target_selection_arrows[0].global_position.x = target_selection_arrows[0].global_position.x + 50
+#	target_selection_arrows[0].global_position.x = arrow.global_position.x + 50
+	target_selection_arrows[0].set_visible(true)
 
 func _manage_target_arraows():
 	for arrow in target_arrows:
 		arrow.set_visible(false)
 		
-	if not input_group == INPUT_GROUP.ACTION:
+	if not input_group == INPUT_GROUP.ACTION and not input_group == INPUT_GROUP.FOE:
 		return
 		
 	var targets = _get_target();
@@ -56,8 +63,11 @@ func _manage_target_arraows():
 	for i in targets.indexes:
 		target_arrows[i].global_position = team[i].global_position
 		target_arrows[i].global_position.x = target_arrows[i].global_position.x + 50
-		target_arrows[i].set_visible(true) 
-	
+		target_arrows[i].set_visible(true)
+		
+#	if input_group == INPUT_GROUP.FOE:
+#		target_arrows[input_index].set_visible(false)
+		
 func _get_target_team(targets):
 	if targets.ally:
 		return teamA
@@ -71,6 +81,9 @@ func _get_target():
 	return targets
 	
 func _manage_selection_arrow():
+	if not input_group == INPUT_GROUP.ALLY and not input_group == INPUT_GROUP.ACTION:
+		return
+	
 	var global_position
 	
 	if input_group == INPUT_GROUP.ALLY:
@@ -90,12 +103,26 @@ func _manage_selection_arrow():
 	arrow.global_position.x = arrow.global_position.x - 50
 
 func _inputs():
-	_input_index()
+	if Input.is_action_just_pressed("down"):
+		_input_index_increment(true)
+		
+	if Input.is_action_just_pressed("up"):
+		_input_index_increment(false)
+		
 	_input_group()
 	_set_monster_index()
 	_set_action_index()
 	
-func _input_index():
+func _input_index_increment(var increment : bool):
+	if increment:
+		input_index = input_index + 1
+		
+	if not increment:
+		input_index = input_index -1
+		
+	_input_corrections(increment)
+	
+func _input_corrections(var increment : bool):
 	var index_min = 0
 	var index_max = 2
 	var actions_count = 4
@@ -103,18 +130,18 @@ func _input_index():
 	if input_group == INPUT_GROUP.ACTION:
 		index_max = actions_count - 1
 	
-	if Input.is_action_just_pressed("down"):
-		input_index = input_index + 1
-		
-	if Input.is_action_just_pressed("up"):
-		input_index = input_index -1
-		
 	if input_index < index_min:
 		input_index = index_max
 		
 	if input_index > index_max:
 		input_index = index_min
 		
+	var targets = _get_target();
+	
+	if input_group == INPUT_GROUP.FOE:
+		if not targets.indexes.has(input_index):
+			_input_index_increment(increment)
+
 func _set_monster_index():
 	if input_group == INPUT_GROUP.ALLY:
 		monster_index = input_index
@@ -139,7 +166,7 @@ func _input_group():
 		if (input_group == INPUT_GROUP.ALLY):
 			input_group = INPUT_GROUP.ACTION
 			
-		input_index = 0
+		_reset_index()
 			
 	if Input.is_action_just_pressed("reject"):
 		if (input_group == INPUT_GROUP.ACTION):
@@ -147,5 +174,9 @@ func _input_group():
 			
 		if (input_group == INPUT_GROUP.FOE):
 			input_group = INPUT_GROUP.ACTION
+			
+		_reset_index()
 
-		input_index = 0
+func _reset_index():
+	input_index = -1
+	_input_index_increment(true)

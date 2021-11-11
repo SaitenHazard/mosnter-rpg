@@ -343,46 +343,46 @@ position = Vector2( 579.541, 309.592 )
 position = Vector2( 671.097, 408.699 )
 
 [node name="Arrow" type="Sprite" parent="."]
-position = Vector2( -184.999, 124.591 )
+position = Vector2( 598.479, 135.816 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 11 )
+
+[node name="TargetArrows" type="Node2D" parent="."]
+
+[node name="Arrow2" type="Sprite" parent="TargetArrows"]
+position = Vector2( 241.329, 141.43 )
+rotation = 3.14159
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 11 )
+
+[node name="Arrow3" type="Sprite" parent="TargetArrows"]
+position = Vector2( 63.9803, 139.185 )
+rotation = 3.14159
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 11 )
+
+[node name="Arrow4" type="Sprite" parent="TargetArrows"]
+position = Vector2( 139.185, 136.94 )
+rotation = 3.14159
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 11 )
 
 [node name="TargetSelectArrows" type="Node2D" parent="."]
 
 [node name="Arrow2" type="Sprite" parent="TargetSelectArrows"]
-visible = false
+position = Vector2( 486.715, 180.537 )
 rotation = 3.14159
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
 
 [node name="Arrow3" type="Sprite" parent="TargetSelectArrows"]
-visible = false
+position = Vector2( 422.718, 179.792 )
 rotation = 3.14159
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
 
 [node name="Arrow4" type="Sprite" parent="TargetSelectArrows"]
-visible = false
+position = Vector2( 229.488, 143.768 )
 rotation = 3.14159
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
-
-[node name="TargetArrows" type="Node2D" parent="."]
-
-[node name="Arrow2" type="Sprite" parent="TargetArrows"]
-visible = false
-rotation = 3.14159
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 11 )
-
-[node name="Arrow3" type="Sprite" parent="TargetArrows"]
-visible = false
-rotation = 3.14159
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 11 )
-
-[node name="Arrow4" type="Sprite" parent="TargetArrows"]
-visible = false
-rotation = 3.14159
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 11 )
