@@ -9,7 +9,7 @@ onready var lifebars : Array = get_children()
 func _process(delta):
 	for i in monsters.size():
 		var health_current = monsters[i].get_health_max()
-		var health_max = monsters[i].get_health_current()
+		var health_max = monsters[i].get_health()
 		
 		lifebars[i].value = health_current
 		lifebars[i].max_value = health_max

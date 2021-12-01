@@ -61,6 +61,9 @@ func _set_teamA():
 #	teamA[2].set_name('Mon3')
 	teamA[2].set_type(ELEMENTAL_TYPE.GRASS)
 	
+	for i in teamA.size():
+		teamA[i].set_position_index(i) 
+	
 func _set_teamB():
 #	teamB[0].set_name('Mon1')
 	teamB[0].set_type(ELEMENTAL_TYPE.FIRE)
@@ -70,6 +73,9 @@ func _set_teamB():
 	
 #	teamB[2].set_name('Mon3')
 	teamB[2].set_type(ELEMENTAL_TYPE.GRASS)
+	
+	for i in teamB.size():
+		teamB[i].set_position_index(i)
 	
 func _assign_health():
 	for monster in teamA:

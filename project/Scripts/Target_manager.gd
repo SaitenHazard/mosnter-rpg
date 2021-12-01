@@ -50,12 +50,12 @@ func _remove_outofbounds_targets():
 func _remove_dead_targets():
 	if ally == true:
 		for i in teamA.size():
-			if teamA[i].get_health_current() <= 0:
+			if teamA[i].get_health() <= 0:
 				indexes.remove(i)
 				
 	if ally == false:
 		for i in teamB.size():
-			if teamB[i].get_health_current() <= 0:
+			if teamB[i].get_health() <= 0:
 				indexes.remove(i)
 
 func _remove_actioner_as_target(actioner_index):

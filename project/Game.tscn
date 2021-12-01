@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
 [ext_resource path="res://sprite/target_select_arrow.png" type="Texture" id=2]
@@ -7,12 +7,14 @@
 [ext_resource path="res://styles/LifeBarBg.tres" type="StyleBox" id=5]
 [ext_resource path="res://Scripts/UI_action_details.gd" type="Script" id=6]
 [ext_resource path="res://font/Font.tres" type="DynamicFont" id=7]
+[ext_resource path="res://Scripts/Action_manager.gd" type="Script" id=8]
 [ext_resource path="res://Scripts/LifeBar.gd" type="Script" id=9]
 [ext_resource path="res://Scripts/Game_manager.gd" type="Script" id=10]
 [ext_resource path="res://sprite/arrow.png" type="Texture" id=11]
 [ext_resource path="res://Scenes/Monster.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Scripts/UI_actions.gd" type="Script" id=13]
 [ext_resource path="res://Scenes/UI_Actions.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Scripts/UI_arrows.gd" type="Script" id=15]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://font/Comfortaa-Bold.ttf"
@@ -39,6 +41,12 @@ __meta__ = {
 
 [node name="GameManager" type="Node2D" parent="."]
 script = ExtResource( 10 )
+
+[node name="ActionManager" type="Node2D" parent="."]
+script = ExtResource( 8 )
+
+[node name="UI_arrows" type="Node2D" parent="."]
+script = ExtResource( 15 )
 
 [node name="Label" type="Label" parent="."]
 margin_left = 483.544
