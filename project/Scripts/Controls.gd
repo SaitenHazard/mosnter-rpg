@@ -13,15 +13,20 @@ onready var ActionManager = get_node('ActionManager')
 
 var input_group
 
-var input_index : int = 0
-var monster_index : int = 0
-var action_index : int = 0
+var input_index : int
+var monster_index : int
+var action_index : int
 var targets = null
 var targets_team = null
+var lock_inputs : bool = false 
 	
 func _ready():
 #	print(INPUT_GROUP_)
 	input_group = INPUT_GROUP.ALLY
+	
+func reset():
+	while not input_group ==  INPUT_GROUP.ALLY:
+		_input_group_increment(false)
 	
 func _process(delta):
 	_inputs()
@@ -64,7 +69,11 @@ func _inputs():
 	if Input.is_action_just_pressed("up"):
 		_input_index_increment(false)
 		
-	_input_group()
+	if Input.is_action_just_pressed("accept"):
+		_input_group_increment(true)
+		
+	if Input.is_action_just_pressed("reject"):
+		_input_group_increment(false)
 	
 func _input_index_increment(var increment : bool):
 	if increment:
@@ -109,8 +118,8 @@ func get_action_index() -> int:
 func get_monster_index() -> int:
 	return monster_index
 		
-func _input_group():
-	if Input.is_action_just_pressed("accept"):
+func _input_group_increment(var accept : bool):
+	if accept:
 		if (input_group == INPUT_GROUP.TARGET):
 			get_node('ActionManager').do_action()
 			
@@ -122,7 +131,7 @@ func _input_group():
 			
 		_reset_index()
 			
-	if Input.is_action_just_pressed("reject"):
+	if not accept:
 		if (input_group == INPUT_GROUP.ACTION):
 			input_group = INPUT_GROUP.ALLY
 			

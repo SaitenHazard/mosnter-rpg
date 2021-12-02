@@ -41,40 +41,54 @@ func get_target_team():
 	else:
 		return teamB
 		
+var target
+var attacker
+var action
+
 func do_action():
-#	var action = _get_action()
+	_set_action_variables()
 	_do_damage()
+#	control._input_group_increment(false)
+#	control._input_group_increment(false)
+#	control._input_group_increment(false)
 	
-func _do_damage():
+func _set_action_variables():
+	action = _get_action()
+	
 	var target_index = control.get_input_index() 
-	var target = teamB[target_index]
+	target = teamB[target_index]
 	
 	var attacker_index = control.get_monster_index()
-	var attacker = teamA[attacker_index]
+	attacker = teamA[attacker_index]
 	
-	var action = _get_action()
-	
-	var damage = _get_damage(action, target, attacker)
-	
+func _do_damage():
+	var damage = _get_damage()
 	target.do_damage(damage)
 
-func _get_damage(var action, var target, var attacker):
+func _get_damage():
 	var damage = action.damage
 	
-	if _is_type_advantage(action.get_type(), target.get_type_weakness()):
+	if _is_type_advantage():
 		damage = damage + 1
 		
-	if _is_position_advantage(attacker.get_position_index(), target.get_position_index()):
+	if _is_position_advantage():
 		damage = damage + 1
 		
 	return damage
 
-func _is_position_advantage(var attacker_position, var target_position):
+func _is_position_advantage():
+	var attacker_position = attacker.get_position_index()
+	var target_position = target.get_position_index()
+	
 	if attacker_position == target_position:
 		return true
+		
 	return false
 
-func _is_type_advantage(var action_type, var target_type_weakness):
+func _is_type_advantage():
+	var action_type = action.get_type()
+	var target_type_weakness = target.get_type_weakness()
+	
 	if action_type == target_type_weakness:
 		return true
 		
