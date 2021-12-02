@@ -41,7 +41,7 @@ onready var teamA : Array = get_node("/root/Control/TeamA").get_children()
 onready var teamB : Array = get_node('/root/Control/TeamB').get_children()
 
 func _ready():
-	Status_effect.BLEED
+#	Status_effect.BLEED
 	_set_actions()
 	_set_monsters()
 	

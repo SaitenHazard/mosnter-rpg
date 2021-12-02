@@ -24,9 +24,23 @@ func _ready():
 #	print(INPUT_GROUP_)
 	input_group = INPUT_GROUP.ALLY
 	
+func reset_and_unlock_inputs():
+	reset()
+	unlock_inputs()
+	
 func reset():
 	while not input_group ==  INPUT_GROUP.ALLY:
 		_input_group_increment(false)
+		
+#	_input_group_increment(false)
+#	_input_group_increment(false)
+#	_input_group_increment(false)
+		
+func lock_inputs():
+	lock_inputs = true
+	
+func unlock_inputs():
+	lock_inputs = false
 	
 func _process(delta):
 	_inputs()
@@ -63,6 +77,9 @@ func _manage_selection_arrow():
 	arrow.global_position.x = arrow.global_position.x - 50
 
 func _inputs():
+	if lock_inputs():
+		return
+	
 	if Input.is_action_just_pressed("down"):
 		_input_index_increment(true)
 		
@@ -119,26 +136,35 @@ func get_monster_index() -> int:
 	return monster_index
 		
 func _input_group_increment(var accept : bool):
+#	print('in')
 	if accept:
 		if (input_group == INPUT_GROUP.TARGET):
+			lock_inputs()
 			get_node('ActionManager').do_action()
+			return
 			
 		if (input_group == INPUT_GROUP.ACTION):
 			input_group = INPUT_GROUP.TARGET
+			return
 			
 		if (input_group == INPUT_GROUP.ALLY):
 			input_group = INPUT_GROUP.ACTION
+			return
 			
 		_reset_index()
 			
 	if not accept:
 		if (input_group == INPUT_GROUP.ACTION):
 			input_group = INPUT_GROUP.ALLY
+			return
 			
 		if (input_group == INPUT_GROUP.TARGET):
 			input_group = INPUT_GROUP.ACTION
+			return
 			
 		_reset_index()
+
+#	print(input_group)
 
 func _reset_index():
 	input_index = -1

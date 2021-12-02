@@ -44,13 +44,12 @@ func get_target_team():
 var target
 var attacker
 var action
+var targets
 
 func do_action():
 	_set_action_variables()
 	_do_damage()
-#	control._input_group_increment(false)
-#	control._input_group_increment(false)
-#	control._input_group_increment(false)
+	control.reset_and_unlock_inputs()
 	
 func _set_action_variables():
 	action = _get_action()
