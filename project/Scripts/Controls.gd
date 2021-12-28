@@ -13,29 +13,26 @@ onready var ActionManager = get_node('ActionManager')
 
 var input_group
 
-var input_index : int
-var monster_index : int
-var action_index : int
+var index_ally : int
+var index_target : int
+var index_action : int
+
+var ally_min_index : int = 0
+var ally_max_index : int = 2
+
+var target_min_index : int = 0
+var target_max_index : int = 2
+
+var action_min_index : int = 0
+var action_max_index : int = 3
+
 var targets = null
 var targets_team = null
 var lock_inputs : bool = false 
 	
 func _ready():
-#	print(INPUT_GROUP_)
 	input_group = INPUT_GROUP.ALLY
 	
-func reset_and_unlock_inputs():
-	reset()
-	unlock_inputs()
-	
-func reset():
-	while not input_group ==  INPUT_GROUP.ALLY:
-		_input_group_increment(false)
-		
-#	_input_group_increment(false)
-#	_input_group_increment(false)
-#	_input_group_increment(false)
-		
 func lock_inputs():
 	lock_inputs = true
 	
@@ -44,128 +41,124 @@ func unlock_inputs():
 	
 func _process(delta):
 	_inputs()
-	_set_monster_index()
-	_set_action_index()
-	_manage_selection_arrow()
 
 func get_input_group():
 	return input_group
-	
-func get_input_index():
-	return input_index
-
-func _manage_selection_arrow():
-	if not input_group == INPUT_GROUP.ALLY and not input_group == INPUT_GROUP.ACTION:
-		return
-	
-	var global_position
-	
-	if input_group == INPUT_GROUP.ALLY:
-		global_position = teamA[input_index].global_position
-		arrow.scale = Vector2(0.5,0.5)
-		
-	if input_group == INPUT_GROUP.ACTION:
-		global_position = actions[input_index].get_global_transform().origin
-		global_position.y = global_position.y + 13
-		arrow.scale = Vector2(1,1)
-		
-#	if input_group == INPUT_GROUP.TARGET:
-#		global_position = teamB[input_index].global_position
-#		arrow.scale = Vector2(0.5,0.5)
-	
-	arrow.global_position = global_position
-	arrow.global_position.x = arrow.global_position.x - 50
 
 func _inputs():
 	if lock_inputs():
 		return
 	
+	_input_groups()
+	_input_allies()
+	_input_actions()
+	_input_targets()
+
+func _input_groups():
+	if Input.is_action_just_pressed("accept"):
+		if get_input_group() == INPUT_GROUP.ACTION:
+			input_group = INPUT_GROUP.TARGET
+			
+		if get_input_group() == INPUT_GROUP.ALLY:
+			input_group = INPUT_GROUP.ACTION
+			
+		if get_input_group() == INPUT_GROUP.ACTION:
+			ActionManager.do_action()
+			
+	if Input.is_action_just_pressed("reject"):
+		if get_input_group() == INPUT_GROUP.TARGET:
+			input_group = INPUT_GROUP.ACTION
+			
+		if get_input_group() == INPUT_GROUP.ACTION:
+			input_group = INPUT_GROUP.ALLY
+			
+		print(input_group)
+
+func _input_allies():
+	if get_input_group() != INPUT_GROUP.ALLY:
+		return
+		
 	if Input.is_action_just_pressed("down"):
-		_input_index_increment(true)
+		_input_allies_increment(true)
 		
 	if Input.is_action_just_pressed("up"):
-		_input_index_increment(false)
-		
-	if Input.is_action_just_pressed("accept"):
-		_input_group_increment(true)
-		
-	if Input.is_action_just_pressed("reject"):
-		_input_group_increment(false)
+		_input_allies_increment(false)
 	
-func _input_index_increment(var increment : bool):
+func _input_actions():
+	if get_input_group() != INPUT_GROUP.ACTION:
+		return
+	
+	if Input.is_action_just_pressed("down"):
+		_input_actions_increment(true)
+		
+	if Input.is_action_just_pressed("up"):
+		_input_actions_increment(false)
+	
+func _input_targets():
+	if get_input_group() != INPUT_GROUP.TARGET:
+		return
+	
+	if Input.is_action_just_pressed("down"):
+		_input_targets_increment(true)
+		
+	if Input.is_action_just_pressed("up"):
+		_input_targets_increment(false)
+	
+func _input_allies_increment(var increment):
+	var min_index = 0
+	var max_index = 2
+	
+	var candidate_index = index_ally
+	
 	if increment:
-		input_index = input_index + 1
+		candidate_index = candidate_index + 1
+	else:
+		candidate_index = candidate_index -1
 		
-	if not increment:
-		input_index = input_index -1
+	if candidate_index < min_index:
+		candidate_index = max_index
 		
-	_input_corrections(increment)
+	if candidate_index > max_index:
+		candidate_index = min_index
+		
+	index_ally = candidate_index
 	
-func _input_corrections(var increment : bool):
-	var index_min = 0
-	var index_max = 2
-	var actions_count = 4
+func _input_actions_increment(var increment):
+	var min_index = 0
+	var max_index = 3
 	
-	if input_group == INPUT_GROUP.ACTION:
-		index_max = actions_count - 1
+	var candidate_index = index_action
 	
-	if input_index < index_min:
-		input_index = index_max
+	if increment:
+		candidate_index = candidate_index + 1
+	else:
+		candidate_index = candidate_index -1
 		
-	if input_index > index_max:
-		input_index = index_min
+	if candidate_index < min_index:
+		candidate_index = max_index
 		
-	if input_group == INPUT_GROUP.TARGET:
-		var targets = ActionManager.get_targets();
+	if candidate_index > max_index:
+		candidate_index = min_index
 		
-		if not targets.indexes.has(input_index):
-			_input_index_increment(increment)
+	index_action = candidate_index
 	
-func _set_monster_index():
-	if input_group == INPUT_GROUP.ALLY:
-		monster_index = input_index
+func _input_targets_increment(var increment):
+	var min_index = 0
+	var max_index = 2
+	
+	if increment:
+		index_target = index_target + 1
+	else:
+		index_target = index_target -1
 		
-func _set_action_index():
-	if input_group == INPUT_GROUP.ACTION:
-		action_index = input_index
+	if index_target < min_index:
+		index_target = max_index
 		
-func get_action_index() -> int:
-	return action_index	
+func get_index_action() -> int:
+	return index_action
 		
-func get_monster_index() -> int:
-	return monster_index
-		
-func _input_group_increment(var accept : bool):
-#	print('in')
-	if accept:
-		if (input_group == INPUT_GROUP.TARGET):
-			lock_inputs()
-			get_node('ActionManager').do_action()
-			return
-			
-		if (input_group == INPUT_GROUP.ACTION):
-			input_group = INPUT_GROUP.TARGET
-			return
-			
-		if (input_group == INPUT_GROUP.ALLY):
-			input_group = INPUT_GROUP.ACTION
-			return
-			
-		_reset_index()
-			
-	if not accept:
-		if (input_group == INPUT_GROUP.ACTION):
-			input_group = INPUT_GROUP.ALLY
-			return
-			
-		if (input_group == INPUT_GROUP.TARGET):
-			input_group = INPUT_GROUP.ACTION
-			return
-			
-		_reset_index()
-
-#	print(input_group)
-
-func _reset_index():
-	input_index = -1
-	_input_index_increment(true)
+func get_index_ally() -> int:
+	return index_ally
+	
+func get_index_target() -> int:
+	return index_target

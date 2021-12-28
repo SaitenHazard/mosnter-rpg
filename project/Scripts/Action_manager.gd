@@ -6,6 +6,7 @@ onready var teamA : Array = get_node('/root/Control/TeamA').get_children()
 onready var teamB : Array = get_node('/root/Control/TeamB').get_children()
 
 func _get_action():
+	return
 	var action_index = control.get_action_index()
 	var monster_index = control.get_monster_index()
 	var monster = teamA[monster_index]
@@ -14,6 +15,7 @@ func _get_action():
 	return action
 
 func _get_action_range():
+	return
 	return _get_action().action_range
 
 func get_targets():
@@ -41,29 +43,53 @@ func get_target_team():
 	else:
 		return teamB
 		
-var target
+var targets : Array
 var attacker
 var action
-var targets
+var action_range
+var team
+var target
 
 func do_action():
+	return
 	_set_action_variables()
 	_do_damage()
+	_do_status_effect()
 	control.reset_and_unlock_inputs()
 	
 func _set_action_variables():
+	return
 	action = _get_action()
+	action_range = _get_action_range()
 	
-	var target_index = control.get_input_index() 
-	target = teamB[target_index]
+	if action_range == ACTION_RANGE.ALLY_ALL:
+		targets.append(teamA[0])
+		targets.append(teamA[1])
+		targets.append(teamA[2])
+	elif action_range == ACTION_RANGE.FOE_ALL:
+		targets.append(teamB[0])
+		targets.append(teamB[1])
+		targets.append(teamB[2])
+	else:
+		var target_index = control.get_input_index()
+		targets.append(teamB[target_index])
 	
 	var attacker_index = control.get_monster_index()
 	attacker = teamA[attacker_index]
 	
 func _do_damage():
-	var damage = _get_damage()
-	target.do_damage(damage)
-
+	for target in targets:
+		self.target = target
+		var damage = _get_damage()
+		target.do_damage(damage)
+		
+func _do_status_effect():
+	return
+	var status_effect = action.status_effect
+	if status_effect != Status_effect.NULL:
+		for target in targets:
+			target.set_status(status_effect)
+		
 func _get_damage():
 	var damage = action.damage
 	
@@ -76,6 +102,9 @@ func _get_damage():
 	return damage
 
 func _is_position_advantage():
+	if _is_action_healing():
+		false
+		
 	var attacker_position = attacker.get_position_index()
 	var target_position = target.get_position_index()
 	
@@ -85,6 +114,9 @@ func _is_position_advantage():
 	return false
 
 func _is_type_advantage():
+	if _is_action_healing():
+		return false
+	
 	var action_type = action.get_type()
 	var target_type_weakness = target.get_type_weakness()
 	
@@ -92,3 +124,10 @@ func _is_type_advantage():
 		return true
 		
 	return false
+	
+func _is_action_healing():
+	if action.damage < 0:
+		return true;
+		
+	return false
+

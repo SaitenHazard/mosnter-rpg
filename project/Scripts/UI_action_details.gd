@@ -14,7 +14,7 @@ var type_name = {
 }
 
 func _process(delta):
-	
+	return
 	var action_index = control.get_action_index()
 	
 	if action_index == -1:

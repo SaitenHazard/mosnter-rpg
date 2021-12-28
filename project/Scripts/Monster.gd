@@ -7,6 +7,25 @@ var position_index : int
 
 var actions : Array
 
+var status = {
+	BLEED = 0,
+	PARALYZE = 0,
+}
+
+func _manage_status():
+	if status.BLEED != 0:
+		status.BLEED = status.BLEED - 1
+		
+	if status.PARALYZE != 0:
+		status.PARALYZE = status.PARALYZE - 1
+
+func set_status(var status):
+	if status == Status_effect.BLEED:
+		self.status.BLEED = 4
+		
+	if status == Status_effect.PARALYZE:
+		self.status.PARALYZE = 2
+
 func get_position_index() -> int:
 	return position_index
 	
@@ -39,4 +58,10 @@ func get_action(i : int) :
 	return actions[i]
 	
 func do_damage(var damage : int):
-	health = health - damage 
+	health = health - damage
+	
+	if health < 0:
+		health = 0
+		
+	if health > health_max:
+		health = health_max
