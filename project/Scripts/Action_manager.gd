@@ -6,29 +6,27 @@ onready var teamA : Array = get_node('/root/Control/TeamA').get_children()
 onready var teamB : Array = get_node('/root/Control/TeamB').get_children()
 
 func _get_action():
-	return
-	var action_index = control.get_action_index()
-	var monster_index = control.get_monster_index()
+	var action_index = control.get_index_action()
+	var monster_index = control.get_index_ally()
 	var monster = teamA[monster_index]
 	var action = monster.get_action(action_index)
 	
 	return action
 
 func _get_action_range():
-	return
 	return _get_action().action_range
 
-func get_targets():
-	var monster_index = control.get_monster_index()
+func get_candidate_targets():
+	var ally_index = control.get_index_ally()
 	var action_range = _get_action_range();
-	var targets = Targets.new(monster_index, action_range, teamA, teamB)
+	var targets = Targets.new(ally_index, action_range, teamA, teamB)
 	
 	return targets
 
 func _set_targets():
 	var input_group = control.get_input_group()
 	var targets_team = get_target_team()
-	var targets = get_targets()
+	var targets = get_candidate_targets()
 	
 	if not input_group == INPUT_GROUP.TARGET or not input_group == INPUT_GROUP.ACTION:
 		targets_team = null
@@ -36,7 +34,7 @@ func _set_targets():
 		return
 
 func get_target_team():
-	var targets = get_targets()
+	var targets = get_candidate_targets()
 	
 	if targets.ally:
 		return teamA

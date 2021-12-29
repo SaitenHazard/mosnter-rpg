@@ -1,16 +1,18 @@
 extends Node
 
-onready var ActionManager = get_node('ActionManager')
+onready var ActionManager = get_node('/root/Control/ActionManager')
 onready var control = get_parent()
 
 onready var selection_arrows : Array = get_node('/root/Control/SelectionArrows').get_children()
 onready var targets_selected_arrows : Array = get_node('/root/Control/TargetsSelectArrows').get_children()
+onready var targets_candidate_arrows : Array = get_node('/root/Control/TargetCandidateArrows').get_children()
 
 onready var selection_arrow_ally = selection_arrows[0]
 onready var selection_arrow_action = selection_arrows[1]
 onready var selection_arrow_target = selection_arrows[2]
 
 onready var team_ally : Array = get_node('/root/Control/TeamA').get_children()
+onready var team_foe : Array = get_node('/root/Control/TeamB').get_children()
 onready var actions : Array = get_node('/root/Control/Actions').get_children()
 
 var input_group
@@ -25,39 +27,58 @@ func _process(delta):
 	_set_variables()
 	_set_selected_ally()
 	_set_selected_action()
+	_set_candidate_targets()
+	_set_selected_targets()
 #	_manage_target_selection_arrows()
 #	_manage_target_arraows()
+
+func _set_selected_targets():
+	for arrow in targets_selected_arrows:
+		arrow.visible = false
+		
+	if input_group != INPUT_GROUP.TARGET:
+		return
+		
+	if targets.all:
+		for arrow in targets_selected_arrows:
+			arrow.visible = true
+			
+	if not targets.all:
+		print(index_target)
+		targets_selected_arrows[index_target].visible = true
 
 func _set_variables():
 	input_group = control.get_input_group()
 	index_ally = control.get_index_ally()
 	index_action = control.get_index_action()
 	index_target = control.get_index_target()
-	
-#	targets = ActionManager.get_targets()
-#	team = ActionManager.get_target_team()
+	targets = ActionManager.get_candidate_targets()
 	
 func _set_selected_ally():
 	selection_arrow_ally.global_position = team_ally[index_ally].global_position
 	selection_arrow_ally.global_position.x = selection_arrow_ally.global_position.x + 55
 	
 func _set_selected_action():
-	var origin_y = 243
-	var y_increment = 43
-	
 	if input_group == INPUT_GROUP.ALLY:
 		selection_arrow_action.visible = false
 		return
 		
+	var origin_y = 243
+	var y_increment = 43
+		
 	selection_arrow_action.visible = true
 	selection_arrow_action.position.y = origin_y + (index_action * y_increment) 
 	
-	print(index_action)
-	print(selection_arrow_action.global_position)
-#	print(selection_arrow_action.global_position)
-	
-func _set_selected_target():
-	pass
+func _set_candidate_targets():
+	for arrow in targets_candidate_arrows:
+		arrow.visible = false
+		
+	if input_group == INPUT_GROUP.ALLY:
+		selection_arrow_action.visible = false
+		return
+		
+	for i in targets.indexes:
+		targets_candidate_arrows[i].visible = true
 
 #func _manage_target_selection_arrows():
 #	for arrow in target_selection_arrows:

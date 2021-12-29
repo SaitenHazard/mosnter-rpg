@@ -2,12 +2,10 @@ extends Node
 
 class_name Targets
 
-#onready var positions : Array
 
-onready var teamA : Array = get_node('/root/Control/TeamA').get_children()
-onready var teamB : Array = get_node('/root/Control/TeamB').get_children()
+onready var teamA
+onready var teamB
 
-#class Targets:
 var indexes : Array
 var all : bool
 var ally : bool

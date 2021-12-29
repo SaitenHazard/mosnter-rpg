@@ -58,6 +58,7 @@ func _input_groups():
 	if Input.is_action_just_pressed("accept"):
 		if get_input_group() == INPUT_GROUP.ACTION:
 			input_group = INPUT_GROUP.TARGET
+			_input_targets_increment(true)
 			
 		if get_input_group() == INPUT_GROUP.ALLY:
 			input_group = INPUT_GROUP.ACTION
@@ -72,8 +73,6 @@ func _input_groups():
 		if get_input_group() == INPUT_GROUP.ACTION:
 			input_group = INPUT_GROUP.ALLY
 			
-		print(input_group)
-
 func _input_allies():
 	if get_input_group() != INPUT_GROUP.ALLY:
 		return
@@ -146,13 +145,32 @@ func _input_targets_increment(var increment):
 	var min_index = 0
 	var max_index = 2
 	
-	if increment:
-		index_target = index_target + 1
-	else:
-		index_target = index_target -1
+	var target_indexes = ActionManager.get_candidate_targets().indexes
+	
+	var candidate_index = index_target
+	var index_is_valid = false
+	
+	while index_is_valid == false:
+		if increment:
+			candidate_index = candidate_index + 1
+		else:
+			candidate_index = candidate_index -1
+			
+		if candidate_index < min_index:
+			candidate_index = max_index
+
+		if candidate_index > max_index:
+			candidate_index = min_index
 		
-	if index_target < min_index:
-		index_target = max_index
+#		print('lavel')
+#		print(target_indexes)
+#		print(candidate_index)
+		
+		for index in target_indexes:
+			if index == candidate_index:
+				index_is_valid = true
+		
+	index_target = candidate_index
 		
 func get_index_action() -> int:
 	return index_action

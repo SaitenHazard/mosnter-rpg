@@ -32,7 +32,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "Targets",
 "language": "GDScript",
-"path": "res://Scripts/Target_manager.gd"
+"path": "res://Scripts/Targets.gd"
 } ]
 _global_script_class_icons={
 "ACTION_RANGE": "",
