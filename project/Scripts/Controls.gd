@@ -35,18 +35,25 @@ func _ready():
 	
 func lock_inputs():
 	lock_inputs = true
-	
+
 func unlock_inputs():
 	lock_inputs = false
 	
 func _process(delta):
 	_inputs()
 
+func _monster_position_manager():
+	pass
+
 func get_input_group():
 	return input_group
 
+func reset_inputs():
+	input_group = INPUT_GROUP.ALLY
+	unlock_inputs()
+
 func _inputs():
-	if lock_inputs():
+	if lock_inputs:
 		return
 	
 	_input_groups()
@@ -56,22 +63,27 @@ func _inputs():
 
 func _input_groups():
 	if Input.is_action_just_pressed("accept"):
+		if get_input_group() == INPUT_GROUP.TARGET:
+			ActionManager.do_action()
+			return
+			
 		if get_input_group() == INPUT_GROUP.ACTION:
 			input_group = INPUT_GROUP.TARGET
 			_input_targets_increment(true)
+			return
 			
 		if get_input_group() == INPUT_GROUP.ALLY:
 			input_group = INPUT_GROUP.ACTION
-			
-		if get_input_group() == INPUT_GROUP.ACTION:
-			ActionManager.do_action()
+			return
 			
 	if Input.is_action_just_pressed("reject"):
-		if get_input_group() == INPUT_GROUP.TARGET:
-			input_group = INPUT_GROUP.ACTION
-			
 		if get_input_group() == INPUT_GROUP.ACTION:
 			input_group = INPUT_GROUP.ALLY
+			return
+			
+		if get_input_group() == INPUT_GROUP.TARGET:
+			input_group = INPUT_GROUP.ACTION
+			return
 			
 func _input_allies():
 	if get_input_group() != INPUT_GROUP.ALLY:

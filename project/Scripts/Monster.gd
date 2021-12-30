@@ -12,6 +12,28 @@ var status = {
 	PARALYZE = 0,
 }
 
+var team
+var team_ally_positions : Array = [Vector2(290,230), Vector2(380,312), Vector2(290,420)]
+var team_foe_positions : Array = [Vector2(660,230), Vector2(580,310), Vector2(660,410)]
+
+var index = 0
+
+func get_index():
+	return index
+
+func set_index(var index):
+	self.index = index
+	set_position_()
+	
+func set_team(var team):
+	self.team = team
+	
+func set_position_():
+	if team == TEAM.ALLY:
+		position = team_ally_positions[index]
+	else:
+		position = team_foe_positions[index]
+
 func _manage_status():
 	if status.BLEED != 0:
 		status.BLEED = status.BLEED - 1

@@ -1,7 +1,7 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
-[ext_resource path="res://sprite/target_select_arrow.png" type="Texture" id=2]
+[ext_resource path="res://sprite/arrow_c.png" type="Texture" id=2]
 [ext_resource path="res://font/Montserrat-Bold.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://styles/LifeBarFg.tres" type="StyleBox" id=4]
 [ext_resource path="res://styles/LifeBarBg.tres" type="StyleBox" id=5]
@@ -10,11 +10,12 @@
 [ext_resource path="res://Scripts/Action_manager.gd" type="Script" id=8]
 [ext_resource path="res://Scripts/LifeBar.gd" type="Script" id=9]
 [ext_resource path="res://Scripts/Game_manager.gd" type="Script" id=10]
-[ext_resource path="res://sprite/arrow.png" type="Texture" id=11]
+[ext_resource path="res://sprite/arrow_b.png" type="Texture" id=11]
 [ext_resource path="res://Scenes/Monster.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Scripts/UI_actions.gd" type="Script" id=13]
 [ext_resource path="res://Scenes/UI_Actions.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Scripts/Arrow_manager.gd" type="Script" id=15]
+[ext_resource path="res://sprite/arrow_a.png" type="Texture" id=16]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://font/Comfortaa-Bold.ttf"
@@ -47,6 +48,26 @@ script = ExtResource( 8 )
 
 [node name="Arrow_manager" type="Node2D" parent="."]
 script = ExtResource( 15 )
+
+[node name="SelectionArrows" type="Node2D" parent="."]
+
+[node name="SelectionArrowAlly" type="Sprite" parent="SelectionArrows"]
+position = Vector2( 393.068, 178.47 )
+rotation = 3.14159
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 16 )
+
+[node name="SelectionArrowAction" type="Sprite" parent="SelectionArrows"]
+position = Vector2( 215, 248 )
+rotation = -3.14159
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 16 )
+
+[node name="SelectionArrowTarget" type="Sprite" parent="SelectionArrows"]
+visible = false
+position = Vector2( 598.479, 135.816 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 2 )
 
 [node name="TargetCandidateArrows" type="Node2D" parent="."]
 
@@ -85,26 +106,6 @@ texture = ExtResource( 2 )
 [node name="Arrow3" type="Sprite" parent="TargetsSelectArrows"]
 position = Vector2( 794.561, 406.525 )
 rotation = 3.14159
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 2 )
-
-[node name="SelectionArrows" type="Node2D" parent="."]
-
-[node name="SelectionArrowAlly" type="Sprite" parent="SelectionArrows"]
-position = Vector2( 393.068, 178.47 )
-rotation = 3.14159
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 11 )
-
-[node name="SelectionArrowAction" type="Sprite" parent="SelectionArrows"]
-position = Vector2( 215, 248 )
-rotation = -3.14159
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 11 )
-
-[node name="SelectionArrowTarget" type="Sprite" parent="SelectionArrows"]
-visible = false
-position = Vector2( 598.479, 135.816 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
 
@@ -387,25 +388,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TeamA" type="Node2D" parent="."]
+[node name="TeamAlly" type="Node2D" parent="."]
 
-[node name="Mon1" parent="TeamA" instance=ExtResource( 12 )]
-position = Vector2( 292.602, 230.306 )
+[node name="Mon1" parent="TeamAlly" instance=ExtResource( 12 )]
+position = Vector2( 290, 230 )
 
-[node name="Monster2" parent="TeamA" instance=ExtResource( 12 )]
-position = Vector2( 380.382, 313.367 )
+[node name="Monster2" parent="TeamAlly" instance=ExtResource( 12 )]
+position = Vector2( 380, 312 )
 
-[node name="Monster3" parent="TeamA" instance=ExtResource( 12 )]
-position = Vector2( 292.602, 420.025 )
+[node name="Monster3" parent="TeamAlly" instance=ExtResource( 12 )]
+position = Vector2( 290, 420 )
 
-[node name="TeamB" type="Node2D" parent="."]
+[node name="TeamFoe" type="Node2D" parent="."]
 position = Vector2( 60, 0 )
 
-[node name="Monster" parent="TeamB" instance=ExtResource( 12 )]
-position = Vector2( 661.658, 228.418 )
+[node name="Monster" parent="TeamFoe" instance=ExtResource( 12 )]
+position = Vector2( 660, 230 )
 
-[node name="Monster2" parent="TeamB" instance=ExtResource( 12 )]
-position = Vector2( 579.541, 309.592 )
+[node name="Monster2" parent="TeamFoe" instance=ExtResource( 12 )]
+position = Vector2( 580, 310 )
 
-[node name="Monster3" parent="TeamB" instance=ExtResource( 12 )]
-position = Vector2( 671.097, 408.699 )
+[node name="Monster3" parent="TeamFoe" instance=ExtResource( 12 )]
+position = Vector2( 660, 410 )

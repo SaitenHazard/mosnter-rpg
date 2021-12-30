@@ -21,7 +21,7 @@ var index_target
 var index_action
 
 var targets
-var team
+var target_team
 
 func _process(delta):
 	_set_variables()
@@ -29,8 +29,6 @@ func _process(delta):
 	_set_selected_action()
 	_set_candidate_targets()
 	_set_selected_targets()
-#	_manage_target_selection_arrows()
-#	_manage_target_arraows()
 
 func _set_selected_targets():
 	for arrow in targets_selected_arrows:
@@ -40,12 +38,18 @@ func _set_selected_targets():
 		return
 		
 	if targets.all:
+		for i in targets_selected_arrows.size():
+			targets_selected_arrows[i].visible = true
+			targets_selected_arrows[i].global_position = target_team[i].global_position
+			targets_selected_arrows[i].global_position.x = targets_selected_arrows[i].global_position.x + 55
+			
 		for arrow in targets_selected_arrows:
 			arrow.visible = true
 			
 	if not targets.all:
-		print(index_target)
 		targets_selected_arrows[index_target].visible = true
+		targets_selected_arrows[index_target].global_position = target_team[index_target].global_position
+		targets_selected_arrows[index_target].global_position.x = targets_selected_arrows[index_target].global_position.x + 55
 
 func _set_variables():
 	input_group = control.get_input_group()
@@ -53,6 +57,11 @@ func _set_variables():
 	index_action = control.get_index_action()
 	index_target = control.get_index_target()
 	targets = ActionManager.get_candidate_targets()
+	
+	if targets.ally:
+		target_team = team_ally
+	else:
+		target_team = team_foe
 	
 func _set_selected_ally():
 	selection_arrow_ally.global_position = team_ally[index_ally].global_position
@@ -79,6 +88,8 @@ func _set_candidate_targets():
 		
 	for i in targets.indexes:
 		targets_candidate_arrows[i].visible = true
+		targets_candidate_arrows[i].global_position = target_team[i].global_position
+		targets_candidate_arrows[i].global_position.x = targets_candidate_arrows[i].global_position.x + 55
 
 #func _manage_target_selection_arrows():
 #	for arrow in target_selection_arrows:

@@ -29,6 +29,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Scripts/Status_effect.gd"
 }, {
+"base": "Reference",
+"class": "TEAM",
+"language": "GDScript",
+"path": "res://Scripts/TEAM.gd"
+}, {
 "base": "Node",
 "class": "Targets",
 "language": "GDScript",
@@ -39,6 +44,7 @@ _global_script_class_icons={
 "ELEMENTAL_TYPE": "",
 "INPUT_GROUP": "",
 "Status_effect": "",
+"TEAM": "",
 "Targets": ""
 }
 

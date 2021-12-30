@@ -129,7 +129,7 @@ func _set_actions():
 	action = Action.new('Healing Wave', -2, 6, Status_effect.NULL, ACTION_RANGE.ALLY_ALL, ELEMENTAL_TYPE.NULL)
 	actions.append(action)
 	
-	action = Action.new('Ice Punch', 1, 3, Status_effect.BLEED, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER)
+	action = Action.new('Icicle Blade', 1, 3, Status_effect.BLEED, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER)
 	actions.append(action)
 	action = Action.new('Swift Surf', 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER)
 	actions.append(action)

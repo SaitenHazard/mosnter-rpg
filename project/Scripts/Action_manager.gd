@@ -49,16 +49,17 @@ var team
 var target
 
 func do_action():
-	return
+	control.lock_inputs()
 	_set_action_variables()
 	_do_damage()
 	_do_status_effect()
-	control.reset_and_unlock_inputs()
+	control.reset_inputs()
 	
 func _set_action_variables():
-	return
 	action = _get_action()
 	action_range = _get_action_range()
+	
+	targets.clear()
 	
 	if action_range == ACTION_RANGE.ALLY_ALL:
 		targets.append(teamA[0])
@@ -69,10 +70,10 @@ func _set_action_variables():
 		targets.append(teamB[1])
 		targets.append(teamB[2])
 	else:
-		var target_index = control.get_input_index()
+		var target_index = control.get_index_target()
 		targets.append(teamB[target_index])
 	
-	var attacker_index = control.get_monster_index()
+	var attacker_index = control.get_index_ally()
 	attacker = teamA[attacker_index]
 	
 func _do_damage():
@@ -82,7 +83,6 @@ func _do_damage():
 		target.do_damage(damage)
 		
 func _do_status_effect():
-	return
 	var status_effect = action.status_effect
 	if status_effect != Status_effect.NULL:
 		for target in targets:
