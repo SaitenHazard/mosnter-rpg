@@ -16,27 +16,27 @@ var team
 var team_ally_positions : Array = [Vector2(290,230), Vector2(380,312), Vector2(290,420)]
 var team_foe_positions : Array = [Vector2(660,230), Vector2(580,310), Vector2(660,410)]
 
-var index = 0
-
 var texture_monster_fire = preload('res://sprite/monster_fire.png')
 var texture_monster_water = preload('res://sprite/monster_water.png')
 var texture_monster_grass = preload('res://sprite/monster_grass.png')
 
-func get_index():
-	return index
+func get_position_index() -> int:
+	return position_index
 
-func set_index(var index):
-	self.index = index
-	set_position_()
+func set_position_index(var index):
+	self.position_index = index
 	
 func set_team(var team):
 	self.team = team
 	
-func set_position_():
+func _process(var delta):
+	_set_position_()
+	
+func _set_position_():
 	if team == TEAM.ALLY:
-		position = team_ally_positions[index]
+		position = team_ally_positions[position_index]
 	else:
-		position = team_foe_positions[index]
+		position = team_foe_positions[position_index]
 
 func _manage_status():
 	if status.BLEED != 0:
@@ -51,12 +51,6 @@ func set_status(var status):
 		
 	if status == Status_effect.PARALYZE:
 		self.status.PARALYZE = 2
-
-func get_position_index() -> int:
-	return position_index
-	
-func set_position_index(position_index):
-	self.position_index = position_index
 
 func get_type_weakness():
 	return type_weakness

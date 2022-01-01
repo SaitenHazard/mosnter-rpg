@@ -53,7 +53,23 @@ func do_action():
 	_set_action_variables()
 	_do_damage()
 	_do_status_effect()
+	_do_swap()
 	control.reset_inputs()
+	
+func _do_swap():
+	if not _get_action().name == 'Swap':
+		return
+		
+	var targets_team = get_target_team()
+		
+	var index_ally = control.get_index_ally()
+	var index_target = control.get_index_target()
+	
+	var position_index_ally = teamAlly[index_ally].get_position_index()
+	var position_index_target = teamFoe[index_target].get_position_index()
+	
+	teamAlly[index_ally].set_position_index(index_target)
+	targets_team[index_target].set_position_index(position_index_ally)
 	
 func _set_action_variables():
 	action = _get_action()

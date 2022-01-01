@@ -31,10 +31,6 @@ class Action:
 		
 var action_swap : Action
 
-#const ELEMENTAL_TYPE =  preload('res://Scripts/Elemental_type.gd')
-#const ACTION_RANGE =  preload('res://Scripts/Action_range.gd')
-#const STATUS_EFFECT =  preload('res://Scripts/Status_effect.gd')
-
 var actions : Array
 
 onready var teamAlly : Array = get_node("/root/Control/TeamAlly").get_children()
@@ -132,7 +128,3 @@ func _set_actions():
 	actions.append(action)
 	
 	action_swap = Action.new('Swap', 0, 1, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.NULL)
-	
-#	print('in')
-#	print(actions[0])
-	

@@ -109,6 +109,8 @@ rotation = 3.14159
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
 
+[node name="MonsterManager" type="Node2D" parent="."]
+
 [node name="ActionPoints" type="Label" parent="."]
 margin_left = 483.544
 margin_top = 65.8618
@@ -394,19 +396,18 @@ __meta__ = {
 position = Vector2( 290, 230 )
 
 [node name="Monster2" parent="TeamAlly" instance=ExtResource( 12 )]
-position = Vector2( 380, 312 )
+position = Vector2( 382, 314 )
 
 [node name="Monster3" parent="TeamAlly" instance=ExtResource( 12 )]
 position = Vector2( 290, 420 )
 
 [node name="TeamFoe" type="Node2D" parent="."]
-position = Vector2( 60, 0 )
 
 [node name="Monster" parent="TeamFoe" instance=ExtResource( 12 )]
-position = Vector2( 660, 230 )
+position = Vector2( 720, 230 )
 
 [node name="Monster2" parent="TeamFoe" instance=ExtResource( 12 )]
-position = Vector2( 580, 310 )
+position = Vector2( 640, 310 )
 
 [node name="Monster3" parent="TeamFoe" instance=ExtResource( 12 )]
-position = Vector2( 660, 410 )
+position = Vector2( 720, 410 )
