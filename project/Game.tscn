@@ -208,7 +208,7 @@ valign = 1
 
 [node name="LifeBarTeamA" type="Node2D" parent="."]
 script = ExtResource( 9 )
-team = "TeamA"
+team_select = "TeamAlly"
 
 [node name="LifeBar1" type="ProgressBar" parent="LifeBarTeamA"]
 margin_left = 150.0
@@ -293,7 +293,7 @@ __meta__ = {
 
 [node name="LifeBarTeamB" type="Node2D" parent="."]
 script = ExtResource( 9 )
-team = "TeamB"
+team_select = "TeamFoe"
 
 [node name="LifeBarA" type="ProgressBar" parent="LifeBarTeamB"]
 margin_left = 877.797

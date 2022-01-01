@@ -11,8 +11,8 @@ onready var selection_arrow_ally = selection_arrows[0]
 onready var selection_arrow_action = selection_arrows[1]
 onready var selection_arrow_target = selection_arrows[2]
 
-onready var team_ally : Array = get_node('/root/Control/TeamA').get_children()
-onready var team_foe : Array = get_node('/root/Control/TeamB').get_children()
+onready var team_ally : Array = get_node('/root/Control/TeamAlly').get_children()
+onready var team_foe : Array = get_node('/root/Control/TeamFoe').get_children()
 onready var actions : Array = get_node('/root/Control/Actions').get_children()
 
 var input_group

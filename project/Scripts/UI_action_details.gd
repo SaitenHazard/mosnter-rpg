@@ -2,7 +2,7 @@ extends PanelContainer
 
 onready var labels : Array = get_node("HBoxContainer").get_children()
 onready var control = get_node('/root/Control')
-onready var monsters : Array = get_node('/root/Control/TeamA').get_children()
+onready var teamAlly : Array = get_node('/root/Control/TeamAlly').get_children()
 
 const STATUS_EFFECT =  preload('res://Scripts/Status_effect.gd')
 
@@ -22,7 +22,7 @@ func _process(delta):
 		
 	var monster_index = control.get_monster_index()
 	
-	var action = monsters[monster_index].get_action(action_index)
+	var action = teamAlly[monster_index].get_action(action_index)
 	
 #	labels[0] = "DAMAGE " + String(action.get_damage());
 #	labels[1] = "COST " + String(action.get_cost());

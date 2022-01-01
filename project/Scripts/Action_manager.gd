@@ -2,13 +2,13 @@ extends Node
 
 onready var control = get_parent()
 
-onready var teamA : Array = get_node('/root/Control/TeamA').get_children()
-onready var teamB : Array = get_node('/root/Control/TeamB').get_children()
+onready var teamAlly : Array = get_node('/root/Control/TeamAlly').get_children()
+onready var teamFoe : Array = get_node('/root/Control/TeamFoe').get_children()
 
 func _get_action():
 	var action_index = control.get_index_action()
 	var monster_index = control.get_index_ally()
-	var monster = teamA[monster_index]
+	var monster = teamAlly[monster_index]
 	var action = monster.get_action(action_index)
 	
 	return action
@@ -19,7 +19,7 @@ func _get_action_range():
 func get_candidate_targets():
 	var ally_index = control.get_index_ally()
 	var action_range = _get_action_range();
-	var targets = Targets.new(ally_index, action_range, teamA, teamB)
+	var targets = Targets.new(ally_index, action_range, teamAlly, teamFoe)
 	
 	return targets
 
@@ -37,9 +37,9 @@ func get_target_team():
 	var targets = get_candidate_targets()
 	
 	if targets.ally:
-		return teamA
+		return teamAlly
 	else:
-		return teamB
+		return teamFoe
 		
 var targets : Array
 var attacker
@@ -62,19 +62,19 @@ func _set_action_variables():
 	targets.clear()
 	
 	if action_range == ACTION_RANGE.ALLY_ALL:
-		targets.append(teamA[0])
-		targets.append(teamA[1])
-		targets.append(teamA[2])
+		targets.append(teamAlly[0])
+		targets.append(teamAlly[1])
+		targets.append(teamAlly[2])
 	elif action_range == ACTION_RANGE.FOE_ALL:
-		targets.append(teamB[0])
-		targets.append(teamB[1])
-		targets.append(teamB[2])
+		targets.append(teamFoe[0])
+		targets.append(teamFoe[1])
+		targets.append(teamFoe[2])
 	else:
 		var target_index = control.get_index_target()
-		targets.append(teamB[target_index])
+		targets.append(teamFoe[target_index])
 	
 	var attacker_index = control.get_index_ally()
-	attacker = teamA[attacker_index]
+	attacker = teamAlly[attacker_index]
 	
 func _do_damage():
 	for target in targets:

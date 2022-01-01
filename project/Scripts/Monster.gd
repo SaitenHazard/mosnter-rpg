@@ -18,6 +18,10 @@ var team_foe_positions : Array = [Vector2(660,230), Vector2(580,310), Vector2(66
 
 var index = 0
 
+var texture_monster_fire = preload('res://sprite/monster_fire.png')
+var texture_monster_water = preload('res://sprite/monster_water.png')
+var texture_monster_grass = preload('res://sprite/monster_grass.png')
+
 func get_index():
 	return index
 
@@ -59,7 +63,16 @@ func get_type_weakness():
 
 func set_type(type_weakness):
 	self.type_weakness = type_weakness
+	_set_sprite()
 	
+func _set_sprite():
+	if type_weakness == ELEMENTAL_TYPE.WATER:
+		get_node('Sprite').texture = texture_monster_fire
+	elif type_weakness == ELEMENTAL_TYPE.FIRE:
+		get_node('Sprite').texture = texture_monster_grass
+	else:
+		get_node('Sprite').texture = texture_monster_water
+		
 func set_health(health : int):
 	self.health_max = health
 	self.health = health

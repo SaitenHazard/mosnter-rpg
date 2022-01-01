@@ -2,14 +2,8 @@ extends Control
 
 onready var arrow : Sprite = get_node('/root/Control/Arrow')
 
-onready var teamA : Array = get_node('/root/Control/TeamA').get_children()
-onready var teamB : Array = get_node('/root/Control/TeamB').get_children()
 onready var actions : Array = get_node('/root/Control/Actions').get_children()
 onready var ActionManager = get_node('ActionManager')
-
-#onready var Target_manager = load('res://Scripts/Target_manager.gd')
-
-#const INPUT_GROUP_ =  preload('res://Scripts/INPUT_GROUP.gd')
 
 var input_group
 
@@ -173,10 +167,6 @@ func _input_targets_increment(var increment):
 
 		if candidate_index > max_index:
 			candidate_index = min_index
-		
-#		print('lavel')
-#		print(target_indexes)
-#		print(candidate_index)
 		
 		for index in target_indexes:
 			if index == candidate_index:

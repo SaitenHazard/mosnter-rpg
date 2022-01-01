@@ -37,8 +37,8 @@ var action_swap : Action
 
 var actions : Array
 
-onready var teamA : Array = get_node("/root/Control/TeamA").get_children()
-onready var teamB : Array = get_node('/root/Control/TeamB').get_children()
+onready var teamAlly : Array = get_node("/root/Control/TeamAlly").get_children()
+onready var teamFoe : Array = get_node('/root/Control/TeamFoe').get_children()
 
 func _ready():
 #	Status_effect.BLEED
@@ -46,42 +46,44 @@ func _ready():
 	_set_monsters()
 	
 func _set_monsters():
-	_set_teamA()
-	_set_teamB()
+	_set_teamAlly()
+	_set_teamFoe()
 	_assign_health()
 	_assign_actions()
 
-func _set_teamA():
+func _set_teamAlly():
 #	teamA[0].set_name('Mon1')
-	teamA[0].set_type(ELEMENTAL_TYPE.FIRE)
+	teamAlly[0].set_type(ELEMENTAL_TYPE.FIRE)
 	
 #	teamA[1].set_name('Mon2')
-	teamA[1].set_type(ELEMENTAL_TYPE.WATER)
+	teamAlly[1].set_type(ELEMENTAL_TYPE.WATER)
 	
 #	teamA[2].set_name('Mon3')
-	teamA[2].set_type(ELEMENTAL_TYPE.GRASS)
+	teamAlly[2].set_type(ELEMENTAL_TYPE.GRASS)
 	
-	for i in teamA.size():
-		teamA[i].set_position_index(i) 
+	for i in teamAlly.size():
+		teamAlly[i].set_position_index(i)
+		teamAlly[i].set_team(TEAM.ALLY)
 	
-func _set_teamB():
+func _set_teamFoe():
 #	teamB[0].set_name('Mon1')
-	teamB[0].set_type(ELEMENTAL_TYPE.FIRE)
+	teamFoe[0].set_type(ELEMENTAL_TYPE.FIRE)
 	
 #	teamB[1].set_name('Mon2')
-	teamB[1].set_type(ELEMENTAL_TYPE.WATER)
+	teamFoe[1].set_type(ELEMENTAL_TYPE.WATER)
 	
 #	teamB[2].set_name('Mon3')
-	teamB[2].set_type(ELEMENTAL_TYPE.GRASS)
+	teamFoe[2].set_type(ELEMENTAL_TYPE.GRASS)
 	
-	for i in teamB.size():
-		teamB[i].set_position_index(i)
-	
+	for i in teamFoe.size():
+		teamFoe[i].set_position_index(i)
+		teamFoe[i].set_team(TEAM.FOE)
+		
 func _assign_health():
-	for monster in teamA:
+	for monster in teamAlly:
 		monster.set_health(10)
 		
-	for monster in teamB:
+	for monster in teamFoe:
 		monster.set_health(10)
 
 func _assign_actions():
@@ -90,7 +92,7 @@ func _assign_actions():
 	var action3 : Action
 	var rand_index : int
 	
-	for i in teamA.size():
+	for i in teamAlly.size():
 		rand_index = randi() % actions.size()
 		action1 = actions[rand_index]
 		actions.remove(rand_index)
@@ -102,15 +104,10 @@ func _assign_actions():
 		rand_index = randi() % actions.size()
 		action3 = actions[rand_index]
 		actions.remove(rand_index)
-		teamA[i].set_actions(action1, action2, action3, action_swap)
+		teamAlly[i].set_actions(action1, action2, action3, action_swap)
 		
-#	for monster in teamB:
-#		monster.set_actions(action_set)
-	
 func _set_actions():
 	var action
-	
-#	STATUS_EFFECT.NULL
 	
 	action = Action.new('Fire Ball', 3, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.FIRE)
 	actions.append(action)
