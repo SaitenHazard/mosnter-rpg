@@ -1,6 +1,6 @@
 extends Node
 
-onready var ActionManager = get_node('/root/Control/ActionManager')
+onready var monster_manager = get_node('/root/Control/MonsterManager')
 onready var control = get_parent()
 
 onready var selection_arrows : Array = get_node('/root/Control/SelectionArrows').get_children()
@@ -11,8 +11,6 @@ onready var selection_arrow_ally = selection_arrows[0]
 onready var selection_arrow_action = selection_arrows[1]
 onready var selection_arrow_target = selection_arrows[2]
 
-onready var team_ally : Array = get_node('/root/Control/TeamAlly').get_children()
-onready var team_foe : Array = get_node('/root/Control/TeamFoe').get_children()
 onready var actions : Array = get_node('/root/Control/Actions').get_children()
 
 var input_group
@@ -47,8 +45,9 @@ func _set_selected_targets():
 			arrow.visible = true
 			
 	if not targets.all:
+		var target = monster_manager.get_target()
 		targets_selected_arrows[index_target].visible = true
-		targets_selected_arrows[index_target].global_position = target_team[index_target].global_position
+		targets_selected_arrows[index_target].global_position = target.global_position
 		targets_selected_arrows[index_target].global_position.x = targets_selected_arrows[index_target].global_position.x + 55
 
 func _set_variables():
@@ -56,15 +55,11 @@ func _set_variables():
 	index_ally = control.get_index_ally()
 	index_action = control.get_index_action()
 	index_target = control.get_index_target()
-	targets = ActionManager.get_candidate_targets()
-	
-	if targets.ally:
-		target_team = team_ally
-	else:
-		target_team = team_foe
+	targets = monster_manager.get_selected_action_targets()
+	target_team = monster_manager.get_target_team()
 	
 func _set_selected_ally():
-	selection_arrow_ally.global_position = team_ally[index_ally].global_position
+	selection_arrow_ally.global_position = monster_manager.get_selected_ally().global_position
 	selection_arrow_ally.global_position.x = selection_arrow_ally.global_position.x + 55
 	
 func _set_selected_action():
@@ -79,16 +74,20 @@ func _set_selected_action():
 	selection_arrow_action.position.y = origin_y + (index_action * y_increment) 
 	
 func _set_candidate_targets():
+	if targets == null:
+		return
+	
 	for arrow in targets_candidate_arrows:
 		arrow.visible = false
 		
 	if input_group == INPUT_GROUP.ALLY:
 		selection_arrow_action.visible = false
 		return
-		
+	
 	for i in targets.indexes:
+		var target = monster_manager.get_target_team_monster(i)
 		targets_candidate_arrows[i].visible = true
-		targets_candidate_arrows[i].global_position = target_team[i].global_position
+		targets_candidate_arrows[i].global_position = target.global_position
 		targets_candidate_arrows[i].global_position.x = targets_candidate_arrows[i].global_position.x + 55
 
 #func _manage_target_selection_arrows():

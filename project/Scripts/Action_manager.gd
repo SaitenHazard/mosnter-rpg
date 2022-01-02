@@ -2,13 +2,12 @@ extends Node
 
 onready var control = get_parent()
 
-onready var teamAlly : Array = get_node('/root/Control/TeamAlly').get_children()
-onready var teamFoe : Array = get_node('/root/Control/TeamFoe').get_children()
+onready var monster_manager = get_node('/root/Control/MonsterManager')
 
 func _get_action():
 	var action_index = control.get_index_action()
 	var monster_index = control.get_index_ally()
-	var monster = teamAlly[monster_index]
+	var monster = monster_manager.get_selected_ally()
 	var action = monster.get_action(action_index)
 	
 	return action
@@ -16,30 +15,17 @@ func _get_action():
 func _get_action_range():
 	return _get_action().action_range
 
-func get_candidate_targets():
-	var ally_index = control.get_index_ally()
-	var action_range = _get_action_range();
-	var targets = Targets.new(ally_index, action_range, teamAlly, teamFoe)
-	
-	return targets
+
 
 func _set_targets():
 	var input_group = control.get_input_group()
-	var targets_team = get_target_team()
-	var targets = get_candidate_targets()
+	var targets_team = monster_manager.get_target_team()
+	var targets = monster_manager.get_selected_action_targets()
 	
 	if not input_group == INPUT_GROUP.TARGET or not input_group == INPUT_GROUP.ACTION:
 		targets_team = null
 		targets = null
 		return
-
-func get_target_team():
-	var targets = get_candidate_targets()
-	
-	if targets.ally:
-		return teamAlly
-	else:
-		return teamFoe
 		
 var targets : Array
 var attacker
@@ -60,16 +46,19 @@ func _do_swap():
 	if not _get_action().name == 'Swap':
 		return
 		
-	var targets_team = get_target_team()
+	var targets_team = monster_manager.get_target_team()
 		
 	var index_ally = control.get_index_ally()
 	var index_target = control.get_index_target()
 	
-	var position_index_ally = teamAlly[index_ally].get_position_index()
-	var position_index_target = teamFoe[index_target].get_position_index()
+	var ally = monster_manager.get_selected_ally()
+	var target = monster_manager.get_target()
 	
-	teamAlly[index_ally].set_position_index(index_target)
-	targets_team[index_target].set_position_index(position_index_ally)
+	var position_index_ally = ally.get_position_index()
+	var position_index_target = target.get_position_index()
+	
+	ally.set_position_index(position_index_target)
+	target.set_position_index(position_index_ally)
 	
 func _set_action_variables():
 	action = _get_action()
@@ -78,19 +67,15 @@ func _set_action_variables():
 	targets.clear()
 	
 	if action_range == ACTION_RANGE.ALLY_ALL:
-		targets.append(teamAlly[0])
-		targets.append(teamAlly[1])
-		targets.append(teamAlly[2])
+		targets = monster_manager.get_allies()
 	elif action_range == ACTION_RANGE.FOE_ALL:
-		targets.append(teamFoe[0])
-		targets.append(teamFoe[1])
-		targets.append(teamFoe[2])
+		targets = monster_manager.get_foes()
 	else:
 		var target_index = control.get_index_target()
-		targets.append(teamFoe[target_index])
+		targets.append(monster_manager.get_target())
 	
 	var attacker_index = control.get_index_ally()
-	attacker = teamAlly[attacker_index]
+	attacker = monster_manager.get_selected_ally()
 	
 func _do_damage():
 	for target in targets:

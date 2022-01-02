@@ -13,8 +13,6 @@ var status = {
 }
 
 var team
-var team_ally_positions : Array = [Vector2(290,230), Vector2(380,312), Vector2(290,420)]
-var team_foe_positions : Array = [Vector2(660,230), Vector2(580,310), Vector2(660,410)]
 
 var texture_monster_fire = preload('res://sprite/monster_fire.png')
 var texture_monster_water = preload('res://sprite/monster_water.png')
@@ -29,15 +27,6 @@ func set_position_index(var index):
 func set_team(var team):
 	self.team = team
 	
-func _process(var delta):
-	_set_position_()
-	
-func _set_position_():
-	if team == TEAM.ALLY:
-		position = team_ally_positions[position_index]
-	else:
-		position = team_foe_positions[position_index]
-
 func _manage_status():
 	if status.BLEED != 0:
 		status.BLEED = status.BLEED - 1

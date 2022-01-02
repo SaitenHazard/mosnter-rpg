@@ -5,6 +5,8 @@ onready var arrow : Sprite = get_node('/root/Control/Arrow')
 onready var actions : Array = get_node('/root/Control/Actions').get_children()
 onready var ActionManager = get_node('ActionManager')
 
+onready var monster_manager = get_node('/root/Control/MonsterManager')
+
 var input_group
 
 var index_ally : int
@@ -151,7 +153,7 @@ func _input_targets_increment(var increment):
 	var min_index = 0
 	var max_index = 2
 	
-	var target_indexes = ActionManager.get_candidate_targets().indexes
+	var target_indexes = monster_manager.get_selected_action_targets().indexes
 	
 	var candidate_index = index_target
 	var index_is_valid = false

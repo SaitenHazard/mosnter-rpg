@@ -2,7 +2,6 @@ extends Node
 
 class_name Targets
 
-
 onready var teamA
 onready var teamB
 
@@ -17,9 +16,6 @@ func _init(actioner_index : int, action_range, teamA, teamB):
 	_debug(action_range)
 
 func _debug(action_range):
-#	for i in indexes:
-#		print(i)
-
 	return
 
 	if action_range == ACTION_RANGE.ALLY:
@@ -63,9 +59,10 @@ func _remove_actioner_as_target(actioner_index):
 	if ally == false:
 		return
 		
+	print(actioner_index)
+		
 	indexes.remove(actioner_index)
 	
-
 func _get_target_candidates(actioner_index : int, action_range):
 	if action_range == ACTION_RANGE.ALLY_ALL:
 		indexes = [0, 1, 2]

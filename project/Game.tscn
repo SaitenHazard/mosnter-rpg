@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
 [ext_resource path="res://sprite/arrow_c.png" type="Texture" id=2]
@@ -16,6 +16,7 @@
 [ext_resource path="res://Scenes/UI_Actions.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Scripts/Arrow_manager.gd" type="Script" id=15]
 [ext_resource path="res://sprite/arrow_a.png" type="Texture" id=16]
+[ext_resource path="res://Scripts/Monster_manager.gd" type="Script" id=17]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://font/Comfortaa-Bold.ttf"
@@ -48,6 +49,9 @@ script = ExtResource( 8 )
 
 [node name="Arrow_manager" type="Node2D" parent="."]
 script = ExtResource( 15 )
+
+[node name="MonsterManager" type="Node2D" parent="."]
+script = ExtResource( 17 )
 
 [node name="SelectionArrows" type="Node2D" parent="."]
 
@@ -108,8 +112,6 @@ position = Vector2( 794.561, 406.525 )
 rotation = 3.14159
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
-
-[node name="MonsterManager" type="Node2D" parent="."]
 
 [node name="ActionPoints" type="Label" parent="."]
 margin_left = 483.544
