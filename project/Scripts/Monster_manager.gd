@@ -14,7 +14,6 @@ func _process(var delta):
 	
 func get_target():
 	var index_target = control.get_index_target()
-#	print(get_target_team_monster(index_target))
 	return get_target_team_monster(index_target)
 	
 func get_target_team_monster(var index):
@@ -23,6 +22,16 @@ func get_target_team_monster(var index):
 	for monster in team:
 		if monster.get_position_index() == index:
 			return monster
+			
+func get_action_swap_team():
+	var action = action_manager.get_selected_action()
+	if action.swap == TEAM.ALLY:
+		return get_allies()
+	else:
+		return get_foes()
+		
+func get_action_swap_targets():
+	pass
 	
 func get_selected_action_targets():
 	var action = action_manager.get_selected_action()
@@ -32,11 +41,6 @@ func get_selected_action_targets():
 	
 func get_target_team():
 	var targets = get_selected_action_targets()
-	
-#	if targets == null:
-#		return
-	
-#	print(targets.ally)
 		
 	if targets.ally:
 		return get_allies()

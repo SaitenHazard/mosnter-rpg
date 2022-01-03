@@ -210,3 +210,6 @@ func get_index_ally() -> int:
 	
 func get_index_target() -> int:
 	return index_target
+	
+func get_index_targettwo() -> int:
+	return index_targettwo
