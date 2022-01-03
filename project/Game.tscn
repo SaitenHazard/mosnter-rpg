@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
 [ext_resource path="res://sprite/arrow_c.png" type="Texture" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://Scripts/Arrow_manager.gd" type="Script" id=15]
 [ext_resource path="res://sprite/arrow_a.png" type="Texture" id=16]
 [ext_resource path="res://Scripts/Monster_manager.gd" type="Script" id=17]
+[ext_resource path="res://sprite/arrow_d.png" type="Texture" id=18]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://font/Comfortaa-Bold.ttf"
@@ -67,11 +68,12 @@ rotation = -3.14159
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 16 )
 
-[node name="SelectionArrowTarget" type="Sprite" parent="SelectionArrows"]
+[node name="SelectionArrowTarget2" type="Sprite" parent="SelectionArrows"]
 visible = false
 position = Vector2( 598.479, 135.816 )
+rotation = 3.14159
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 2 )
+texture = ExtResource( 18 )
 
 [node name="TargetCandidateArrows" type="Node2D" parent="."]
 
@@ -394,22 +396,22 @@ __meta__ = {
 
 [node name="TeamAlly" type="Node2D" parent="."]
 
-[node name="Mon1" parent="TeamAlly" instance=ExtResource( 12 )]
+[node name="Ally1" parent="TeamAlly" instance=ExtResource( 12 )]
 position = Vector2( 290, 230 )
 
-[node name="Monster2" parent="TeamAlly" instance=ExtResource( 12 )]
+[node name="Ally2" parent="TeamAlly" instance=ExtResource( 12 )]
 position = Vector2( 382, 314 )
 
-[node name="Monster3" parent="TeamAlly" instance=ExtResource( 12 )]
+[node name="Ally3" parent="TeamAlly" instance=ExtResource( 12 )]
 position = Vector2( 290, 420 )
 
 [node name="TeamFoe" type="Node2D" parent="."]
 
-[node name="Monster" parent="TeamFoe" instance=ExtResource( 12 )]
+[node name="Foe1" parent="TeamFoe" instance=ExtResource( 12 )]
 position = Vector2( 720, 230 )
 
-[node name="Monster2" parent="TeamFoe" instance=ExtResource( 12 )]
+[node name="Foe2" parent="TeamFoe" instance=ExtResource( 12 )]
 position = Vector2( 640, 310 )
 
-[node name="Monster3" parent="TeamFoe" instance=ExtResource( 12 )]
+[node name="Foe3" parent="TeamFoe" instance=ExtResource( 12 )]
 position = Vector2( 720, 410 )

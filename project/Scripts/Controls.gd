@@ -3,24 +3,16 @@ extends Control
 onready var arrow : Sprite = get_node('/root/Control/Arrow')
 
 onready var actions : Array = get_node('/root/Control/Actions').get_children()
-onready var ActionManager = get_node('ActionManager')
 
 onready var monster_manager = get_node('/root/Control/MonsterManager')
+onready var action_manager = get_node('/root/Control/ActionManager')
 
 var input_group
 
 var index_ally : int
 var index_target : int
 var index_action : int
-
-var ally_min_index : int = 0
-var ally_max_index : int = 2
-
-var target_min_index : int = 0
-var target_max_index : int = 2
-
-var action_min_index : int = 0
-var action_max_index : int = 3
+var index_targettwo : int
 
 var targets = null
 var targets_team = null
@@ -37,9 +29,6 @@ func unlock_inputs():
 	
 func _process(delta):
 	_inputs()
-
-func _monster_position_manager():
-	pass
 
 func get_input_group():
 	return input_group
@@ -59,9 +48,15 @@ func _inputs():
 
 func _input_groups():
 	if Input.is_action_just_pressed("accept"):
+		if get_input_group() == INPUT_GROUP.TARGETTWO:
+			action_manager.do_action()
+		
 		if get_input_group() == INPUT_GROUP.TARGET:
-			ActionManager.do_action()
-			return
+			if not action_manager.selected_action_has_two_targets():
+				action_manager.do_action()
+				return
+			else:
+				input_group = INPUT_GROUP.TARGETTWO
 			
 		if get_input_group() == INPUT_GROUP.ACTION:
 			input_group = INPUT_GROUP.TARGET
@@ -110,6 +105,37 @@ func _input_targets():
 		
 	if Input.is_action_just_pressed("up"):
 		_input_targets_increment(false)
+		
+func _input_targetstwo():
+	if Input.is_action_just_pressed("down"):
+		_input_targetstwo_increment(true)
+		
+	if Input.is_action_just_pressed("up"):
+		_input_targetstwo_increment(false)
+		
+func _input_targetstwo_increment(var increment):
+	var min_index = 0
+	var max_index = 2
+	
+	var candidate_index = index_targettwo
+	var index_is_valid = false
+	
+	while index_is_valid == false:
+		if increment:
+			candidate_index = candidate_index + 1
+		else:
+			candidate_index = candidate_index -1
+			
+		if candidate_index < min_index:
+			candidate_index = max_index
+
+		if candidate_index > max_index:
+			candidate_index = min_index
+		
+		if not candidate_index == index_target:
+			index_is_valid = true
+		
+	index_target = candidate_index
 	
 func _input_allies_increment(var increment):
 	var min_index = 0
@@ -175,7 +201,7 @@ func _input_targets_increment(var increment):
 				index_is_valid = true
 		
 	index_target = candidate_index
-		
+
 func get_index_action() -> int:
 	return index_action
 		

@@ -59,7 +59,7 @@ func _remove_actioner_as_target(actioner_index):
 	if ally == false:
 		return
 		
-	print(actioner_index)
+#	print(actioner_index)
 		
 	indexes.remove(actioner_index)
 	

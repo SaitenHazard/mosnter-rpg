@@ -7,15 +7,18 @@ class Action:
 	var cost : int
 	var damage: int
 	var elemental_type
+	var swap = null 
 	
 	func _init(
-		name : String, damage : int, cost : int, status_effect : int, action_range : int, elemental_type : int):
+		name : String, damage : int, cost : int, status_effect : int, action_range : int, 
+		elemental_type : int, swap):
 		 self.name = name
 		 self.status_effect = status_effect
 		 self.action_range = action_range
 		 self.cost = cost
 		 self.damage = damage
 		 self.elemental_type = elemental_type
+		 self.swap = swap
 		
 	func get_name() -> String:
 		return name
@@ -105,26 +108,26 @@ func _assign_actions():
 func _set_actions():
 	var action
 	
-	action = Action.new('Fire Ball', 3, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.FIRE)
+	action = Action.new('Fire Ball', 3, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.FIRE, null)
 	actions.append(action)
-	action = Action.new('Fire Blitz', 1, 6, Status_effect.NULL, ACTION_RANGE.FOE_ALL, ELEMENTAL_TYPE.FIRE)
-	actions.append(action)
-	
-	action = Action.new('Sticky Sticks', 1, 3, Status_effect.PARALYZE, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS)
-	actions.append(action)
-	action = Action.new('Bamboo Bash', 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS)
+	action = Action.new('Fire Blitz', 1, 6, Status_effect.NULL, ACTION_RANGE.FOE_ALL, ELEMENTAL_TYPE.FIRE, null)
 	actions.append(action)
 	
-	action = Action.new('Protect', 0, 2, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.NULL)
+	action = Action.new('Sticky Sticks', 1, 3, Status_effect.PARALYZE, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS, null)
 	actions.append(action)
-	action = Action.new('Heal', -5, 5, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.NULL)
-	actions.append(action)
-	action = Action.new('Healing Wave', -2, 6, Status_effect.NULL, ACTION_RANGE.ALLY_ALL, ELEMENTAL_TYPE.NULL)
+	action = Action.new('Bamboo Bash', 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS, TEAM.FOE)
 	actions.append(action)
 	
-	action = Action.new('Icicle Blade', 1, 3, Status_effect.BLEED, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER)
+	action = Action.new('Protect', 0, 2, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.NULL, null)
 	actions.append(action)
-	action = Action.new('Swift Surf', 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER)
+	action = Action.new('Heal', -5, 5, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.NULL, null)
+	actions.append(action)
+	action = Action.new('Healing Wave', -2, 6, Status_effect.NULL, ACTION_RANGE.ALLY_ALL, ELEMENTAL_TYPE.NULL, null)
 	actions.append(action)
 	
-	action_swap = Action.new('Swap', 0, 1, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.NULL)
+	action = Action.new('Icicle Blade', 1, 3, Status_effect.BLEED, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER, null)
+	actions.append(action)
+	action = Action.new('Swift Surf', 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER, TEAM.ALLY)
+	actions.append(action)
+	
+	action_swap = Action.new('Swap', 0, 1, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.NULL, TEAM.ALLY)
