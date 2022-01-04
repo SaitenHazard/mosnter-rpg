@@ -46,21 +46,27 @@ func _do_swap():
 	if action.swap == null:
 		return
 		
-	var action_range = action.action_range
+	var target_one
+	var target_two
 	
-	var targets_team = monster_manager.get_target_team()
+	var position_index_target_one
+	var position_index_target_two
+	
+	if not selected_action_has_two_targets():
+		target_one = monster_manager.get_selected_ally()
+		target_two = monster_manager.get_target()
+	elif action.swap == TEAM.ALLY or action.name == "Bonfire":
+		target_one = monster_manager.get_actioner()
+		target_two = monster_manager.get_targettwo()
+	else:
+		target_one = monster_manager.get_target()
+		target_two = monster_manager.get_targettwo()
 		
-	var index_ally = control.get_index_ally()
-	var index_target = control.get_index_target()
-	
-	var ally = monster_manager.get_selected_ally()
-	var target = monster_manager.get_target()
-	
-	var position_index_ally = ally.get_position_index()
-	var position_index_target = target.get_position_index()
-	
-	ally.set_position_index(position_index_target)
-	target.set_position_index(position_index_ally)
+	position_index_target_one = target_one.get_position_index()
+	position_index_target_two = target_two.get_position_index()
+		
+	target_one.set_position_index(position_index_target_two)
+	target_two.set_position_index(position_index_target_one)
 	
 func _get_effected_targets():
 	var action = get_selected_action()
@@ -96,7 +102,10 @@ func _get_damage(var target):
 	var damage = action.damage
 	
 	if _is_type_advantage(target):
-		damage = damage + 1
+		if _is_action_healing():
+			damage = damage - 2
+		else:
+			damage = damage + 1
 		
 	if _is_position_advantage(target):
 		damage = damage + 1
@@ -105,7 +114,7 @@ func _get_damage(var target):
 
 func _is_position_advantage(var target):
 	if _is_action_healing():
-		false
+		return false
 		
 	var attacker = monster_manager.get_selected_ally()
 	var attacker_position = attacker.get_position_index()
@@ -117,9 +126,6 @@ func _is_position_advantage(var target):
 	return false
 
 func _is_type_advantage(var target):
-	if _is_action_healing():
-		return false
-	
 	var action = get_selected_action()
 	var action_type = action.get_type()
 	var target_type_weakness = target.get_type_weakness()
@@ -139,6 +145,10 @@ func _is_action_healing():
 	
 func selected_action_has_two_targets():
 	var action = get_selected_action()
+	
+	if action.name == "Bonfire":
+		return false
+		
 	if not action.damage == 0 and not action.swap == null:
 		return true
 	

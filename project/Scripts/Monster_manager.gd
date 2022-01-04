@@ -11,10 +11,14 @@ var team_foe_positions : Array = [Vector2(660,230), Vector2(580,312), Vector2(66
 	
 func _process(var delta):
 	_set_position_()
-	
+
 func get_target():
 	var index_target = control.get_index_target()
 	return get_target_team_monster(index_target)
+	
+func get_actioner():
+	var index_ally = control.get_index_ally()
+	return get_allies()[index_ally]
 	
 func get_target_team_monster(var index):
 	var team = get_target_team()
@@ -23,6 +27,10 @@ func get_target_team_monster(var index):
 		if monster.get_position_index() == index:
 			return monster
 			
+func get_targettwo():
+	var index_targettwo = control.get_index_targettwo()
+	return get_action_swap_team()[index_targettwo]
+			
 func get_action_swap_team():
 	var action = action_manager.get_selected_action()
 	if action.swap == TEAM.ALLY:
@@ -30,8 +38,28 @@ func get_action_swap_team():
 	else:
 		return get_foes()
 		
+func get_targettwo_indexes():
+	var targets : Array = [0,1,2]
+	var action = action_manager.get_selected_action()
+	
+	if action.swap == TEAM.ALLY:
+		var index_ally = control.get_index_ally()
+		var position_index = get_allies()[index_ally].get_position_index()
+		targets.remove(index_ally)
+	else:
+		var index_target = control.get_index_target()
+		var position_index = get_foes()[index_target].get_position_index()
+		targets.remove(index_target)
+		
+	return targets
+		
 func get_action_swap_targets():
-	pass
+	if get_target_team() == team_ally:
+		var index_ally = control.get_index_ally()
+		return Targets.new(index_ally, ACTION_RANGE.ALLY, team_ally, team_foe)
+	else:
+		var index_target = control.get_index_target()
+		return Targets.new(index_target, ACTION_RANGE.ALLY, team_ally, team_foe)
 	
 func get_selected_action_targets():
 	var action = action_manager.get_selected_action()
@@ -74,14 +102,9 @@ func get_foe(var index : int):
 func _set_position_():
 	for ally in team_ally:
 		var index = ally.get_position_index()
-#		if ally.name == 'Ally1':
-#			print(ally.position)
-#			print(team_ally_positions[index])
 		ally.position = team_ally_positions[index]
 		
 	for foe in team_foe:
-#		if foe.name == 'Ally1':
-#			print('in')
 		var index = foe.get_position_index()
 		foe.position = team_foe_positions[index]
 		

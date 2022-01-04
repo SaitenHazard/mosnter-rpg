@@ -30,7 +30,7 @@ func _process(delta):
 	_set_selected_targetstwo()
 	
 func _set_selected_targetstwo():
-#	selection_arrow_targettwo.visible = false
+	selection_arrow_targettwo.visible = false
 	
 	var input_group = control.get_input_group()
 	
@@ -39,8 +39,6 @@ func _set_selected_targetstwo():
 	
 	var team = monster_manager.get_action_swap_team()
 	var targettwo = control.get_index_targettwo()
-	
-	print(team[0].name)
 	
 	selection_arrow_targettwo.global_position = team[targettwo].global_position
 	selection_arrow_targettwo.global_position.x = selection_arrow_targettwo.global_position.x + 55
@@ -54,7 +52,7 @@ func _set_selected_targets():
 	
 	var input_group = control.get_input_group()
 		
-	if input_group != INPUT_GROUP.TARGET:
+	if input_group != INPUT_GROUP.TARGET and input_group != INPUT_GROUP.TARGETTWO:
 		return
 		
 	var targets = monster_manager.get_selected_action_targets()

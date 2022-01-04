@@ -45,11 +45,13 @@ func _inputs():
 	_input_allies()
 	_input_actions()
 	_input_targets()
+	_input_targetstwo()
 
 func _input_groups():
 	if Input.is_action_just_pressed("accept"):
 		if get_input_group() == INPUT_GROUP.TARGETTWO:
 			action_manager.do_action()
+			return
 		
 		if get_input_group() == INPUT_GROUP.TARGET:
 			if not action_manager.selected_action_has_two_targets():
@@ -57,6 +59,7 @@ func _input_groups():
 				return
 			else:
 				input_group = INPUT_GROUP.TARGETTWO
+				return
 			
 		if get_input_group() == INPUT_GROUP.ACTION:
 			input_group = INPUT_GROUP.TARGET
@@ -74,6 +77,10 @@ func _input_groups():
 			
 		if get_input_group() == INPUT_GROUP.TARGET:
 			input_group = INPUT_GROUP.ACTION
+			return
+			
+		if get_input_group() == INPUT_GROUP.TARGETTWO:
+			input_group = INPUT_GROUP.TARGET
 			return
 			
 func _input_allies():
@@ -117,6 +124,8 @@ func _input_targetstwo_increment(var increment):
 	var min_index = 0
 	var max_index = 2
 	
+	var target_indexes = monster_manager.get_targettwo_indexes()
+	
 	var candidate_index = index_targettwo
 	var index_is_valid = false
 	
@@ -132,10 +141,11 @@ func _input_targetstwo_increment(var increment):
 		if candidate_index > max_index:
 			candidate_index = min_index
 		
-		if not candidate_index == index_target:
-			index_is_valid = true
+		for index in target_indexes:
+			if index == candidate_index:
+				index_is_valid = true
 		
-	index_target = candidate_index
+	index_targettwo = candidate_index
 	
 func _input_allies_increment(var increment):
 	var min_index = 0

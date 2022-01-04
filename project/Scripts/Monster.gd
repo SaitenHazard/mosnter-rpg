@@ -57,6 +57,7 @@ func _set_sprite():
 		get_node('Sprite').texture = texture_monster_water
 		
 func set_health(health : int):
+	health = health * 2
 	self.health_max = health
 	self.health = health
 	

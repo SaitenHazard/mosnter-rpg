@@ -118,11 +118,11 @@ func _set_actions():
 	action = Action.new('Bamboo Bash', 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS, TEAM.FOE)
 	actions.append(action)
 	
-	action = Action.new('Protect', 0, 2, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.NULL, null)
+	action = Action.new('Bonfire', -1, 2, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.FIRE, TEAM.ALLY)
 	actions.append(action)
-	action = Action.new('Heal', -5, 5, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.NULL, null)
+	action = Action.new('Natural Remedy', -5, 5, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.GRASS, null)
 	actions.append(action)
-	action = Action.new('Healing Wave', -2, 6, Status_effect.NULL, ACTION_RANGE.ALLY_ALL, ELEMENTAL_TYPE.NULL, null)
+	action = Action.new('Healing Pulse', -2, 6, Status_effect.NULL, ACTION_RANGE.ALLY_ALL, ELEMENTAL_TYPE.WATER, null)
 	actions.append(action)
 	
 	action = Action.new('Icicle Blade', 1, 3, Status_effect.BLEED, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER, null)
