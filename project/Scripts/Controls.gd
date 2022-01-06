@@ -50,11 +50,18 @@ func _inputs():
 func _input_groups():
 	if Input.is_action_just_pressed("accept"):
 		if get_input_group() == INPUT_GROUP.TARGETTWO:
+			
+			if not action_manager.enough_points_for_action():
+				return
+			
 			action_manager.do_action()
 			return
 		
 		if get_input_group() == INPUT_GROUP.TARGET:
 			if not action_manager.selected_action_has_two_targets():
+				if not action_manager.enough_points_for_action():
+					return
+					
 				action_manager.do_action()
 				return
 			else:

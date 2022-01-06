@@ -3,17 +3,7 @@ extends Node
 onready var control = get_parent()
 
 onready var monster_manager = get_node('/root/Control/MonsterManager')
-
-#func _get_action():
-#	var action_index = control.get_index_action()
-#	var monster_index = control.get_index_ally()
-#	var monster = monster_manager.get_selected_ally()
-#	var action = monster.get_action(action_index)
-#
-#	return action
-
-#func _get_action_range():
-#	return _get_action().action_range
+onready var game_manager = get_node('/root/Control/GameManager')
 
 func _set_targets():
 	var input_group = control.get_input_group()
@@ -24,13 +14,6 @@ func _set_targets():
 		targets_team = null
 		targets = null
 		return
-		
-#var targets : Array
-#var attacker
-#var action
-#var action_range
-#var team
-#var target
 
 func do_action():
 	control.lock_inputs()
@@ -38,7 +21,19 @@ func do_action():
 	_do_damage(targets)
 	_do_status_effect(targets)
 	_do_swap()
+	_deduct_action_points()
 	control.reset_inputs()
+	
+func _deduct_action_points():
+	var action = get_selected_action()
+	game_manager.deduct_action_points(action.cost)
+	
+func enough_points_for_action():
+	var action = get_selected_action()
+	if game_manager.get_action_points() < action.cost:
+		return false
+	
+	return true
 	
 func _do_swap():
 	var action = get_selected_action()
@@ -101,6 +96,9 @@ func _get_damage(var target):
 	var action = get_selected_action()
 	var damage = action.damage
 	
+	if damage == 0:
+		return damage
+	
 	if _is_type_advantage(target):
 		if _is_action_healing():
 			damage = damage - 2
@@ -127,7 +125,7 @@ func _is_position_advantage(var target):
 
 func _is_type_advantage(var target):
 	var action = get_selected_action()
-	var action_type = action.get_type()
+	var action_type = action.elemental_type
 	var target_type_weakness = target.get_type_weakness()
 	
 	if action_type == target_type_weakness:

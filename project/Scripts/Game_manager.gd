@@ -19,19 +19,7 @@ class Action:
 		 self.damage = damage
 		 self.elemental_type = elemental_type
 		 self.swap = swap
-		
-	func get_name() -> String:
-		return name
-		
-	func get_damage() -> int:
-		return damage
-		
-	func get_type():
-		return elemental_type
-		
-	func get_cost() -> int:
-		return cost
-		
+
 var action_swap : Action
 
 var actions : Array
@@ -39,10 +27,22 @@ var actions : Array
 onready var teamAlly : Array = get_node("/root/Control/TeamAlly").get_children()
 onready var teamFoe : Array = get_node('/root/Control/TeamFoe').get_children()
 
+var action_points_max = 10
+var action_points
+
 func _ready():
-#	Status_effect.BLEED
+	_set_action_points()
 	_set_actions()
 	_set_monsters()
+	
+func _set_action_points():
+	action_points = action_points_max
+	
+func deduct_action_points(var point):
+	action_points = action_points - point
+	
+func get_action_points():
+	return action_points
 	
 func _set_monsters():
 	_set_teamAlly()
