@@ -24,16 +24,41 @@ var action_swap : Action
 
 var actions : Array
 
+onready var game_manager = get_node("/root/Control/GameManager").get_children()
 onready var teamAlly : Array = get_node("/root/Control/TeamAlly").get_children()
 onready var teamFoe : Array = get_node('/root/Control/TeamFoe').get_children()
+onready var control = get_node('/root/Control')
 
 var action_points_max = 10
 var action_points
+var team_a_turn = true 
+
+func _process(var delta):
+	_manage_turns()
+	
+func _manage_turns():
+	for monster in teamAlly:
+		if monster.get_turn_available():
+			team_a_turn = true
+			return
+	
+	control.lock_inputs()
+	team_a_turn = false
+	
+func _end_all_ally_turns():
+	for monster in teamAlly:
+		monster.set_turn_availabale(false)
 
 func _ready():
 	_set_action_points()
 	_set_actions()
 	_set_monsters()
+	
+func set_team_a_turn(var b):
+	team_a_turn = b
+	
+func get_team_a_turn():
+	return team_a_turn
 	
 func _set_action_points():
 	action_points = action_points_max

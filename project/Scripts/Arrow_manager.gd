@@ -1,8 +1,9 @@
 extends Node
 
-onready var monster_manager = get_node('/root/Control/MonsterManager')
 onready var control = get_parent()
 
+onready var monster_manager = get_node('/root/Control/MonsterManager')
+onready var game_manager = get_node('/root/Control/GameManager')
 onready var selection_arrows : Array = get_node('/root/Control/SelectionArrows').get_children()
 onready var targets_selected_arrows : Array = get_node('/root/Control/TargetsSelectArrows').get_children()
 onready var targets_candidate_arrows : Array = get_node('/root/Control/TargetCandidateArrows').get_children()
@@ -72,16 +73,14 @@ func _set_selected_targets():
 		targets_selected_arrows[index_target].visible = true
 		targets_selected_arrows[index_target].global_position = target.global_position
 		targets_selected_arrows[index_target].global_position.x = targets_selected_arrows[index_target].global_position.x + 55
-
-#func _set_variables():
-#	input_group = control.get_input_group()
-#	index_ally = control.get_index_ally()
-#	index_action = control.get_index_action()
-#	index_target = control.get_index_target()
-#	targets = monster_manager.get_selected_action_targets()
-#	target_team = monster_manager.get_target_team()
 	
 func _set_selected_ally():
+	selection_arrow_ally.visible = false
+	
+	if control.get_lock_inputs():
+		return
+	
+	selection_arrow_ally.visible = true
 	selection_arrow_ally.global_position = monster_manager.get_selected_ally().global_position
 	selection_arrow_ally.global_position.x = selection_arrow_ally.global_position.x + 55
 	
@@ -94,7 +93,7 @@ func _set_selected_action():
 		
 	var index_action = control.get_index_action()
 		
-	var origin_y = 243
+	var origin_y = 248
 	var y_increment = 43
 		
 	selection_arrow_action.visible = true
@@ -116,32 +115,3 @@ func _set_candidate_targets():
 		targets_candidate_arrows[i].visible = true
 		targets_candidate_arrows[i].global_position = target.global_position
 		targets_candidate_arrows[i].global_position.x = targets_candidate_arrows[i].global_position.x + 55
-
-#func _manage_target_selection_arrows():
-#	for arrow in target_selection_arrows:
-#		arrow.set_visible(false)
-#
-#	if not input_group == INPUT_GROUP.TARGET:
-#		return
-#
-#	if targets.all == true:
-#		for i in targets.indexes:
-#			target_selection_arrows[i].global_position = team[i].global_position
-#			target_selection_arrows[i].global_position.x = target_selection_arrows[i].global_position.x + 50
-#			target_selection_arrows[i].set_visible(true)
-#		return
-#
-#	target_selection_arrows[0].global_position.x = target_selection_arrows[0].global_position.x + 50
-#	target_selection_arrows[0].set_visible(true)
-#
-#func _manage_target_arraows():
-#	for arrow in target_arrows:
-#		arrow.set_visible(false)
-#
-#	if not input_group == INPUT_GROUP.ACTION and not input_group == INPUT_GROUP.TARGET:
-#		return
-#
-#	for i in targets.indexes:
-#		target_arrows[i].global_position = team[i].global_position
-#		target_arrows[i].global_position.x = target_arrows[i].global_position.x + 50
-#		target_arrows[i].set_visible(true)

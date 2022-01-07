@@ -14,12 +14,13 @@ func _process(var delta):
 
 func get_target():
 	var index_target = control.get_index_target()
-	return get_target_team_monster(index_target)
+	var team =  get_target_team()
+	return get_monster(team, index_target)
 	
 func get_actioner():
 	var index_ally = control.get_index_ally()
-	return get_allies()[index_ally]
-	
+	return get_monster(get_allies(), index_ally)
+			
 func get_target_team_monster(var index):
 	var team = get_target_team()
 	
@@ -41,6 +42,10 @@ func get_action_swap_team():
 func get_targettwo_indexes():
 	var targets : Array = [0,1,2]
 	var action = action_manager.get_selected_action()
+	
+	print(action)
+	
+	return targets
 	
 	if action.swap == TEAM.ALLY:
 		var index_ally = control.get_index_ally()
@@ -87,17 +92,21 @@ func get_selected_foe():
 	
 func get_selected_ally():
 	var index_ally = control.get_index_ally()
-	return get_ally(index_ally)
+	var ally = get_allies()
+	return get_monster(ally ,index_ally)
+	
+func get_monster(var team, var index):
+	for monster in team:
+		if monster.get_position_index() == index:
+			return monster
 
 func get_ally(var index : int):
-	for monster in team_ally:
-		if monster.get_position_index() == index:
-			return monster
+	var allies = get_allies()
+	return get_monster(allies, index)
 	
 func get_foe(var index : int):
-	for monster in team_foe:
-		if monster.get_position_index() == index:
-			return monster
+	var foes = get_foes()
+	return get_monster(foes, index)
 	
 func _set_position_():
 	for ally in team_ally:

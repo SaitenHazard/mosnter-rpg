@@ -17,19 +17,31 @@ func _set_targets():
 
 func do_action():
 	control.lock_inputs()
-	var targets = _get_effected_targets()
-	_do_damage(targets)
-	_do_status_effect(targets)
-	_do_swap()
-	_deduct_action_points()
+	_set_turn_available()
+#	_deduct_action_points()
+#	_do_damage()
+#	_do_status_effect()
+#	_do_swap()
 	control.reset_inputs()
+	
+func _set_turn_available():
+	var monster = monster_manager.get_selected_ally()
+	monster.set_turn_availabale(false)
+	control.input_allies_increment(true)
 	
 func _deduct_action_points():
 	var action = get_selected_action()
+#	print('_deduct_action_points')
+#	print(action.cost)
 	game_manager.deduct_action_points(action.cost)
 	
 func enough_points_for_action():
 	var action = get_selected_action()
+	
+#	print('enough_points_for_action')
+#	print(action.cost)
+#	print(action.name)
+	
 	if game_manager.get_action_points() < action.cost:
 		return false
 	
@@ -80,14 +92,17 @@ func _get_effected_targets():
 		
 	return targets
 	
-func _do_damage(var targets):
+func _do_damage():
+	var targets = _get_effected_targets()
 	for target in targets:
 		var damage = _get_damage(target)
 		target.do_damage(damage)
 		
-func _do_status_effect(var targets):
+func _do_status_effect():
 	var action = get_selected_action()
 	var status_effect = action.status_effect
+	var targets = _get_effected_targets()
+	
 	if status_effect != Status_effect.NULL:
 		for target in targets:
 			target.set_status(status_effect)

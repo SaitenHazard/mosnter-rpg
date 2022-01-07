@@ -49,8 +49,11 @@ func _process(delta):
 	else:
 		label_damage.text = "Heal: " + String(action.damage * -1)
 		
-	label_cost.text = "Cost: " + String(action.cost);
-	label_type.text = "Type: " + type_name[action.elemental_type];
+	label_cost.text = "Cost: " + String(action.cost)
+	label_type.text = "Type: " + type_name[action.elemental_type]
+	
+#	print(action.cost)
+#	print(action.name)
 	
 	if action.damage == 0:
 		label_damage.visible = false

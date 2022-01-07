@@ -6,6 +6,7 @@ onready var actions : Array = get_node('/root/Control/Actions').get_children()
 
 onready var monster_manager = get_node('/root/Control/MonsterManager')
 onready var action_manager = get_node('/root/Control/ActionManager')
+onready var game_manager = get_node('/root/Control/GameManager')
 
 var input_group
 
@@ -16,7 +17,7 @@ var index_targettwo : int
 
 var targets = null
 var targets_team = null
-var lock_inputs : bool = false 
+var lock_inputs : bool = false
 	
 func _ready():
 	input_group = INPUT_GROUP.ALLY
@@ -26,6 +27,9 @@ func lock_inputs():
 
 func unlock_inputs():
 	lock_inputs = false
+	
+func get_lock_inputs():
+	return lock_inputs
 	
 func _process(delta):
 	_inputs()
@@ -46,6 +50,11 @@ func _inputs():
 	_input_actions()
 	_input_targets()
 	_input_targetstwo()
+	_end_turn()
+	
+func _end_turn():
+	if Input.is_action_just_pressed("end_turn"):
+		game_manager._end_all_ally_turns()
 
 func _input_groups():
 	if Input.is_action_just_pressed("accept"):
@@ -95,10 +104,10 @@ func _input_allies():
 		return
 		
 	if Input.is_action_just_pressed("down"):
-		_input_allies_increment(true)
+		input_allies_increment(true)
 		
 	if Input.is_action_just_pressed("up"):
-		_input_allies_increment(false)
+		input_allies_increment(false)
 	
 func _input_actions():
 	if get_input_group() != INPUT_GROUP.ACTION:
@@ -154,25 +163,36 @@ func _input_targetstwo_increment(var increment):
 		
 	index_targettwo = candidate_index
 	
-func _input_allies_increment(var increment):
+func input_allies_increment(var increment):
 	var min_index = 0
 	var max_index = 2
 	
 	var candidate_index = index_ally
+	var number_monsters_turn_not_available = 0
+	var index_is_valid = false
 	
-	if increment:
-		candidate_index = candidate_index + 1
-	else:
-		candidate_index = candidate_index -1
+	while index_is_valid == false:
+		if increment:
+			candidate_index = candidate_index + 1
+		else:
+			candidate_index = candidate_index -1
+			
+		if candidate_index < min_index:
+			candidate_index = max_index
+
+		if candidate_index > max_index:
+			candidate_index = min_index
 		
-	if candidate_index < min_index:
-		candidate_index = max_index
-		
-	if candidate_index > max_index:
-		candidate_index = min_index
+		if monster_manager.get_ally(candidate_index).get_turn_available():
+			index_is_valid = true
+		else:
+			number_monsters_turn_not_available = number_monsters_turn_not_available +1
+			
+		if number_monsters_turn_not_available == 3:
+			index_is_valid = true
 		
 	index_ally = candidate_index
-	
+
 func _input_actions_increment(var increment):
 	var min_index = 0
 	var max_index = 3

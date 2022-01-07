@@ -5,6 +5,8 @@ var health : int
 var type_weakness
 var position_index : int
 
+var turn_available : bool = true
+
 var actions : Array
 
 var status = {
@@ -18,6 +20,12 @@ var texture_monster_fire = preload('res://sprite/monster_fire.png')
 var texture_monster_water = preload('res://sprite/monster_water.png')
 var texture_monster_grass = preload('res://sprite/monster_grass.png')
 
+func set_turn_availabale(var b : bool):
+	turn_available = b
+	
+func get_turn_available():
+	return turn_available
+	
 func get_position_index() -> int:
 	return position_index
 
