@@ -142,6 +142,9 @@ func _input_targetstwo_increment(var increment):
 	
 	var target_indexes = monster_manager.get_targettwo_indexes()
 	
+#	print('target_indexes')
+#	print(target_indexes)
+	
 	var candidate_index = index_targettwo
 	var index_is_valid = false
 	
@@ -160,6 +163,8 @@ func _input_targetstwo_increment(var increment):
 		for index in target_indexes:
 			if index == candidate_index:
 				index_is_valid = true
+		
+#	print(candidate_index)
 		
 	index_targettwo = candidate_index
 	
@@ -183,7 +188,7 @@ func input_allies_increment(var increment):
 		if candidate_index > max_index:
 			candidate_index = min_index
 		
-		if monster_manager.get_ally(candidate_index).get_turn_available():
+		if monster_manager.get_team_a_monster(candidate_index).is_turn_available():
 			index_is_valid = true
 		else:
 			number_monsters_turn_not_available = number_monsters_turn_not_available +1

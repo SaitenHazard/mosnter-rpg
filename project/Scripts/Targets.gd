@@ -2,18 +2,18 @@ extends Node
 
 class_name Targets
 
-onready var teamA
-onready var teamB
+onready var team_user
+onready var team_target
 
 var indexes : Array
 var all : bool
 var ally : bool
 
-func _init(actioner_index : int, action_range, teamA, teamB):
-	self.teamA = teamA
-	self.teamB = teamB
-	_get_targets(actioner_index, action_range)
-	_debug(action_range)
+func _init(user_index : int, action_range, team_user, team_target):
+	self.team_user = team_user
+	self.team_target = team_target
+	_get_targets(user_index, action_range)
+#	_debug(action_range)
 
 func _debug(action_range):
 	return
@@ -43,13 +43,13 @@ func _remove_outofbounds_targets():
 		
 func _remove_dead_targets():
 	if ally == true:
-		for i in teamA.size():
-			if teamA[i].get_health() <= 0:
+		for i in team_user.size():
+			if team_user[i].get_health() <= 0:
 				indexes.remove(i)
 				
 	if ally == false:
-		for i in teamB.size():
-			if teamB[i].get_health() <= 0:
+		for i in team_target.size():
+			if team_target[i].get_health() <= 0:
 				indexes.remove(i)
 
 func _remove_actioner_as_target(actioner_index):

@@ -18,16 +18,17 @@ func _set_targets():
 func do_action():
 	control.lock_inputs()
 	_set_turn_available()
-#	_deduct_action_points()
-#	_do_damage()
-#	_do_status_effect()
-#	_do_swap()
+	_deduct_action_points()
+	_do_damage()
+	_do_status_effect()
+	_do_swap()
+	control.input_allies_increment(true)
 	control.reset_inputs()
 	
 func _set_turn_available():
 	var monster = monster_manager.get_selected_ally()
 	monster.set_turn_availabale(false)
-	control.input_allies_increment(true)
+
 	
 func _deduct_action_points():
 	var action = get_selected_action()
@@ -96,6 +97,7 @@ func _do_damage():
 	var targets = _get_effected_targets()
 	for target in targets:
 		var damage = _get_damage(target)
+#		print(damage)
 		target.do_damage(damage)
 		
 func _do_status_effect():
@@ -113,9 +115,9 @@ func _get_damage(var target):
 	
 	if damage == 0:
 		return damage
-	
-	if _is_type_advantage(target):
-		if _is_action_healing():
+		
+	if is_type_advantage(target):
+		if is_action_healing():
 			damage = damage - 2
 		else:
 			damage = damage + 1
@@ -125,21 +127,47 @@ func _get_damage(var target):
 		
 	return damage
 
-func _is_position_advantage(var target):
-	if _is_action_healing():
+func _is_position_advantage(var target = null, var action = null, var user = null):
+	if action == null:
+		action = get_selected_action()
+	
+	if _is_action_range_ally(action):
 		return false
 		
-	var attacker = monster_manager.get_selected_ally()
-	var attacker_position = attacker.get_position_index()
+	if is_action_healing(action):
+		return false
+		
+	if user == null:
+		user = monster_manager.get_selected_ally()
+		
+	var user_position = user.get_position_index()
+	
+	if target == null:
+		target = monster_manager.get_target()
+	
 	var target_position = target.get_position_index()
 	
-	if attacker_position == target_position:
+	if target_position == user_position:
+		return true
+		
+	return false
+	
+func _is_action_range_ally(var action = null):
+	if action == null:
+		action = get_selected_action()
+		
+	if action.action_range == ACTION_RANGE.ALLY:
+		return true
+		
+	if action.action_range == ACTION_RANGE.ALLY_ALL:
 		return true
 		
 	return false
 
-func _is_type_advantage(var target):
-	var action = get_selected_action()
+func is_type_advantage(var target, var action = null):
+	if action == null:
+		action = get_selected_action()
+		
 	var action_type = action.elemental_type
 	var target_type_weakness = target.get_type_weakness()
 	
@@ -148,11 +176,12 @@ func _is_type_advantage(var target):
 		
 	return false
 	
-func _is_action_healing():
-	var action = get_selected_action()
+func is_action_healing(var action = null):
+	if action == null:
+		action = get_selected_action()
 	
 	if action.damage < 0:
-		return true;
+		return true
 		
 	return false
 	

@@ -1,6 +1,6 @@
 extends Node2D
 
-export (String, 'TeamAlly', 'TeamFoe') var team_select
+export (String, 'TeamA', 'TeamB') var team_select
 
 onready var team : Array = get_node('/root/Control/'+team_select).get_children()
 

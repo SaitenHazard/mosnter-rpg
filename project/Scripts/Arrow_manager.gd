@@ -14,16 +14,7 @@ onready var selection_arrow_targettwo = selection_arrows[2]
 
 onready var actions : Array = get_node('/root/Control/Actions').get_children()
 
-#var input_group
-#var index_ally
-#var index_target
-#var index_action
-
-#var targets
-var target_team
-
 func _process(delta):
-#	_set_variables()
 	_set_selected_ally()
 	_set_selected_action()
 	_set_candidate_targets()
@@ -38,10 +29,9 @@ func _set_selected_targetstwo():
 	if not input_group == INPUT_GROUP.TARGETTWO:
 		return
 	
-	var team = monster_manager.get_action_swap_team()
-	var targettwo = control.get_index_targettwo()
+	var targettwo = monster_manager.get_action_swap_target_to()
 	
-	selection_arrow_targettwo.global_position = team[targettwo].global_position
+	selection_arrow_targettwo.global_position = targettwo.global_position
 	selection_arrow_targettwo.global_position.x = selection_arrow_targettwo.global_position.x + 55
 	selection_arrow_targettwo.visible = true
 
@@ -106,6 +96,9 @@ func _set_candidate_targets():
 		arrow.visible = false
 		
 	if input_group == INPUT_GROUP.ALLY:
+		return	
+		
+	if input_group == INPUT_GROUP.TARGETTWO:
 		return
 		
 	var targets = monster_manager.get_selected_action_targets()

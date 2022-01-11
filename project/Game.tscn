@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
 [ext_resource path="res://sprite/arrow_c.png" type="Texture" id=2]
@@ -19,6 +19,7 @@
 [ext_resource path="res://Scripts/Monster_manager.gd" type="Script" id=17]
 [ext_resource path="res://sprite/arrow_d.png" type="Texture" id=18]
 [ext_resource path="res://Scripts/ActionPoints.gd" type="Script" id=19]
+[ext_resource path="res://Scripts/AI.gd" type="Script" id=20]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://font/Comfortaa-Bold.ttf"
@@ -45,6 +46,9 @@ __meta__ = {
 
 [node name="GameManager" type="Node2D" parent="."]
 script = ExtResource( 10 )
+
+[node name="AI" type="Node2D" parent="."]
+script = ExtResource( 20 )
 
 [node name="ActionManager" type="Node2D" parent="."]
 script = ExtResource( 8 )
@@ -242,7 +246,7 @@ valign = 1
 
 [node name="LifeBarTeamA" type="Node2D" parent="."]
 script = ExtResource( 9 )
-team_select = "TeamAlly"
+team_select = "TeamA"
 
 [node name="LifeBar1" type="ProgressBar" parent="LifeBarTeamA"]
 margin_left = 150.0
@@ -327,7 +331,7 @@ __meta__ = {
 
 [node name="LifeBarTeamB" type="Node2D" parent="."]
 script = ExtResource( 9 )
-team_select = "TeamFoe"
+team_select = "TeamB"
 
 [node name="LifeBarA" type="ProgressBar" parent="LifeBarTeamB"]
 margin_left = 877.797
@@ -422,24 +426,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TeamAlly" type="Node2D" parent="."]
+[node name="TeamA" type="Node2D" parent="."]
 
-[node name="Ally1" parent="TeamAlly" instance=ExtResource( 12 )]
+[node name="AllyGreen" parent="TeamA" instance=ExtResource( 12 )]
 position = Vector2( 290, 230 )
 
-[node name="Ally2" parent="TeamAlly" instance=ExtResource( 12 )]
+[node name="AllyRed" parent="TeamA" instance=ExtResource( 12 )]
 position = Vector2( 382, 314 )
 
-[node name="Ally3" parent="TeamAlly" instance=ExtResource( 12 )]
+[node name="AllyBlue" parent="TeamA" instance=ExtResource( 12 )]
 position = Vector2( 290, 420 )
 
-[node name="TeamFoe" type="Node2D" parent="."]
+[node name="TeamB" type="Node2D" parent="."]
 
-[node name="Foe1" parent="TeamFoe" instance=ExtResource( 12 )]
+[node name="FoeGreen" parent="TeamB" instance=ExtResource( 12 )]
 position = Vector2( 720, 230 )
 
-[node name="Foe2" parent="TeamFoe" instance=ExtResource( 12 )]
+[node name="FoeRed" parent="TeamB" instance=ExtResource( 12 )]
 position = Vector2( 640, 310 )
 
-[node name="Foe3" parent="TeamFoe" instance=ExtResource( 12 )]
+[node name="FoeBlue" parent="TeamB" instance=ExtResource( 12 )]
 position = Vector2( 720, 410 )

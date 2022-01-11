@@ -23,7 +23,7 @@ var texture_monster_grass = preload('res://sprite/monster_grass.png')
 func set_turn_availabale(var b : bool):
 	turn_available = b
 	
-func get_turn_available():
+func is_turn_available():
 	return turn_available
 	
 func get_position_index() -> int:
@@ -34,6 +34,9 @@ func set_position_index(var index):
 	
 func set_team(var team):
 	self.team = team
+	
+func get_team():
+	return team
 	
 func _manage_status():
 	if status.BLEED != 0:

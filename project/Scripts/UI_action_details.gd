@@ -63,7 +63,7 @@ func _process(delta):
 		
 	if action.swap == null:
 		label_swap.visible = false
-	elif action.swap == TEAM.ALLY:
+	elif action.swap == ACTION_RANGE.ALLY:
 		label_swap.text = "Swap Ally"
 	else:
 		label_swap.text = "Swap Foe"

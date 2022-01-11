@@ -78,9 +78,6 @@ function set_action_target_weights(action_targets)
 		if(action_target.is_action_healing())
 			action_target.weight++
 
-			if(action_target.is_target_health_one_third())
-				action_target.weight++
-
 		if(action_target.is_target_lowest_HP())
 			action_weight++
 	}

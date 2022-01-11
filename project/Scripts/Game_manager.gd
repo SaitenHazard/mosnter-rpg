@@ -25,11 +25,11 @@ var action_swap : Action
 var actions : Array
 
 onready var game_manager = get_node("/root/Control/GameManager").get_children()
-onready var teamAlly : Array = get_node("/root/Control/TeamAlly").get_children()
-onready var teamFoe : Array = get_node('/root/Control/TeamFoe').get_children()
+onready var team_a : Array = get_node("/root/Control/TeamA").get_children()
+onready var team_b : Array = get_node('/root/Control/TeamB').get_children()
 onready var control = get_node('/root/Control')
 
-var action_points_max = 10
+var action_points_max = 100
 var action_points
 var team_a_turn = true 
 
@@ -37,8 +37,8 @@ func _process(var delta):
 	_manage_turns()
 	
 func _manage_turns():
-	for monster in teamAlly:
-		if monster.get_turn_available():
+	for monster in team_a:
+		if monster.is_turn_available():
 			team_a_turn = true
 			return
 	
@@ -46,7 +46,7 @@ func _manage_turns():
 	team_a_turn = false
 	
 func _end_all_ally_turns():
-	for monster in teamAlly:
+	for monster in team_a:
 		monster.set_turn_availabale(false)
 
 func _ready():
@@ -77,37 +77,37 @@ func _set_monsters():
 
 func _set_teamAlly():
 #	teamA[0].set_name('Mon1')
-	teamAlly[0].set_type(ELEMENTAL_TYPE.FIRE)
+	team_a[0].set_type(ELEMENTAL_TYPE.FIRE)
 	
 #	teamA[1].set_name('Mon2')
-	teamAlly[1].set_type(ELEMENTAL_TYPE.WATER)
+	team_a[1].set_type(ELEMENTAL_TYPE.WATER)
 	
 #	teamA[2].set_name('Mon3')
-	teamAlly[2].set_type(ELEMENTAL_TYPE.GRASS)
+	team_a[2].set_type(ELEMENTAL_TYPE.GRASS)
 	
-	for i in teamAlly.size():
-		teamAlly[i].set_position_index(i)
-		teamAlly[i].set_team(TEAM.ALLY)
+	for i in team_a.size():
+		team_a[i].set_position_index(i)
+		team_a[i].set_team(TEAM.A)
 	
 func _set_teamFoe():
 #	teamB[0].set_name('Mon1')
-	teamFoe[0].set_type(ELEMENTAL_TYPE.FIRE)
+	team_b[0].set_type(ELEMENTAL_TYPE.FIRE)
 	
 #	teamB[1].set_name('Mon2')
-	teamFoe[1].set_type(ELEMENTAL_TYPE.WATER)
+	team_b[1].set_type(ELEMENTAL_TYPE.WATER)
 	
 #	teamB[2].set_name('Mon3')
-	teamFoe[2].set_type(ELEMENTAL_TYPE.GRASS)
+	team_b[2].set_type(ELEMENTAL_TYPE.GRASS)
 	
-	for i in teamFoe.size():
-		teamFoe[i].set_position_index(i)
-		teamFoe[i].set_team(TEAM.FOE)
+	for i in team_b.size():
+		team_b[i].set_position_index(i)
+		team_b[i].set_team(TEAM.B)
 		
 func _assign_health():
-	for monster in teamAlly:
+	for monster in team_a:
 		monster.set_health(10)
 		
-	for monster in teamFoe:
+	for monster in team_b:
 		monster.set_health(10)
 
 func _assign_actions():
@@ -116,19 +116,39 @@ func _assign_actions():
 	var action3 : Action
 	var rand_index : int
 	
-	for i in teamAlly.size():
-		rand_index = randi() % actions.size()
-		action1 = actions[rand_index]
-		actions.remove(rand_index)
+	var action_left = actions.duplicate()
 	
-		rand_index = randi() % actions.size()
-		action2 = actions[rand_index]
-		actions.remove(rand_index)
+	for monster in team_a:
+		rand_index = randi() % action_left.size()
+		action1 = action_left[rand_index]
+		action_left.remove(rand_index)
 	
-		rand_index = randi() % actions.size()
-		action3 = actions[rand_index]
-		actions.remove(rand_index)
-		teamAlly[i].set_actions(action1, action2, action3, action_swap)
+		rand_index = randi() % action_left.size()
+		action2 = action_left[rand_index]
+		action_left.remove(rand_index)
+	
+		rand_index = randi() % action_left.size()
+		action3 = action_left[rand_index]
+		action_left.remove(rand_index)
+		
+		monster.set_actions(action1, action2, action3, action_swap)
+		
+	action_left = actions.duplicate()
+	
+	for monster in team_b:
+		rand_index = randi() % action_left.size()
+		action1 = action_left[rand_index]
+		action_left.remove(rand_index)
+	
+		rand_index = randi() % action_left.size()
+		action2 = action_left[rand_index]
+		action_left.remove(rand_index)
+	
+		rand_index = randi() % action_left.size()
+		action3 = action_left[rand_index]
+		action_left.remove(rand_index)
+		
+		monster.set_actions(action1, action2, action3, action_swap)
 		
 func _set_actions():
 	var action
@@ -140,10 +160,10 @@ func _set_actions():
 	
 	action = Action.new('Sticky Sticks', 1, 3, Status_effect.PARALYZE, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS, null)
 	actions.append(action)
-	action = Action.new('Bamboo Bash', 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS, TEAM.FOE)
+	action = Action.new('Bamboo Bash', 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS, ACTION_RANGE.FOE)
 	actions.append(action)
 	
-	action = Action.new('Bonfire', -1, 2, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.FIRE, TEAM.ALLY)
+	action = Action.new('Bonfire', -1, 2, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.FIRE, ACTION_RANGE.ALLY)
 	actions.append(action)
 	action = Action.new('Natural Remedy', -5, 5, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.GRASS, null)
 	actions.append(action)
@@ -152,7 +172,7 @@ func _set_actions():
 	
 	action = Action.new('Icicle Blade', 1, 3, Status_effect.BLEED, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER, null)
 	actions.append(action)
-	action = Action.new('Swift Surf', 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER, TEAM.ALLY)
+	action = Action.new('Swift Surf', 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER, ACTION_RANGE.ALLY)
 	actions.append(action)
 	
-	action_swap = Action.new('Swap', 0, 1, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.NULL, TEAM.ALLY)
+	action_swap = Action.new('Swap', 0, 1, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.NULL, ACTION_RANGE.ALLY)
