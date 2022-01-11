@@ -27,24 +27,42 @@ var actions : Array
 onready var game_manager = get_node("/root/Control/GameManager").get_children()
 onready var team_a : Array = get_node("/root/Control/TeamA").get_children()
 onready var team_b : Array = get_node('/root/Control/TeamB').get_children()
+onready var monster_manager = get_node("/root/Control/MonsterManager")
+
 onready var control = get_node('/root/Control')
 
 var action_points_max = 100
 var action_points
-var team_a_turn = true 
+
+var team_a_turn = true
+var turn_has_been_reset = false
 
 func _process(var delta):
 	_manage_turns()
-	
+	_swap_turn()
+
 func _manage_turns():
 	for monster in team_a:
 		if monster.is_turn_available():
 			team_a_turn = true
 			return
-	
-	control.lock_inputs()
+
+#	control.lock_inputs()
 	team_a_turn = false
 	
+func _swap_turn():
+	if turn_has_been_reset == false and team_a_turn == false:
+		turn_has_been_reset = true
+		
+		if team_a_turn:
+			_set_team_turn(monster_manager.get_team_a())
+		else:
+			_set_team_turn(monster_manager.get_team_b())
+
+func _set_team_turn(var team):
+	for monster in team:
+		monster.set_turn_availabale(true)
+
 func _end_all_ally_turns():
 	for monster in team_a:
 		monster.set_turn_availabale(false)

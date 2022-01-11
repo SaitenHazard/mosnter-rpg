@@ -122,12 +122,12 @@ func _get_damage(var target):
 		else:
 			damage = damage + 1
 		
-	if _is_position_advantage(target):
+	if is_position_advantage(target):
 		damage = damage + 1
 		
 	return damage
 
-func _is_position_advantage(var target = null, var action = null, var user = null):
+func is_position_advantage(var target = null, var action = null, var user = null):
 	if action == null:
 		action = get_selected_action()
 	

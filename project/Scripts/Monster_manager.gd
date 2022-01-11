@@ -40,20 +40,46 @@ func get_action_swap_team():
 		return get_team_b()
 		
 func get_action_target_team(var action, var user):
+#	print('*****************')
+#	print(user.name)
+#	print(action.name)
+#
+#	if action.action_range == ACTION_RANGE.ALLY:
+#		print('ALLY')
+#	elif action.action_range == ACTION_RANGE.ALLY_ALL:
+#		print('ALLY ALL')
+#	elif action.action_range == ACTION_RANGE.FOE:
+#		print('FOE')
+#	else:
+#		print('FOE ALL')
+#
+#	if user.get_team() == TEAM.A:
+#		print('TEAM A')
+#	else:
+#		print('TEAM B')
+	
 	if action.action_range == ACTION_RANGE.ALLY or ACTION_RANGE.ALLY_ALL:
 		if user.get_team() == TEAM.A:
-			return get_team_a()
-		else:
+#			print('team B1')
 			return get_team_b()
+		else:
+#			print('team A1')
+			return get_team_a()
 	else:
-		if user.get_team() == TEAM.A:
-			return get_team_b()
-		else:
+		if user.get_team() == TEAM.B:
+#			print('team A2')
 			return get_team_a()
+		else:
+#			print('team B2')
+			return get_team_b()
+			
+#	print('*****************')
 			
 func get_action_target_team_monster(var action, var user):
 	var team = get_action_target_team(action, user)
 	var index = user.get_index()
+#	print('------------------------------')
+#	print(team[0].name)
 	return get_monster(team, index)
 		
 func get_targettwo_indexes():
@@ -155,4 +181,30 @@ func get_team_monsters_with_turn_remaining(var team):
 			turn_remaining_monsters.append(monster)
 			
 	return turn_remaining_monsters
+	
+func get_target_team_lowest_hp(action, user):
+	var team = get_action_target_team(action, user)
+	return get_lowest_hp(team)
+	
+func get_lowest_hp_a():
+	return get_lowest_hp(get_team_a())
+	
+func get_lowest_hp_b():
+	return get_lowest_hp(get_team_b())
+		
+func get_lowest_hp(var team):
+	var monster_one = team[0]
+	var monster_two = team[1]
+	var monster_three = team[2]
+	
+	if monster_one.health < monster_two.health and monster_one.health < monster_three.health:
+		return monster_one
+		
+	if monster_two.health < monster_one.health and monster_two.health < monster_three.health:
+		return monster_two
+		
+	if monster_three.health < monster_one.health and monster_three.health < monster_two.health:
+		return monster_three
+		
+	return null
 	
