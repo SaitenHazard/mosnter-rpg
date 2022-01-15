@@ -55,6 +55,14 @@ func _inputs():
 func _end_turn():
 	if Input.is_action_just_pressed("end_turn"):
 		game_manager._end_all_ally_turns()
+		
+func _do_action():
+	var action = action_manager.get_selected_action()
+	var user = monster_manager.get_selected_ally()
+	var targets = monster_manager.get_action_target_team(action, user)
+	var target2 = monster_manager.get_targettwo()
+	
+	action_manager.do_action(action, user, targets, target2)
 
 func _input_groups():
 	if Input.is_action_just_pressed("accept"):
@@ -71,7 +79,7 @@ func _input_groups():
 				if not action_manager.enough_points_for_action():
 					return
 					
-				action_manager.do_action()
+				_do_action()
 				return
 			else:
 				input_group = INPUT_GROUP.TARGETTWO
@@ -163,8 +171,6 @@ func _input_targetstwo_increment(var increment):
 		for index in target_indexes:
 			if index == candidate_index:
 				index_is_valid = true
-		
-#	print(candidate_index)
 		
 	index_targettwo = candidate_index
 	

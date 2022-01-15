@@ -40,26 +40,8 @@ func get_action_swap_team():
 		return get_team_b()
 		
 func get_action_target_team(var action, var user):
-#	print('*****************')
-#	print(user.name)
-#	print(action.name)
-#
-#	if action.action_range == ACTION_RANGE.ALLY:
-#		print('ALLY')
-#	elif action.action_range == ACTION_RANGE.ALLY_ALL:
-#		print('ALLY ALL')
-#	elif action.action_range == ACTION_RANGE.FOE:
-#		print('FOE')
-#	else:
-#		print('FOE ALL')
-#
-#	if user.get_team() == TEAM.A:
-#		print('TEAM A')
-#	else:
-#		print('TEAM B')
-	
-	if action.action_range == ACTION_RANGE.ALLY or ACTION_RANGE.ALLY_ALL:
-		if user.get_team() == TEAM.A:
+	if action.action_range == ACTION_RANGE.ALLY or action.action_range == ACTION_RANGE.ALLY_ALL:
+		if user.get_team() == TEAM.B:
 #			print('team B1')
 			return get_team_b()
 		else:
@@ -75,11 +57,8 @@ func get_action_target_team(var action, var user):
 			
 #	print('*****************')
 			
-func get_action_target_team_monster(var action, var user):
+func get_action_target_team_monster(var action, var user, var index):
 	var team = get_action_target_team(action, user)
-	var index = user.get_index()
-#	print('------------------------------')
-#	print(team[0].name)
 	return get_monster(team, index)
 		
 func get_targettwo_indexes():
@@ -155,17 +134,14 @@ func _set_position_():
 		monster.position = team_b_positions[index]
 		
 func get_selected_action_targets():
-	var team_user = get_team_a()
-		
-	var team_target = get_team_b()
-	
 	var action = action_manager.get_selected_action()
-	var index_ally = control.get_index_ally()
+	var user = get_selected_ally()
 	
-	return get_targets(index_ally, team_user,  team_target, action)
+	return get_targets(user, action)
 	
-func get_targets(user_idnex, team_user, team_target, action):
-	return Targets.new(user_idnex, action.action_range, team_user, team_target)
+func get_targets(user, action):
+	var team_target = get_action_target_team(action, user)
+	return Targets.new(user.get_position_index(), action.action_range, user, team_target)
 	
 func get_team_a_monsters_with_turn_remaining():
 	return get_team_monsters_with_turn_remaining(get_team_a())
