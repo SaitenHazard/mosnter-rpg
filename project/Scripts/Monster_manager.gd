@@ -34,7 +34,7 @@ func get_targettwo():
 			
 func get_action_swap_team():
 	var action = action_manager.get_selected_action()
-	if action.swap == TEAM.ALLY:
+	if action.swap == TEAM.A:
 		return get_team_a()
 	else:
 		return get_team_b()
@@ -92,7 +92,7 @@ func get_action_swap_target_to():
 func get_target_team():
 	var targets = get_selected_action_targets()
 		
-	if targets.ally:
+	if targets.team_a:
 		return get_team_a()
 	else:
 		return get_team_b()

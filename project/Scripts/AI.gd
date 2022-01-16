@@ -68,10 +68,11 @@ func _decide_action():
 	
 func _choose_ai_action_target_user(var ai_action_target_users : Array):
 	var roll = _roll_dice()
+	
 	ai_action_target_users = _get_actions_user_targets_with_weight(ai_action_target_users, roll)
 	
 	var count = ai_action_target_users.size()
-	var rand : int = randi()%1+count
+	var rand : int = (randi()%1+count)-1
 	
 	return ai_action_target_users[rand]
 	
@@ -80,7 +81,7 @@ func _get_actions_user_targets_with_weight(var ai_action_target_users, var weigh
 	
 	for ai_action_target_user in ai_action_target_users:
 		if ai_action_target_user.weight == weight:
-			ai_action_target_users_with_weight = ai_action_target_user
+			ai_action_target_users_with_weight.append(ai_action_target_user)
 			
 	return ai_action_target_users_with_weight
 	
@@ -115,7 +116,7 @@ func _set_ai_action_targets_weight(var ai_action_target_users):
 	
 func _set_ai_action_targets_multitarget(var ai_action_target_users):
 	for ai_action_target in ai_action_target_users:
-		if typeof(ai_action_target.targets) == TYPE_ARRAY:
+		if ai_action_target.targets.size() > 1:
 			ai_action_target.add_weight()
 			ai_action_target.weight_reasons = ai_action_target.weight_reasons + 'multitarget |'
 			
@@ -129,11 +130,9 @@ func debug(var ai_action_target_users):
 		print('Weight:' + String(ai_action_target.weight))
 #		print('Cumulative Weight:' + String(ai_action_target.cumulative_weight))
 		print('Targets:')
-		if typeof(ai_action_target.targets) == TYPE_ARRAY:
-			for target in ai_action_target.targets:
-				print(target.name)
-		else:
-			print(ai_action_target.targets.name)
+		
+		for target in ai_action_target.targets:
+			print(target.name)
 			
 		print('Reason : ' + ai_action_target.weight_reasons)
 			
@@ -158,12 +157,12 @@ func debug(var ai_action_target_users):
 			
 func _set_weight_lowest_hp(var ai_action_target_users):
 	for ai_action_target in ai_action_target_users:
-		if typeof(ai_action_target.targets) == TYPE_ARRAY:
+		if ai_action_target.targets.size() > 1:
 			continue
 			
 		var target_team_monster_lowest_hp = monster_manager.get_target_team_lowest_hp(ai_action_target.action, ai_action_target.user)
 			
-		if target_team_monster_lowest_hp == ai_action_target.targets:
+		if target_team_monster_lowest_hp == ai_action_target.targets[0]:
 			ai_action_target.add_weight()
 			ai_action_target.weight_reasons = ai_action_target.weight_reasons + 'lowest_hp |'
 			
@@ -171,10 +170,10 @@ func _set_weight_lowest_hp(var ai_action_target_users):
 	
 func _set_weight_type_advantage(var ai_action_target_users):
 	for ai_action_target in ai_action_target_users:
-		if typeof(ai_action_target.targets) == TYPE_ARRAY:
+		if ai_action_target.targets.size() > 1:
 			continue
 			
-		if action_manager.is_type_advantage(ai_action_target.targets, ai_action_target.action):
+		if action_manager.is_type_advantage(ai_action_target.targets[0], ai_action_target.action):
 			ai_action_target.add_weight()
 			ai_action_target.weight_reasons = ai_action_target.weight_reasons + 'type_advantage |'
 			
@@ -190,12 +189,12 @@ func _set_weight_healing(var ai_action_target_users):
 			
 func _set_position_advantage(var ai_action_target_users):
 	for action_user_target in ai_action_target_users:
-		if typeof(action_user_target.targets) == TYPE_ARRAY:
+		if action_user_target.targets.size() > 1:
 			continue
 		
 		var action = action_user_target.action
 		var user = action_user_target.user
-		var traget = action_user_target.targets
+		var traget = action_user_target.targets[0]
 		
 		if action_manager.is_position_advantage(traget, action, user):
 			action_user_target.weight_reasons = action_user_target.weight_reasons + 'position_advantage |'
@@ -215,7 +214,7 @@ func _set_ai_action_user_target(var actions_users):
 		var team_target = monster_manager.get_action_target_team(action, user)
 		var team_user = monster_manager.get_team_b()
 		
-		var targets = monster_manager.get_targets(user_index, team_user, team_target, action)
+		var targets = monster_manager.get_targets(user, action)
 		
 		if targets.all:
 			ai_action_target_users.append(
@@ -224,7 +223,7 @@ func _set_ai_action_user_target(var actions_users):
 			for index in targets.indexes:
 				var target = monster_manager.get_action_target_team_monster(action, user, index)
 				ai_action_target_users.append(
-					AI_ACTION_USER_TARGET.new(user, target, action, initial_weight))
+					AI_ACTION_USER_TARGET.new(user, [target], action, initial_weight))
 					
 	return ai_action_target_users
 

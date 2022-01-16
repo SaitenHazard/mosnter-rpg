@@ -7,7 +7,7 @@ onready var team_target
 
 var indexes : Array
 var all : bool
-var ally : bool
+var team_a : bool
 
 func _init(user_index : int, action_range, team_user, team_target):
 	self.team_user = team_user
@@ -56,7 +56,7 @@ func _remove_actioner_as_target(actioner_index):
 	if all == true:
 		return
 		
-	if ally == false:
+	if team_a == false:
 		return
 		
 #	print(actioner_index)
@@ -66,20 +66,20 @@ func _remove_actioner_as_target(actioner_index):
 func _get_target_candidates(actioner_index : int, action_range):
 	if action_range == ACTION_RANGE.ALLY_ALL:
 		indexes = [0, 1, 2]
-		ally = true
+		team_a = true
 		all = true
 	
 	if action_range == ACTION_RANGE.FOE_ALL:
 		indexes = [0, 1, 2]
-		ally = false
+		team_a = false
 		all = true
 	
 	if action_range == ACTION_RANGE.ALLY:
 		indexes = [0, 1, 2]
-		ally = true
+		team_a = true
 		all = false
 		
 	if action_range == ACTION_RANGE.FOE:
 		indexes = [actioner_index-1, actioner_index, actioner_index+1]
-		ally = false
+		team_a = false
 		all = false

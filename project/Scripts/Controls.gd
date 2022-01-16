@@ -62,6 +62,13 @@ func _do_action():
 	var targets = monster_manager.get_action_target_team(action, user)
 	var target2 = monster_manager.get_targettwo()
 	
+	if not action_manager.selected_action_has_two_targets():
+		target2 = null
+	
+	if action.action_range == ACTION_RANGE.ALLY or action.action_range == ACTION_RANGE.FOE:
+		var index = get_index_target()
+		targets =  [monster_manager.get_action_target_team_monster(action, user, index)]
+		
 	action_manager.do_action(action, user, targets, target2)
 
 func _input_groups():
@@ -193,7 +200,7 @@ func input_allies_increment(var increment):
 
 		if candidate_index > max_index:
 			candidate_index = min_index
-		
+			
 		if monster_manager.get_team_a_monster(candidate_index).is_turn_available():
 			index_is_valid = true
 		else:
