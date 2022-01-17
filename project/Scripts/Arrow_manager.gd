@@ -28,8 +28,10 @@ func _set_selected_targetstwo():
 	
 	if not input_group == INPUT_GROUP.TARGETTWO:
 		return
-	
+		
 	var targettwo = monster_manager.get_action_swap_target_to()
+	
+	print(targettwo.name)
 	
 	selection_arrow_targettwo.global_position = targettwo.global_position
 	selection_arrow_targettwo.global_position.x = selection_arrow_targettwo.global_position.x + 55

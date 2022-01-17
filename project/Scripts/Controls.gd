@@ -78,7 +78,7 @@ func _input_groups():
 			if not action_manager.enough_points_for_action():
 				return
 			
-			action_manager.do_action()
+			_do_action()
 			return
 		
 		if get_input_group() == INPUT_GROUP.TARGET:
