@@ -6,14 +6,12 @@ onready var action_manager = get_node('/root/Control/ActionManager')
 
 var deciding_next_action : bool = false
 var cumulative_weight
-#var ai_action_target_users : Array
 
 class AI_ACTION_USER_TARGET:
 	var user
 	var targets
 	var action
 	var weight
-#	var cumulative_weight
 	var weight_reasons = ''
 	
 	func _init(var user, var targets, var action, var weight):
@@ -33,28 +31,58 @@ class ACTION_USER:
 		self.action = action
 		self.user = user
 		
-class ActionUserTargetSorter:
-	static func sort_ascending(a, b):
-		if a.weight < b.weight:
-			return true
-		return false
+#class ActionUserTargetSorter:
+#	static func sort_ascending(a, b):
+#		if a.weight < b.weight:
+#			return true
+#		return false
 	
 func _process(var delta):
-	var ai_action_user_target = _decide_action()
-	_do_action(ai_action_user_target)
-	
-func _do_action(var ai_action_user_target):
-	pass
-	
-func _decide_action():
 	var team_a_turn = game_manager.get_team_a_turn()
 	
 	if team_a_turn:
 		return
 		
-	if deciding_next_action:
+	if not deciding_next_action:
 		return
 		
+	var ai_action_user_target = _decide_action()
+	_do_action(ai_action_user_target)
+	deciding_next_action = false
+	
+func _do_action(var ai_action_user_target):
+	var action = ai_action_user_target.action
+	var user = ai_action_user_target.user
+	var targets = ai_action_user_target.target
+	var target2 = _get_random_monster_for_swap(ai_action_user_target)
+	
+#	action_manager.do_action(action, user, targets, target2)
+	
+func _get_random_monster_for_swap(var ai_action_user_target):
+	if ai_action_user_target.swap == null:
+		return null
+		
+	if not action_manager.action_has_two_targets():
+		return null
+		
+	var position_indexes : Array = [0,1,2]
+	var team
+	
+	if ai_action_user_target.action.swap == ACTION_RANGE.FOE:
+		team = monster_manager.get_team_a()
+		position_indexes.remove(ai_action_user_target.user.get_position_index())
+		
+	if ai_action_user_target.action.swap == ACTION_RANGE.ALLY:
+		team = monster_manager.get_team_a()
+		position_indexes.remove(ai_action_user_target.target.get_position_index())
+		
+	var rng = RandomNumberGenerator.new()
+		
+	var rand_index : int = rng.randi_range(0,1)
+	
+	return monster_manager.get_monster(team, rand_index)
+	
+func _decide_action():
 	deciding_next_action = true
 	
 	var action_users = _get_action_user_array()
@@ -67,28 +95,40 @@ func _decide_action():
 	return ai_action_target_user
 	
 func _choose_ai_action_target_user(var ai_action_target_users : Array):
-	var roll = _roll_dice()
+	var rng = RandomNumberGenerator.new()
 	
-	ai_action_target_users = _get_actions_user_targets_with_weight(ai_action_target_users, roll)
+	ai_action_target_users = _get_actions_user_targets_with_rand_weight(ai_action_target_users)
 	
-	var count = ai_action_target_users.size()
-	var rand : int = (randi()%1+count)-1
+	var roll = rng.randi_range(1, ai_action_target_users.size())
 	
-	return ai_action_target_users[rand]
+	return ai_action_target_users[roll]
 	
-func _get_actions_user_targets_with_weight(var ai_action_target_users, var weight):
+func _get_actions_user_targets_with_rand_weight(var ai_action_target_users):
 	var ai_action_target_users_with_weight : Array
 	
-	for ai_action_target_user in ai_action_target_users:
-		if ai_action_target_user.weight == weight:
-			ai_action_target_users_with_weight.append(ai_action_target_user)
+	var weight = 0
+	
+	while(ai_action_target_users_with_weight.empty()):
+	
+		var rng = RandomNumberGenerator.new()
+		var roll = rng.randi_range(1, 100)
+	
+		if (roll >= 45):
+			weight = 5
+		elif(roll >= 25):
+			weight = 4
+		elif(roll >= 15):
+			weight = 3
+		elif(roll >= 10):
+			weight = 2
+		else:
+			weight = 1
+	
+		for ai_action_target_user in ai_action_target_users:
+			if ai_action_target_user.weight == weight:
+				ai_action_target_users_with_weight.append(ai_action_target_user)
 			
 	return ai_action_target_users_with_weight
-	
-func _roll_dice() -> int:
-#	var rand = randomize()
-	var roll : int = randi()%5+1
-	return roll
 	
 func _set_ai_action_targets_weight(var ai_action_target_users):
 	ai_action_target_users = _set_weight_healing(ai_action_target_users)
@@ -96,7 +136,16 @@ func _set_ai_action_targets_weight(var ai_action_target_users):
 	ai_action_target_users = _set_weight_type_advantage(ai_action_target_users)
 	ai_action_target_users = _set_weight_lowest_hp(ai_action_target_users)
 	ai_action_target_users = _set_ai_action_targets_multitarget(ai_action_target_users)
+	ai_action_target_users = _set_weight_status(ai_action_target_users)
 	
+	return ai_action_target_users
+	
+func _set_weight_status(var ai_action_target_users):
+	for ai_action_target in ai_action_target_users:
+		if not ai_action_target.action.status_effect == null:
+			ai_action_target.add_weight()
+			ai_action_target.weight_reasons = ai_action_target.weight_reasons + 'status |'
+			
 	return ai_action_target_users
 	
 #func _set_cumulative_weight(var ai_action_targets):
@@ -128,32 +177,12 @@ func debug(var ai_action_target_users):
 		print('Action: ' + ai_action_target.action.name)
 		print('User: ' + ai_action_target.user.name)
 		print('Weight:' + String(ai_action_target.weight))
-#		print('Cumulative Weight:' + String(ai_action_target.cumulative_weight))
 		print('Targets:')
 		
 		for target in ai_action_target.targets:
 			print(target.name)
 			
 		print('Reason : ' + ai_action_target.weight_reasons)
-			
-#func debug2(var ai_action_target):
-#	print('---')
-#	print('Action: ' + ai_action_target.action.name)
-#	print('User: ' + ai_action_target.user.name)
-#	print('User Position Index: ' + String(ai_action_target.user.position_index))
-#	print('Weight:' + String(ai_action_target.weight))
-#	print('Targets:')
-#
-#	if typeof(ai_action_target.targets) == TYPE_ARRAY:
-#		for target in ai_action_target.targets:
-#			print('Target Position Index: ' + String(target.position_index))
-#			print(target.name)
-#	else:
-#		print('Target Position Index: ' + String(ai_action_target.targets.position_index))
-#		print(ai_action_target.targets.name)
-#
-#	print('---')
-	
 			
 func _set_weight_lowest_hp(var ai_action_target_users):
 	for ai_action_target in ai_action_target_users:

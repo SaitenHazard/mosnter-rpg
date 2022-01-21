@@ -14,19 +14,18 @@ func _set_targets():
 		targets_team = null
 		targets = null
 		return
-
+		
 func do_action(var action, var user, var targets, var target2):
-	
 	control.lock_inputs()
 	user.set_turn_availabale(false)
-	game_manager.deduct_action_points(action.cost)
 	
+	game_manager.deduct_action_points(action.cost)
 	_do_damage(action, user, targets)
 	_do_status_effect(action, targets)
 	_do_swap(action, user, targets, target2)
-	
-	control.input_allies_increment(true)
+
 	control.reset_inputs()
+	control.input_allies_increment(true)
 	
 func enough_points_for_action():
 	var action = get_selected_action()
@@ -37,17 +36,11 @@ func enough_points_for_action():
 	return true
 	
 func _do_swap(var action, var user, var targets, var target2):
-	if action.swap == null:
-		return
-	
-	if user.team == TEAM.A:
-		_do_player_swap(action, user, targets, target2)
-	else:
-		_do_ai_swap(action, user, targets, target2)
-	
-func _do_player_swap(var action, var user, var targets, var target2):
 	var swap_one
 	var swap_two
+	
+	if action.swap == null:
+		return
 	
 	if not target2 == null:
 		swap_one = target2
@@ -56,18 +49,14 @@ func _do_player_swap(var action, var user, var targets, var target2):
 		else:
 			swap_two = targets[0]
 	else:
-		if action.swap == ACTION_RANGE.ALLY:
-			swap_one = user
-			swap_two = targets[0]
+		swap_one = user
+		swap_two = targets[0]
 			
 	var position_index_swap_one = swap_one.get_position_index()
 	var position_index_swap_two = swap_two.get_position_index()
 	
 	swap_one.set_position_index(position_index_swap_two)
 	swap_two.set_position_index(position_index_swap_one)
-	
-func _do_ai_swap(var action, var user, var targets, var target2):
-	pass
 	
 func _get_effected_targets():
 	var action = get_selected_action()
@@ -87,17 +76,12 @@ func _get_effected_targets():
 	return targets
 	
 func _do_damage(var action, var user, var targets):
-#	var targets = _get_effected_targets()
-	
 	for target in targets:
 		var damage = _get_damage(target)
-#		print(damage)
 		target.do_damage(damage)
 		
 func _do_status_effect(var action, var targets):
-#	var action = get_selected_action()
 	var status_effect = action.status_effect
-#	var targets = _get_effected_targets()
 	
 	if status_effect != Status_effect.NULL:
 		for target in targets:
@@ -123,7 +107,9 @@ func _get_damage(var target):
 	
 func selected_action_has_two_targets():
 	var action = get_selected_action()
-	
+	return action_has_two_targets(action)
+
+func action_has_two_targets(var action):
 	if action.name == "Bonfire":
 		return false
 		
@@ -143,12 +129,13 @@ func is_position_advantage(var target = null, var action = null, var user = null
 		return false
 		
 	if user == null:
-		user = monster_manager.get_selected_ally()
+		user = monster_manager.get_selected_team_a()
 		
 	var user_position = user.get_position_index()
 	
 	var target_position = target.get_position_index()
 	
+		
 	if target_position == user_position:
 		return true
 		
@@ -187,18 +174,18 @@ func is_action_healing(var action = null):
 		
 	return false
 	
-func action_has_two_targets(var action):
-	if action.name == "Bonfire":
-		return false
-		
-	if not action.damage == 0 and not action.swap == null:
-		return true
-	
-	return false
+#func action_has_two_targets(var action):
+#	if action.name == "Bonfire":
+#		return false
+#
+#	if not action.damage == 0 and not action.swap == null:
+#		return true
+#
+#	return false
 	
 func get_selected_action():
 	var index_action = control.get_index_action()
 	return get_selected_ally_actions()[index_action]
 
 func get_selected_ally_actions():
-	return monster_manager.get_selected_ally().get_actions()
+	return monster_manager.get_selected_team_a().get_actions()

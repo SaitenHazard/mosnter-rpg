@@ -1,3 +1,3 @@
 class_name ELEMENTAL_TYPE
 
-enum {NULL, FIRE, WATER, GRASS}
+enum {FIRE, WATER, GRASS}

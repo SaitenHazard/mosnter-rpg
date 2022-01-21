@@ -24,14 +24,15 @@ func _process(delta):
 func _set_selected_targetstwo():
 	selection_arrow_targettwo.visible = false
 	
+	if control.get_lock_inputs():
+		return
+	
 	var input_group = control.get_input_group()
 	
 	if not input_group == INPUT_GROUP.TARGETTWO:
 		return
 		
 	var targettwo = monster_manager.get_action_swap_target_to()
-	
-	print(targettwo.name)
 	
 	selection_arrow_targettwo.global_position = targettwo.global_position
 	selection_arrow_targettwo.global_position.x = selection_arrow_targettwo.global_position.x + 55
@@ -40,6 +41,9 @@ func _set_selected_targetstwo():
 func _set_selected_targets():
 	for arrow in targets_selected_arrows:
 		arrow.visible = false
+		
+	if control.get_lock_inputs():
+		return
 		
 	var index_target = control.get_index_target()
 	
@@ -73,7 +77,8 @@ func _set_selected_ally():
 		return
 	
 	selection_arrow_ally.visible = true
-	selection_arrow_ally.global_position = monster_manager.get_selected_ally().global_position
+	
+	selection_arrow_ally.global_position = monster_manager.get_selected_team_a().global_position
 	selection_arrow_ally.global_position.x = selection_arrow_ally.global_position.x + 55
 	
 func _set_selected_action():

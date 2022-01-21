@@ -2,7 +2,7 @@ extends Node2D
 
 class Action:
 	var name : String
-	var status_effect : int
+	var status_effect
 	var action_range : int
 	var cost : int
 	var damage: int
@@ -10,8 +10,8 @@ class Action:
 	var swap = null 
 	
 	func _init(
-		name : String, damage : int, cost : int, status_effect : int, action_range : int, 
-		elemental_type : int, swap):
+		name : String, damage : int, cost : int, status_effect, action_range : int, 
+		elemental_type, swap):
 		 self.name = name
 		 self.status_effect = status_effect
 		 self.action_range = action_range
@@ -47,7 +47,7 @@ func _manage_turns():
 			team_a_turn = true
 			return
 
-#	control.lock_inputs()
+	control.lock_inputs()
 	team_a_turn = false
 	
 func _swap_turn():
@@ -132,20 +132,24 @@ func _assign_actions():
 	var action1 : Action
 	var action2 : Action
 	var action3 : Action
-	var rand_index : int
+	
+	var rng = RandomNumberGenerator.new()
+	
 	
 	var action_left = actions.duplicate()
 	
+	var rand_index : int = 0
+	
 	for monster in team_a:
-		rand_index = randi() % action_left.size()
+		rand_index = rng.randi_range(0, action_left.size()-1)
 		action1 = action_left[rand_index]
 		action_left.remove(rand_index)
 	
-		rand_index = randi() % action_left.size()
+		rand_index = rng.randi_range(0, action_left.size()-1)
 		action2 = action_left[rand_index]
 		action_left.remove(rand_index)
 	
-		rand_index = randi() % action_left.size()
+		rand_index = rng.randi_range(0, action_left.size()-1)
 		action3 = action_left[rand_index]
 		action_left.remove(rand_index)
 		
@@ -154,15 +158,15 @@ func _assign_actions():
 	action_left = actions.duplicate()
 	
 	for monster in team_b:
-		rand_index = randi() % action_left.size()
+		rand_index = rng.randi_range(0, action_left.size()-1)
 		action1 = action_left[rand_index]
 		action_left.remove(rand_index)
 	
-		rand_index = randi() % action_left.size()
+		rand_index = rng.randi_range(0, action_left.size()-1)
 		action2 = action_left[rand_index]
 		action_left.remove(rand_index)
 	
-		rand_index = randi() % action_left.size()
+		rand_index = rng.randi_range(0, action_left.size()-1)
 		action3 = action_left[rand_index]
 		action_left.remove(rand_index)
 		
@@ -171,26 +175,26 @@ func _assign_actions():
 func _set_actions():
 	var action
 	
-	action = Action.new('Fire Ball', 3, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.FIRE, null)
+	action = Action.new('Fire Ball', 3, 3, null, ACTION_RANGE.FOE, ELEMENTAL_TYPE.FIRE, null)
 	actions.append(action)
-	action = Action.new('Fire Blitz', 1, 6, Status_effect.NULL, ACTION_RANGE.FOE_ALL, ELEMENTAL_TYPE.FIRE, null)
+	action = Action.new('Fire Blitz', 1, 6, null, ACTION_RANGE.FOE_ALL, ELEMENTAL_TYPE.FIRE, null)
 	actions.append(action)
 	
 	action = Action.new('Sticky Sticks', 1, 3, Status_effect.PARALYZE, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS, null)
 	actions.append(action)
-	action = Action.new('Bamboo Bash', 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS, ACTION_RANGE.FOE)
+	action = Action.new('Bamboo Bash', 1, 3, null, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS, ACTION_RANGE.FOE)
 	actions.append(action)
 	
-	action = Action.new('Bonfire', -1, 2, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.FIRE, ACTION_RANGE.ALLY)
+	action = Action.new('Bonfire', -1, 2, null, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.FIRE, ACTION_RANGE.ALLY)
 	actions.append(action)
-	action = Action.new('Natural Remedy', -5, 5, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.GRASS, null)
+	action = Action.new('Natural Remedy', -5, 5, null, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.GRASS, null)
 	actions.append(action)
-	action = Action.new('Healing Pulse', -2, 6, Status_effect.NULL, ACTION_RANGE.ALLY_ALL, ELEMENTAL_TYPE.WATER, null)
-	actions.append(action)
-	
-	action = Action.new('Icicle Blade', 1, 3, Status_effect.BLEED, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER, null)
-	actions.append(action)
-	action = Action.new('Swift Surf', 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER, ACTION_RANGE.ALLY)
+	action = Action.new('Healing Pulse', -2, 6, null, ACTION_RANGE.ALLY_ALL, ELEMENTAL_TYPE.WATER, null)
 	actions.append(action)
 	
-	action_swap = Action.new('Swap', 0, 1, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.NULL, ACTION_RANGE.ALLY)
+	action = Action.new('Icicle Blade', 1, 3, null, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER, null)
+	actions.append(action)
+	action = Action.new('Swift Surf', 1, 3, null, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER, ACTION_RANGE.ALLY)
+	actions.append(action)
+	
+	action_swap = Action.new('Swap', 0, 1, null, ACTION_RANGE.ALLY, null, ACTION_RANGE.ALLY)

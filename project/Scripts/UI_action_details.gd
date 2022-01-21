@@ -13,10 +13,9 @@ var label_swap
 var label_status
 
 var type_name = {
-	0 : 'Null',
-	1 : 'Fire',
-	2 : 'Water',
-	3 : 'Grass'
+	0 : 'Fire',
+	1 : 'Water',
+	2 : 'Grass'
 }
 
 func _ready():
@@ -28,17 +27,17 @@ func _ready():
 
 
 func _process(delta):
+	label_damage.visible = false
+	label_cost.visible = false
+	label_type.visible = false
+	label_swap.visible = false
+	label_status.visible = false
+		
 	if control.get_input_group() == INPUT_GROUP.ALLY:
-		label_damage.visible = false
-		label_cost.visible = false
-		label_type.visible = false
-		label_swap.visible = false
-		label_status.visible = false
 		return
 		
 	label_damage.visible = true
 	label_cost.visible = true
-	label_type.visible = true
 	label_swap.visible = true
 	label_status.visible = true
 		
@@ -50,7 +49,10 @@ func _process(delta):
 		label_damage.text = "Heal: " + String(action.damage * -1)
 		
 	label_cost.text = "Cost: " + String(action.cost)
-	label_type.text = "Type: " + type_name[action.elemental_type]
+	
+	if not action.elemental_type == null:
+		label_type.visible = true
+		label_type.text = "Type: " + type_name[action.elemental_type]
 	
 #	print(action.cost)
 #	print(action.name)
@@ -64,9 +66,9 @@ func _process(delta):
 	if action.swap == null:
 		label_swap.visible = false
 	elif action.swap == ACTION_RANGE.ALLY:
-		label_swap.text = "Swap Ally"
+		label_swap.text = "Swap with Ally"
 	else:
-		label_swap.text = "Swap Foe"
+		label_swap.text = "Force Swap Foe"
 		
 	if action.status_effect == 0:
 		label_status.visible = false

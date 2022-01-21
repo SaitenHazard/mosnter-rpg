@@ -15,7 +15,6 @@ func _set_texts():
 	if not game_manager.get_team_a_turn():
 		for i in 4:
 			panel_controllers[i].get_child(0).visible = false
-			
 		return
 	
 	var index : int = control.get_index_ally()

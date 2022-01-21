@@ -58,7 +58,7 @@ func _end_turn():
 		
 func _do_action():
 	var action = action_manager.get_selected_action()
-	var user = monster_manager.get_selected_ally()
+	var user = monster_manager.get_selected_team_a()
 	var targets = monster_manager.get_action_target_team(action, user)
 	var target2 = monster_manager.get_targettwo()
 	
@@ -68,6 +68,11 @@ func _do_action():
 	if action.action_range == ACTION_RANGE.ALLY or action.action_range == ACTION_RANGE.FOE:
 		var index = get_index_target()
 		targets =  [monster_manager.get_action_target_team_monster(action, user, index)]
+		
+#	print(action.name)
+#	print(user.name)
+#	print(targets[0].name)
+#	print(target2)
 		
 	action_manager.do_action(action, user, targets, target2)
 
@@ -156,9 +161,6 @@ func _input_targetstwo_increment(var increment):
 	var max_index = 2
 	
 	var target_indexes = monster_manager.get_targettwo_indexes()
-	
-#	print('target_indexes')
-#	print(target_indexes)
 	
 	var candidate_index = index_targettwo
 	var index_is_valid = false
