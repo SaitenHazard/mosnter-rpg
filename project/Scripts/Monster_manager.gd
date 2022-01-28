@@ -162,29 +162,29 @@ func get_team_monsters_with_turn_remaining(var team):
 			
 	return turn_remaining_monsters
 	
-#func get_target_team_lowest_hp(action, user):
-#	var team = get_action_target_team(action, user)
-#	return get_lowest_hp(team)
+func get_target_team_lowest_hp(action, user):
+	var team = get_action_target_team(action, user)
+	return get_lowest_hp(team)
 	
-#func get_lowest_hp_a():
-#	return get_lowest_hp(get_team_a())
-#
-#func get_lowest_hp_b():
-#	return get_lowest_hp(get_team_b())
-		
-#func get_lowest_hp(var team):
-#	var monster_one = team[0]
-#	var monster_two = team[1]
-#	var monster_three = team[2]
-#
-#	if monster_one.health < monster_two.health and monster_one.health < monster_three.health:
-#		return monster_one
-#
-#	if monster_two.health < monster_one.health and monster_two.health < monster_three.health:
-#		return monster_two
-#
-#	if monster_three.health < monster_one.health and monster_three.health < monster_two.health:
-#		return monster_three
-#
-#	return null
+func get_lowest_hp_a():
+	return get_lowest_hp(get_team_a())
+
+func get_lowest_hp_b():
+	return get_lowest_hp(get_team_b())
+
+func get_lowest_hp(var team):
+	var monster_one = team[0]
+	var monster_two = team[1]
+	var monster_three = team[2]
+
+	if monster_one.health < monster_two.health and monster_one.health < monster_three.health:
+		return monster_one
+
+	if monster_two.health < monster_one.health and monster_two.health < monster_three.health:
+		return monster_two
+
+	if monster_three.health < monster_one.health and monster_three.health < monster_two.health:
+		return monster_three
+
+	return null
 	

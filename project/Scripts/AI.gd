@@ -1,12 +1,5 @@
 extends Node2D
 
-onready var game_manager = get_node('/root/Control/GameManager')
-onready var monster_manager = get_node('/root/Control/MonsterManager')
-onready var action_manager = get_node('/root/Control/ActionManager')
-
-var deciding_next_action : bool = false
-var cumulative_weight
-
 class AI_ACTION_USER_TARGET:
 	var user
 	var targets
@@ -30,6 +23,16 @@ class ACTION_USER:
 	func _init(var action, var user):
 		self.action = action
 		self.user = user
+
+onready var game_manager = get_node('/root/Control/GameManager')
+onready var monster_manager = get_node('/root/Control/MonsterManager')
+onready var action_manager = get_node('/root/Control/ActionManager')
+
+var cumulative_weight
+
+var ai_action_user_target_object = null
+
+var rng = RandomNumberGenerator.new()
 		
 #class ActionUserTargetSorter:
 #	static func sort_ascending(a, b):
@@ -37,24 +40,33 @@ class ACTION_USER:
 #			return true
 #		return false
 	
+func _ready():
+	rng.randomize()
+	
 func _process(var delta):
+	_ai_action_manager()
+	
+func _ai_action_manager():
 	var team_a_turn = game_manager.get_team_a_turn()
 	
 	if team_a_turn:
 		return
 		
-	if not deciding_next_action:
+	if not ai_action_user_target_object == null:
 		return
 		
-	var ai_action_user_target = _decide_action()
-	_do_action(ai_action_user_target)
-	deciding_next_action = false
+	_set_action()
 	
-func _do_action(var ai_action_user_target):
-	var action = ai_action_user_target.action
-	var user = ai_action_user_target.user
-	var targets = ai_action_user_target.target
-	var target2 = _get_random_monster_for_swap(ai_action_user_target)
+#	_do_action(ai_action_user_target)
+	
+func get_ai_action_user_target():
+	return ai_action_user_target_object
+	
+func _do_action():
+	var action = ai_action_user_target_object.action
+	var user = ai_action_user_target_object.user
+	var targets = ai_action_user_target_object.target
+	var target2 = _get_random_monster_for_swap(ai_action_user_target_object)
 	
 #	action_manager.do_action(action, user, targets, target2)
 	
@@ -76,60 +88,45 @@ func _get_random_monster_for_swap(var ai_action_user_target):
 		team = monster_manager.get_team_a()
 		position_indexes.remove(ai_action_user_target.target.get_position_index())
 		
-	var rng = RandomNumberGenerator.new()
-		
 	var rand_index : int = rng.randi_range(0,1)
 	
 	return monster_manager.get_monster(team, rand_index)
 	
-func _decide_action():
-	deciding_next_action = true
+func _set_action():
+	var action_user_objects = _get_action_user_array()
+	var action_user_target_objects = _set_ai_action_user_target(action_user_objects)
+	action_user_target_objects = _set_ai_action_targets_weight(action_user_target_objects)
+	ai_action_user_target_object = _choose_ai_action_target_user(action_user_target_objects)
 	
-	var action_users = _get_action_user_array()
+func _choose_ai_action_target_user(var action_user_target_objects : Array):
+	var action_user_target_objects_weight = _get_actions_user_targets_with_rand_weight(action_user_target_objects)
+	var roll = rng.randi_range(0, action_user_target_objects_weight.size()-1)
+	return action_user_target_objects_weight[roll]
 	
-	var ai_action_target_users = _set_ai_action_user_target(action_users)
-	ai_action_target_users = _set_ai_action_targets_weight(ai_action_target_users)
+func _get_actions_user_targets_with_rand_weight(var action_user_target_objects : Array):
+	var action_user_target_objects_weight : Array
 	
-	var ai_action_target_user = _choose_ai_action_target_user(ai_action_target_users)
-	
-	return ai_action_target_user
-	
-func _choose_ai_action_target_user(var ai_action_target_users : Array):
-	var rng = RandomNumberGenerator.new()
-	
-	ai_action_target_users = _get_actions_user_targets_with_rand_weight(ai_action_target_users)
-	
-	var roll = rng.randi_range(1, ai_action_target_users.size())
-	
-	return ai_action_target_users[roll]
-	
-func _get_actions_user_targets_with_rand_weight(var ai_action_target_users):
-	var ai_action_target_users_with_weight : Array
-	
-	var weight = 0
-	
-	while(ai_action_target_users_with_weight.empty()):
-	
-		var rng = RandomNumberGenerator.new()
+	while(action_user_target_objects_weight.empty()):
 		var roll = rng.randi_range(1, 100)
-	
-		if (roll >= 45):
-			weight = 5
-		elif(roll >= 25):
-			weight = 4
-		elif(roll >= 15):
-			weight = 3
-		elif(roll >= 10):
-			weight = 2
-		else:
-			weight = 1
-	
-		for ai_action_target_user in ai_action_target_users:
-			if ai_action_target_user.weight == weight:
-				ai_action_target_users_with_weight.append(ai_action_target_user)
+		var weight = _get_random_weight(roll)
 			
-	return ai_action_target_users_with_weight
+		for action_user_target_object in action_user_target_objects:
+			if action_user_target_object.weight == weight:
+				action_user_target_objects_weight.append(action_user_target_object)
+			
+	return action_user_target_objects_weight
 	
+func _get_random_weight(var roll):
+	if (roll >= 45):
+		return 5
+	elif(roll >= 25):
+		return 4
+	elif(roll >= 15):
+		return 3
+	elif(roll >= 10):
+		return 2
+	else:
+		return 1
 func _set_ai_action_targets_weight(var ai_action_target_users):
 	ai_action_target_users = _set_weight_healing(ai_action_target_users)
 	ai_action_target_users = _set_position_advantage(ai_action_target_users)
