@@ -1,30 +1,8 @@
 extends Node2D
 
-class Action:
-	var name : String
-	var status_effect
-	var action_range : int
-	var cost : int
-	var damage: int
-	var elemental_type
-	var swap = null 
-	
-	func _init(
-		name : String, damage : int, cost : int, status_effect, action_range : int, 
-		elemental_type, swap):
-		 self.name = name
-		 self.status_effect = status_effect
-		 self.action_range = action_range
-		 self.cost = cost
-		 self.damage = damage
-		 self.elemental_type = elemental_type
-		 self.swap = swap
-
 var action_swap : Action
-
 var actions : Array
 
-onready var game_manager = get_node("/root/Control/GameManager").get_children()
 onready var team_a : Array = get_node("/root/Control/TeamA").get_children()
 onready var team_b : Array = get_node('/root/Control/TeamB').get_children()
 onready var monster_manager = get_node("/root/Control/MonsterManager")
@@ -39,25 +17,35 @@ var turn_has_been_reset = false
 
 func _process(var delta):
 	_manage_turns()
-	_swap_turn()
 
 func _manage_turns():
-	for monster in team_a:
-		if monster.is_turn_available():
-			team_a_turn = true
-			return
+#	print(monster_manager.is_team_b_turn_available())
+#	print(team_a_turn)
+#	print('------')
 
-	control.lock_inputs()
-	team_a_turn = false
-	
-func _swap_turn():
-	if turn_has_been_reset == false and team_a_turn == false:
-		turn_has_been_reset = true
+#	if team_a_turn:
+#		print('Team Turn : A')
+#	else:
+#		print('Team Turn : B')
+#
+#	print('Team A Turns: ' + String(monster_manager.is_team_a_turn_available()))
+#	print('Team B Turns: ' + String(monster_manager.is_team_b_turn_available()))
+
+	if team_a_turn and not monster_manager.is_team_a_turn_available():
+		print('in')
+		monster_manager.set_team_b_turn_available()
+		team_a_turn = false
 		
-		if team_a_turn:
-			_set_team_turn(monster_manager.get_team_a())
-		else:
-			_set_team_turn(monster_manager.get_team_b())
+	if not team_a_turn and not monster_manager.is_team_b_turn_available():
+		print('in2')
+		monster_manager.set_team_a_turn_available()
+		team_a_turn = true
+		
+func is_team_a_turn():
+	return team_a_turn
+	
+func is_team_b_turn():
+	return not team_a_turn
 
 func _set_team_turn(var team):
 	for monster in team:
@@ -94,7 +82,7 @@ func _set_monsters():
 	_assign_actions()
 
 func _set_teamAlly():
-#	teamA[0].set_name('Mon1')
+#	teamA[0].set_namename('Mon1')
 	team_a[0].set_type(ELEMENTAL_TYPE.FIRE)
 	
 #	teamA[1].set_name('Mon2')
@@ -120,6 +108,7 @@ func _set_teamFoe():
 	for i in team_b.size():
 		team_b[i].set_position_index(i)
 		team_b[i].set_team(TEAM.B)
+		team_b[i].set_turn_availabale(false)
 		
 func _assign_health():
 	for monster in team_a:
@@ -134,7 +123,6 @@ func _assign_actions():
 	var action3 : Action
 	
 	var rng = RandomNumberGenerator.new()
-	
 	
 	var action_left = actions.duplicate()
 	

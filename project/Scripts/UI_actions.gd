@@ -21,5 +21,5 @@ func _set_team_a():
 	var actions : Array = action_manager.get_selected_ally_actions()
 
 	for i in 4:
-		panel_controllers[i].get_child(0).text = actions[i].name
+		panel_controllers[i].get_child(0).text = actions[i].action_name
 		panel_controllers[i].get_child(0).visible = true

@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name Monster
+
 var health_max : int
 var health : int
 var type_weakness

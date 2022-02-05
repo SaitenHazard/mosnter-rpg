@@ -8,5 +8,5 @@ Game/.mono/
 Game/data_*/
 
 # Custom Ignores
-Records/
+recordings/
 Posts/

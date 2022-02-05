@@ -56,8 +56,10 @@ func _ai_action_manager():
 		return
 		
 	_set_action()
+	_do_action()
 	
-#	_do_action(ai_action_user_target)
+func unset_ai_action_user_target_object():
+	ai_action_user_target_object = null
 	
 func get_ai_action_user_target():
 	return ai_action_user_target_object
@@ -65,28 +67,30 @@ func get_ai_action_user_target():
 func _do_action():
 	var action = ai_action_user_target_object.action
 	var user = ai_action_user_target_object.user
-	var targets = ai_action_user_target_object.target
+	var targets = ai_action_user_target_object.targets
 	var target2 = _get_random_monster_for_swap(ai_action_user_target_object)
 	
-#	action_manager.do_action(action, user, targets, target2)
+	action_manager.do_action(action, user, targets, target2)
 	
 func _get_random_monster_for_swap(var ai_action_user_target):
-	if ai_action_user_target.swap == null:
+	var action = ai_action_user_target.action
+	
+	if action.swap == null:
 		return null
 		
-	if not action_manager.action_has_two_targets():
+	if not action_manager.action_has_two_targets(action):
 		return null
 		
 	var position_indexes : Array = [0,1,2]
 	var team
 	
-	if ai_action_user_target.action.swap == ACTION_RANGE.FOE:
+	if action.swap == ACTION_RANGE.FOE:
 		team = monster_manager.get_team_a()
 		position_indexes.remove(ai_action_user_target.user.get_position_index())
 		
-	if ai_action_user_target.action.swap == ACTION_RANGE.ALLY:
+	if action.swap == ACTION_RANGE.ALLY:
 		team = monster_manager.get_team_a()
-		position_indexes.remove(ai_action_user_target.target.get_position_index())
+		position_indexes.remove(ai_action_user_target.targets[0].get_position_index())
 		
 	var rand_index : int = rng.randi_range(0,1)
 	
@@ -127,6 +131,7 @@ func _get_random_weight(var roll):
 		return 2
 	else:
 		return 1
+		
 func _set_ai_action_targets_weight(var ai_action_target_users):
 	ai_action_target_users = _set_weight_healing(ai_action_target_users)
 	ai_action_target_users = _set_position_advantage(ai_action_target_users)
@@ -199,7 +204,7 @@ func _set_weight_type_advantage(var ai_action_target_users):
 		if ai_action_target.targets.size() > 1:
 			continue
 			
-		if action_manager.is_type_advantage(ai_action_target.targets[0], ai_action_target.action):
+		if action_manager.is_type_advantage(ai_action_target.action, ai_action_target.targets[0]):
 			ai_action_target.add_weight()
 			ai_action_target.weight_reasons = ai_action_target.weight_reasons + 'type_advantage |'
 			
@@ -222,7 +227,7 @@ func _set_position_advantage(var ai_action_target_users):
 		var user = action_user_target.user
 		var traget = action_user_target.targets[0]
 		
-		if action_manager.is_position_advantage(traget, action, user):
+		if action_manager.is_position_advantage(action, user, traget):
 			action_user_target.weight_reasons = action_user_target.weight_reasons + 'position_advantage |'
 			action_user_target.add_weight()
 			

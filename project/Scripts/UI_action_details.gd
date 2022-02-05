@@ -82,7 +82,6 @@ func _set_team_a():
 	else:
 		label_status.text = "Apply Paralyze Status"
 		
-	
 func _set_team_b():
 	if game_manager.get_team_a_turn():
 		return
@@ -90,8 +89,8 @@ func _set_team_b():
 	label_damage.visible = true
 
 	var ai_action_user_target = ai.get_ai_action_user_target()
-
-	var action_name = ai_action_user_target.action.name
+	
+	var action_name = ai_action_user_target.action.action_name
 	var user_name = ai_action_user_target.user.name
 	var target_name = ai_action_user_target.targets[0].name
 

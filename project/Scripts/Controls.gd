@@ -7,6 +7,7 @@ onready var actions : Array = get_node('/root/Control/Actions').get_children()
 onready var monster_manager = get_node('/root/Control/MonsterManager')
 onready var action_manager = get_node('/root/Control/ActionManager')
 onready var game_manager = get_node('/root/Control/GameManager')
+onready var AI = get_node('/root/Control/AI')
 
 var input_group
 
@@ -38,7 +39,11 @@ func get_input_group():
 	return input_group
 
 func reset_inputs():
-	input_group = INPUT_GROUP.ALLY
+	if monster_manager.is_team_a_turn_available():
+		input_group = INPUT_GROUP.ALLY
+	else:
+		input_group = INPUT_GROUP.AIAction
+		
 	unlock_inputs()
 
 func _inputs():
@@ -69,17 +74,33 @@ func _do_action():
 		var index = get_index_target()
 		targets =  [monster_manager.get_action_target_team_monster(action, user, index)]
 		
-#	print(action.name)
-#	print(user.name)
-#	print(targets[0].name)
-#	print(target2)
-		
 	action_manager.do_action(action, user, targets, target2)
 
 func _input_groups():
-	if Input.is_action_just_pressed("accept"):
-		if get_input_group() == INPUT_GROUP.TARGETTWO:
+	_input_accept()
+	_input_reject()
+
+func _input_reject():
+	if Input.is_action_just_pressed("reject"):
+		if get_input_group() == INPUT_GROUP.ACTION:
+			input_group = INPUT_GROUP.ALLY
+			return
 			
+		if get_input_group() == INPUT_GROUP.TARGET:
+			input_group = INPUT_GROUP.ACTION
+			return
+			
+		if get_input_group() == INPUT_GROUP.TARGETTWO:
+			input_group = INPUT_GROUP.TARGET
+			return
+			
+func _input_accept():
+	if Input.is_action_just_pressed("accept"):
+		if get_input_group() == INPUT_GROUP.AIAction:
+			AI.unset_ai_action_user_target_object()
+			return
+		
+		if get_input_group() == INPUT_GROUP.TARGETTWO:
 			if not action_manager.enough_points_for_action():
 				return
 			
@@ -104,19 +125,6 @@ func _input_groups():
 			
 		if get_input_group() == INPUT_GROUP.ALLY:
 			input_group = INPUT_GROUP.ACTION
-			return
-			
-	if Input.is_action_just_pressed("reject"):
-		if get_input_group() == INPUT_GROUP.ACTION:
-			input_group = INPUT_GROUP.ALLY
-			return
-			
-		if get_input_group() == INPUT_GROUP.TARGET:
-			input_group = INPUT_GROUP.ACTION
-			return
-			
-		if get_input_group() == INPUT_GROUP.TARGETTWO:
-			input_group = INPUT_GROUP.TARGET
 			return
 			
 func _input_allies():

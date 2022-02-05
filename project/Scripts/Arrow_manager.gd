@@ -24,6 +24,9 @@ func _process(delta):
 func _set_selected_targetstwo():
 	selection_arrow_targettwo.visible = false
 	
+	if not game_manager.is_team_a_turn():
+		return
+	
 	if control.get_lock_inputs():
 		return
 	
@@ -41,6 +44,9 @@ func _set_selected_targetstwo():
 func _set_selected_targets():
 	for arrow in targets_selected_arrows:
 		arrow.visible = false
+		
+	if not game_manager.is_team_a_turn():
+		return
 		
 	if control.get_lock_inputs():
 		return
@@ -75,6 +81,9 @@ func _set_selected_ally():
 	
 	if control.get_lock_inputs():
 		return
+		
+	if not game_manager.is_team_a_turn():
+		return
 	
 	selection_arrow_ally.visible = true
 	
@@ -86,6 +95,9 @@ func _set_selected_action():
 	selection_arrow_action.visible = false
 	
 	if input_group == INPUT_GROUP.ALLY:
+		return
+		
+	if not game_manager.is_team_a_turn():
 		return
 		
 	var index_action = control.get_index_action()
@@ -106,6 +118,9 @@ func _set_candidate_targets():
 		return	
 		
 	if input_group == INPUT_GROUP.TARGETTWO:
+		return
+		
+	if not game_manager.is_team_a_turn():
 		return
 		
 	var targets = monster_manager.get_selected_action_targets()

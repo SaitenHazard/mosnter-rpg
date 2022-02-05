@@ -11,6 +11,29 @@ var team_b_positions : Array = [Vector2(660,230), Vector2(580,312), Vector2(660,
 	
 func _process(var delta):
 	_set_position_()
+	
+func set_team_a_turn_available():
+	set_team_turn_available(team_a)
+	
+func set_team_b_turn_available():
+	set_team_turn_available(team_b)
+	
+func set_team_turn_available(team):
+	for monster in team:
+		monster.set_turn_availabale(true)
+
+func is_team_a_turn_available():
+	return _is_team_turn_available(team_a)
+	
+func is_team_b_turn_available():
+	return _is_team_turn_available(team_b)
+	
+func _is_team_turn_available(var team):
+	for monster in team:
+		if monster.is_turn_available():
+			return true
+			
+	return false
 
 func get_target():
 	var index_target = control.get_index_target()
