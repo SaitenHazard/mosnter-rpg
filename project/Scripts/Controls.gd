@@ -40,7 +40,9 @@ func get_input_group():
 
 func reset_inputs():
 	if monster_manager.is_team_a_turn_available():
+		print('in')
 		input_group = INPUT_GROUP.ALLY
+		input_allies_increment(true)
 	else:
 		input_group = INPUT_GROUP.AIAction
 		
@@ -140,7 +142,7 @@ func _input_allies():
 func _input_actions():
 	if get_input_group() != INPUT_GROUP.ACTION:
 		return
-	
+		
 	if Input.is_action_just_pressed("down"):
 		_input_actions_increment(true)
 		

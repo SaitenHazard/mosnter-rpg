@@ -64,6 +64,7 @@ _global_script_class_icons={
 
 config/name="mosnter rpg"
 run/main_scene="res://Game.tscn"
+boot_splash/bg_color=Color( 0.2, 0.235294, 0.341176, 1 )
 config/icon="res://icon.png"
 
 [display]
@@ -163,4 +164,5 @@ end_turn={
 
 [rendering]
 
+environment/default_clear_color=Color( 0.337255, 0.423529, 0.52549, 1 )
 environment/default_environment="res://default_env.tres"

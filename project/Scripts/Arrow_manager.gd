@@ -21,6 +21,30 @@ func _process(delta):
 	_set_selected_targets()
 	_set_selected_targetstwo()
 	
+func _set_selected_action():
+	var input_group = control.get_input_group()
+	selection_arrow_action.visible = false
+	
+	if input_group == INPUT_GROUP.ALLY:
+		return
+		
+	if not game_manager.is_team_a_turn():
+		return
+		
+	if control.get_input_group() != INPUT_GROUP.ACTION:
+		selection_arrow_action.get_node('AnimationPlayer').seek(0.6)
+	else:
+		selection_arrow_action.get_node('AnimationPlayer').play()
+		selection_arrow_action.get_node('AnimationPlayer').play()
+		
+	var index_action = control.get_index_action()
+		
+	var origin_y = 248
+	var y_increment = 43
+		
+	selection_arrow_action.visible = true
+	selection_arrow_action.position.y = origin_y + (index_action * y_increment)
+	
 func _set_selected_targetstwo():
 	selection_arrow_targettwo.visible = false
 	
@@ -65,7 +89,7 @@ func _set_selected_targets():
 		for i in targets_selected_arrows.size():
 			targets_selected_arrows[i].visible = true
 			targets_selected_arrows[i].global_position = target_team[i].global_position
-			targets_selected_arrows[i].global_position.x = targets_selected_arrows[i].global_position.x + 55
+			targets_selected_arrows[i].global_position.y = targets_selected_arrows[i].global_position.y - 60
 			
 		for arrow in targets_selected_arrows:
 			arrow.visible = true
@@ -74,7 +98,7 @@ func _set_selected_targets():
 		var target = monster_manager.get_target()
 		targets_selected_arrows[index_target].visible = true
 		targets_selected_arrows[index_target].global_position = target.global_position
-		targets_selected_arrows[index_target].global_position.x = targets_selected_arrows[index_target].global_position.x + 55
+		targets_selected_arrows[index_target].global_position.y = targets_selected_arrows[index_target].global_position.y - 60
 	
 func _set_selected_ally():
 	selection_arrow_ally.visible = false
@@ -84,29 +108,17 @@ func _set_selected_ally():
 		
 	if not game_manager.is_team_a_turn():
 		return
-	
+		
+	if control.get_input_group() != INPUT_GROUP.ALLY:
+		selection_arrow_ally.get_node('AnimationPlayer').seek(0)
+	else:
+		selection_arrow_ally.get_node('AnimationPlayer').play()
+		
 	selection_arrow_ally.visible = true
 	
 	selection_arrow_ally.global_position = monster_manager.get_selected_team_a().global_position
-	selection_arrow_ally.global_position.x = selection_arrow_ally.global_position.x + 55
-	
-func _set_selected_action():
-	var input_group = control.get_input_group()
-	selection_arrow_action.visible = false
-	
-	if input_group == INPUT_GROUP.ALLY:
-		return
-		
-	if not game_manager.is_team_a_turn():
-		return
-		
-	var index_action = control.get_index_action()
-		
-	var origin_y = 248
-	var y_increment = 43
-		
-	selection_arrow_action.visible = true
-	selection_arrow_action.position.y = origin_y + (index_action * y_increment) 
+	selection_arrow_ally.global_position.y = selection_arrow_ally.global_position.y - 60
+
 	
 func _set_candidate_targets():
 	var input_group = control.get_input_group()
@@ -115,7 +127,7 @@ func _set_candidate_targets():
 		arrow.visible = false
 		
 	if input_group == INPUT_GROUP.ALLY:
-		return	
+		return
 		
 	if input_group == INPUT_GROUP.TARGETTWO:
 		return
@@ -129,4 +141,4 @@ func _set_candidate_targets():
 		var target = monster_manager.get_target_team_monster(i)
 		targets_candidate_arrows[i].visible = true
 		targets_candidate_arrows[i].global_position = target.global_position
-		targets_candidate_arrows[i].global_position.x = targets_candidate_arrows[i].global_position.x + 55
+		targets_candidate_arrows[i].global_position.y = targets_candidate_arrows[i].global_position.y - 60

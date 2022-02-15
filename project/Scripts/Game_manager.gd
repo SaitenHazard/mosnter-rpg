@@ -9,7 +9,7 @@ onready var monster_manager = get_node("/root/Control/MonsterManager")
 
 onready var control = get_node('/root/Control')
 
-var action_points_max = 100
+var action_points_max = 8
 var action_points
 
 var team_a_turn = true
@@ -19,27 +19,14 @@ func _process(var delta):
 	_manage_turns()
 
 func _manage_turns():
-#	print(monster_manager.is_team_b_turn_available())
-#	print(team_a_turn)
-#	print('------')
-
-#	if team_a_turn:
-#		print('Team Turn : A')
-#	else:
-#		print('Team Turn : B')
-#
-#	print('Team A Turns: ' + String(monster_manager.is_team_a_turn_available()))
-#	print('Team B Turns: ' + String(monster_manager.is_team_b_turn_available()))
-
 	if team_a_turn and not monster_manager.is_team_a_turn_available():
-		print('in')
 		monster_manager.set_team_b_turn_available()
 		team_a_turn = false
 		
 	if not team_a_turn and not monster_manager.is_team_b_turn_available():
-		print('in2')
 		monster_manager.set_team_a_turn_available()
 		team_a_turn = true
+		control.reset_inputs()
 		
 func is_team_a_turn():
 	return team_a_turn

@@ -22,10 +22,10 @@ var texture_monster_fire = preload('res://sprite/monster_fire.png')
 var texture_monster_water = preload('res://sprite/monster_water.png')
 var texture_monster_grass = preload('res://sprite/monster_grass.png')
 
-func _process(delta):
-	return
-	if name == 'AllyGreen':
-		print(position_index)
+#func _process(delta):
+#	return
+#	if name == 'AllyGreen':
+#		print(position_index)
 
 func set_turn_availabale(var b : bool):
 	turn_available = b
@@ -64,15 +64,15 @@ func get_type_weakness():
 
 func set_type(type_weakness):
 	self.type_weakness = type_weakness
-	_set_sprite()
+#	_set_sprite()
 	
-func _set_sprite():
-	if type_weakness == ELEMENTAL_TYPE.WATER:
-		get_node('Sprite').texture = texture_monster_fire
-	elif type_weakness == ELEMENTAL_TYPE.FIRE:
-		get_node('Sprite').texture = texture_monster_grass
-	else:
-		get_node('Sprite').texture = texture_monster_water
+#func _set_sprite():
+#	if type_weakness == ELEMENTAL_TYPE.WATER:
+#		get_node('Sprite').texture = texture_monster_fire
+#	elif type_weakness == ELEMENTAL_TYPE.FIRE:
+#		get_node('Sprite').texture = texture_monster_grass
+#	else:
+#		get_node('Sprite').texture = texture_monster_water
 		
 func set_health(health : int):
 	health = health * 2

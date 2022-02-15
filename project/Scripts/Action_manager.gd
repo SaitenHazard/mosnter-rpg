@@ -27,9 +27,6 @@ func do_action(var action : Action, var user : Monster, var targets : Array, var
 
 	control.reset_inputs()
 	
-	if user.team == TEAM.A:
-		control.input_allies_increment(true)
-	
 func enough_points_for_action():
 	var action = get_selected_action()
 	

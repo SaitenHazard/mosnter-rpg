@@ -1,7 +1,7 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=48 format=2]
 
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
-[ext_resource path="res://sprite/arrow_c.png" type="Texture" id=2]
+[ext_resource path="res://sprite/arrows/target_selected.png" type="Texture" id=2]
 [ext_resource path="res://font/Montserrat-Bold.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://styles/LifeBarFg.tres" type="StyleBox" id=4]
 [ext_resource path="res://styles/LifeBarBg.tres" type="StyleBox" id=5]
@@ -10,29 +10,377 @@
 [ext_resource path="res://Scripts/Action_manager.gd" type="Script" id=8]
 [ext_resource path="res://Scripts/LifeBar.gd" type="Script" id=9]
 [ext_resource path="res://Scripts/Game_manager.gd" type="Script" id=10]
-[ext_resource path="res://sprite/arrow_b.png" type="Texture" id=11]
-[ext_resource path="res://Scenes/Monster.tscn" type="PackedScene" id=12]
+[ext_resource path="res://sprite/arrows/candidate_selected.png" type="Texture" id=11]
+[ext_resource path="res://Scripts/Monster.gd" type="Script" id=12]
 [ext_resource path="res://Scripts/UI_actions.gd" type="Script" id=13]
 [ext_resource path="res://Scenes/UI_Actions.tscn" type="PackedScene" id=14]
 [ext_resource path="res://Scripts/Arrow_manager.gd" type="Script" id=15]
-[ext_resource path="res://sprite/arrow_a.png" type="Texture" id=16]
+[ext_resource path="res://sprite/arrows/target2_selected.png" type="Texture" id=16]
 [ext_resource path="res://Scripts/Monster_manager.gd" type="Script" id=17]
-[ext_resource path="res://sprite/arrow_d.png" type="Texture" id=18]
 [ext_resource path="res://Scripts/ActionPoints.gd" type="Script" id=19]
 [ext_resource path="res://Scripts/AI.gd" type="Script" id=20]
+[ext_resource path="res://sprite/monsters/Amuck/idle.png" type="Texture" id=21]
+[ext_resource path="res://styles/ActionsNotSelected.tres" type="StyleBox" id=22]
+[ext_resource path="res://sprite/monsters/Buzzkill/idle.png" type="Texture" id=23]
+[ext_resource path="res://sprite/monsters/Octopia/idle.png" type="Texture" id=24]
+[ext_resource path="res://sprite/monsters/Peepers/peepers.png" type="Texture" id=25]
+[ext_resource path="res://sprite/monsters/Spook/idle.png" type="Texture" id=26]
+[ext_resource path="res://sprite/monsters/Rigidigy/idle.png" type="Texture" id=27]
+[ext_resource path="res://sprite/arrows/ally_select.png" type="Texture" id=32]
+
+[sub_resource type="DynamicFont" id=7]
+size = 18
+font_data = ExtResource( 3 )
+
+[sub_resource type="Animation" id=8]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:hframes")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:position:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 393.068, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath(".:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 178.47, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath(".:offset:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath(".:offset:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( 10, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "SelectedArrowAlly"
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=10]
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("../SelectionArrowAction:offset:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "SelectedArrowAlly"
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=12]
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:offset:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=13]
+resource_name = "SelectedArrowAlly"
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=14]
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:offset:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=15]
+resource_name = "SelectedArrowAlly"
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=16]
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("../../TargetCandidateArrows/Arrow4:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = false
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0.6, 1.2 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("../../TargetCandidateArrows/Arrow4:offset:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "SelectedArrowAlly"
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=18]
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:offset:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6 )
+}
+
+[sub_resource type="Animation" id=19]
+resource_name = "SelectedArrowAlly"
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=20]
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("..:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("..:offset:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=21]
+resource_name = "SelectedArrowAlly"
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=22]
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("../../TargetsSelectArrows/Arrow3:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("../../TargetsSelectArrows/Arrow3:offset:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=23]
+resource_name = "SelectedArrowAlly"
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.219608, 0.717647, 0.392157, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://font/Comfortaa-Bold.ttf"
 
 [sub_resource type="DynamicFont" id=2]
-size = 30
+size = 40
 font_data = SubResource( 1 )
-
-[sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 0, 0, 0, 1 )
-
-[sub_resource type="DynamicFont" id=4]
-font_data = ExtResource( 3 )
 
 [node name="Control" type="Control"]
 margin_right = 70.0
@@ -59,88 +407,12 @@ script = ExtResource( 15 )
 [node name="MonsterManager" type="Node2D" parent="."]
 script = ExtResource( 17 )
 
-[node name="SelectionArrows" type="Node2D" parent="."]
-
-[node name="SelectionArrowAlly" type="Sprite" parent="SelectionArrows"]
-position = Vector2( 393.068, 178.47 )
-rotation = 3.14159
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 16 )
-
-[node name="SelectionArrowAction" type="Sprite" parent="SelectionArrows"]
-position = Vector2( 215, 248 )
-rotation = -3.14159
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 16 )
-
-[node name="SelectionArrowTarget2" type="Sprite" parent="SelectionArrows"]
-position = Vector2( 598.479, 135.816 )
-rotation = 3.14159
-scale = Vector2( 0.5, 0.5 )
-z_index = 4096
-z_as_relative = false
-texture = ExtResource( 18 )
-
-[node name="TargetCandidateArrows" type="Node2D" parent="."]
-
-[node name="Arrow2" type="Sprite" parent="TargetCandidateArrows"]
-position = Vector2( 786.269, 222.387 )
-rotation = 3.14159
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 11 )
-
-[node name="Arrow3" type="Sprite" parent="TargetCandidateArrows"]
-position = Vector2( 699.435, 309.524 )
-rotation = 3.14159
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 11 )
-
-[node name="Arrow4" type="Sprite" parent="TargetCandidateArrows"]
-position = Vector2( 794.782, 406.798 )
-rotation = 3.14159
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 11 )
-
-[node name="TargetsSelectArrows" type="Node2D" parent="."]
-
-[node name="Arrow4" type="Sprite" parent="TargetsSelectArrows"]
-position = Vector2( 785.872, 222.074 )
-rotation = 3.14159
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 2 )
-
-[node name="Arrow2" type="Sprite" parent="TargetsSelectArrows"]
-position = Vector2( 699.118, 309.755 )
-rotation = 3.14159
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 2 )
-
-[node name="Arrow3" type="Sprite" parent="TargetsSelectArrows"]
-position = Vector2( 794.561, 406.525 )
-rotation = 3.14159
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 2 )
-
-[node name="ActionPoints" type="Label" parent="."]
-margin_left = 483.544
-margin_top = 65.8618
-margin_right = 523.544
-margin_bottom = 100.862
-custom_fonts/font = SubResource( 2 )
-text = "10"
-align = 1
-valign = 1
-script = ExtResource( 19 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Actions" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 27.0
 margin_top = 233.0
-margin_right = 122.0
+margin_right = 134.0
 margin_bottom = 378.0
 custom_constants/separation = 12
 script = ExtResource( 13 )
@@ -149,41 +421,47 @@ __meta__ = {
 }
 
 [node name="Action" parent="Actions" instance=ExtResource( 14 )]
-margin_right = 165.0
+margin_right = 177.0
 margin_bottom = 30.0
+custom_styles/panel = ExtResource( 22 )
 
 [node name="Action2" parent="Actions" instance=ExtResource( 14 )]
 margin_top = 42.0
-margin_right = 165.0
+margin_right = 177.0
 margin_bottom = 73.0
+custom_styles/panel = ExtResource( 22 )
 
 [node name="Action3" parent="Actions" instance=ExtResource( 14 )]
 margin_top = 85.0
-margin_right = 165.0
+margin_right = 177.0
 margin_bottom = 116.0
+custom_styles/panel = ExtResource( 22 )
 
 [node name="Action4" parent="Actions" instance=ExtResource( 14 )]
 margin_top = 128.0
-margin_right = 165.0
+margin_right = 177.0
 margin_bottom = 159.0
+custom_styles/panel = ExtResource( 22 )
 
 [node name="ActionDetails" type="PanelContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -2.49208
-margin_top = 560.664
-margin_right = 952.508
-margin_bottom = 586.664
+margin_left = 55.0
+margin_top = 537.0
+margin_right = 893.0
+margin_bottom = 563.0
 size_flags_horizontal = 3
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = ExtResource( 22 )
 script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ActionDetails"]
-margin_right = 1025.0
-margin_bottom = 40.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 906.0
+margin_bottom = 38.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -191,58 +469,158 @@ __meta__ = {
 }
 
 [node name="Label3" type="Label" parent="ActionDetails/HBoxContainer"]
-margin_right = 201.0
-margin_bottom = 40.0
+margin_right = 177.0
+margin_bottom = 36.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 7 )
 text = "asd"
 align = 1
 valign = 1
 
 [node name="Label4" type="Label" parent="ActionDetails/HBoxContainer"]
-margin_left = 205.0
-margin_right = 407.0
-margin_bottom = 40.0
+margin_left = 181.0
+margin_right = 359.0
+margin_bottom = 36.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 7 )
 text = "asd"
 align = 1
 valign = 1
 
 [node name="Label5" type="Label" parent="ActionDetails/HBoxContainer"]
-margin_left = 411.0
-margin_right = 613.0
-margin_bottom = 40.0
+margin_left = 363.0
+margin_right = 540.0
+margin_bottom = 36.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = SubResource( 7 )
 text = "asd"
 align = 1
 valign = 1
 
 [node name="Label6" type="Label" parent="ActionDetails/HBoxContainer"]
-margin_left = 617.0
-margin_right = 819.0
-margin_bottom = 40.0
+margin_left = 544.0
+margin_right = 722.0
+margin_bottom = 36.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = SubResource( 7 )
 text = "asd"
 align = 1
 valign = 1
 
 [node name="Label7" type="Label" parent="ActionDetails/HBoxContainer"]
-margin_left = 823.0
-margin_right = 1025.0
-margin_bottom = 40.0
+margin_left = 726.0
+margin_right = 904.0
+margin_bottom = 36.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 7 )
+custom_fonts/font = SubResource( 7 )
 text = "asd"
 align = 1
 valign = 1
+
+[node name="SelectionArrows" type="Node2D" parent="."]
+
+[node name="SelectionArrowAlly" type="Sprite" parent="SelectionArrows"]
+position = Vector2( 393.068, 178.47 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 32 )
+offset = Vector2( 0, 10 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SelectionArrows/SelectionArrowAlly"]
+autoplay = "SelectedArrowAlly"
+anims/RESET = SubResource( 8 )
+anims/SelectedArrowAlly = SubResource( 9 )
+
+[node name="SelectionArrowAction" type="Sprite" parent="SelectionArrows"]
+position = Vector2( 225, 248 )
+rotation = 1.5708
+scale = Vector2( 2, 2 )
+texture = ExtResource( 32 )
+offset = Vector2( 0, 1.16448 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SelectionArrows/SelectionArrowAction"]
+root_node = NodePath("../../SelectionArrowAlly")
+autoplay = "RESET"
+anims/RESET = SubResource( 10 )
+anims/SelectedArrowAlly = SubResource( 11 )
+
+[node name="SelectionArrowTarget2" type="Sprite" parent="SelectionArrows"]
+position = Vector2( 640, 147 )
+rotation = 3.14159
+scale = Vector2( 0.5, 0.5 )
+z_index = 4096
+z_as_relative = false
+texture = ExtResource( 16 )
+
+[node name="TargetCandidateArrows" type="Node2D" parent="."]
+
+[node name="Arrow2" type="Sprite" parent="TargetCandidateArrows"]
+position = Vector2( 786.269, 222.387 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 11 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TargetCandidateArrows/Arrow2"]
+autoplay = "RESET"
+anims/RESET = SubResource( 12 )
+anims/SelectedArrowAlly = SubResource( 13 )
+
+[node name="Arrow3" type="Sprite" parent="TargetCandidateArrows"]
+position = Vector2( 699.435, 309.524 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 11 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TargetCandidateArrows/Arrow3"]
+autoplay = "RESET"
+anims/RESET = SubResource( 14 )
+anims/SelectedArrowAlly = SubResource( 15 )
+
+[node name="Arrow4" type="Sprite" parent="TargetCandidateArrows"]
+position = Vector2( 794.782, 406.798 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 11 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TargetCandidateArrows/Arrow4"]
+autoplay = "RESET"
+anims/RESET = SubResource( 16 )
+anims/SelectedArrowAlly = SubResource( 17 )
+
+[node name="TargetsSelectArrows" type="Node2D" parent="."]
+
+[node name="Arrow4" type="Sprite" parent="TargetsSelectArrows"]
+position = Vector2( 785.872, 222.074 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TargetsSelectArrows/Arrow4"]
+autoplay = "RESET"
+anims/RESET = SubResource( 18 )
+anims/SelectedArrowAlly = SubResource( 19 )
+
+[node name="Arrow2" type="Sprite" parent="TargetsSelectArrows"]
+position = Vector2( 699.118, 309.755 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TargetsSelectArrows/Arrow2"]
+root_node = NodePath(".")
+autoplay = "RESET"
+anims/RESET = SubResource( 20 )
+anims/SelectedArrowAlly = SubResource( 21 )
+
+[node name="Arrow3" type="Sprite" parent="TargetsSelectArrows"]
+position = Vector2( 794.561, 406.525 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TargetsSelectArrows/Arrow3"]
+root_node = NodePath(".")
+autoplay = "RESET"
+anims/RESET = SubResource( 22 )
+anims/SelectedArrowAlly = SubResource( 23 )
 
 [node name="LifeBarTeamA" type="Node2D" parent="."]
 script = ExtResource( 9 )
@@ -252,7 +630,7 @@ team_select = "TeamA"
 margin_left = 150.0
 margin_top = 34.0
 margin_right = 424.0
-margin_bottom = 54.0
+margin_bottom = 60.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/fg = ExtResource( 4 )
@@ -266,10 +644,11 @@ __meta__ = {
 [node name="HealthText" type="Label" parent="LifeBarTeamA/LifeBar1"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 1.0
-margin_bottom = 1.0
+margin_top = -6.0
+margin_right = -234.0
+margin_bottom = 6.0
 custom_fonts/font = ExtResource( 7 )
-text = "15/25"
+text = "15"
 align = 1
 valign = 1
 __meta__ = {
@@ -278,9 +657,9 @@ __meta__ = {
 
 [node name="LifeBar2" type="ProgressBar" parent="LifeBarTeamA"]
 margin_left = 100.0
-margin_top = 60.0
+margin_top = 80.0
 margin_right = 374.0
-margin_bottom = 81.0
+margin_bottom = 106.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/fg = ExtResource( 4 )
@@ -294,10 +673,11 @@ __meta__ = {
 [node name="HealthText" type="Label" parent="LifeBarTeamA/LifeBar2"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 1.0
-margin_bottom = 1.0
+margin_top = -6.0
+margin_right = -234.0
+margin_bottom = 6.0
 custom_fonts/font = ExtResource( 7 )
-text = "15/25"
+text = "15"
 align = 1
 valign = 1
 __meta__ = {
@@ -306,9 +686,9 @@ __meta__ = {
 
 [node name="LifeBar3" type="ProgressBar" parent="LifeBarTeamA"]
 margin_left = 50.0
-margin_top = 87.0
+margin_top = 127.0
 margin_right = 324.0
-margin_bottom = 108.0
+margin_bottom = 153.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/fg = ExtResource( 4 )
@@ -319,10 +699,11 @@ percent_visible = false
 [node name="HealthText" type="Label" parent="LifeBarTeamA/LifeBar3"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 1.0
-margin_bottom = 1.0
+margin_top = -6.0
+margin_right = -234.0
+margin_bottom = 6.0
 custom_fonts/font = ExtResource( 7 )
-text = "15/25"
+text = "15"
 align = 1
 valign = 1
 __meta__ = {
@@ -334,10 +715,10 @@ script = ExtResource( 9 )
 team_select = "TeamB"
 
 [node name="LifeBarA" type="ProgressBar" parent="LifeBarTeamB"]
-margin_left = 877.797
-margin_top = 52.811
-margin_right = 1151.8
-margin_bottom = 72.811
+margin_left = 873.0
+margin_top = 58.0
+margin_right = 1147.0
+margin_bottom = 84.0
 rect_rotation = 180.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -352,13 +733,13 @@ __meta__ = {
 [node name="HealthText" type="Label" parent="LifeBarTeamB/LifeBarA"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 273.341
-margin_top = 18.6595
-margin_right = 273.341
-margin_bottom = 18.6595
+margin_left = 155.0
+margin_top = 33.0
+margin_right = 151.0
+margin_bottom = 45.0
 rect_rotation = -180.0
 custom_fonts/font = ExtResource( 7 )
-text = "15/25"
+text = "15"
 align = 1
 valign = 1
 __meta__ = {
@@ -366,10 +747,10 @@ __meta__ = {
 }
 
 [node name="LifeBarB" type="ProgressBar" parent="LifeBarTeamB"]
-margin_left = 927.797
-margin_top = 78.811
-margin_right = 1201.8
-margin_bottom = 99.811
+margin_left = 923.0
+margin_top = 105.0
+margin_right = 1197.0
+margin_bottom = 131.0
 rect_rotation = 180.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -381,13 +762,13 @@ percent_visible = false
 [node name="HealthText" type="Label" parent="LifeBarTeamB/LifeBarB"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 273.341
-margin_top = 18.6595
-margin_right = 273.341
-margin_bottom = 18.6595
+margin_left = 153.0
+margin_top = 32.0
+margin_right = 149.0
+margin_bottom = 44.0
 rect_rotation = -180.0
 custom_fonts/font = ExtResource( 7 )
-text = "15/25"
+text = "15"
 align = 1
 valign = 1
 __meta__ = {
@@ -395,10 +776,10 @@ __meta__ = {
 }
 
 [node name="LifeBarC" type="ProgressBar" parent="LifeBarTeamB"]
-margin_left = 977.797
-margin_top = 105.811
-margin_right = 1251.8
-margin_bottom = 126.811
+margin_left = 973.0
+margin_top = 151.0
+margin_right = 1247.0
+margin_bottom = 177.0
 rect_rotation = 180.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -413,13 +794,13 @@ __meta__ = {
 [node name="HealthText" type="Label" parent="LifeBarTeamB/LifeBarC"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 273.341
-margin_top = 18.6595
-margin_right = 273.341
-margin_bottom = 18.6595
+margin_left = 154.0
+margin_top = 32.0
+margin_right = 150.0
+margin_bottom = 44.0
 rect_rotation = -180.0
 custom_fonts/font = ExtResource( 7 )
-text = "15/25"
+text = "15"
 align = 1
 valign = 1
 __meta__ = {
@@ -427,23 +808,84 @@ __meta__ = {
 }
 
 [node name="TeamA" type="Node2D" parent="."]
+position = Vector2( 0, 29 )
 
-[node name="AllyGreen" parent="TeamA" instance=ExtResource( 12 )]
+[node name="AllyGreen" type="Node2D" parent="TeamA"]
 position = Vector2( 290, 230 )
+script = ExtResource( 12 )
 
-[node name="AllyRed" parent="TeamA" instance=ExtResource( 12 )]
+[node name="Sprite2" type="Sprite" parent="TeamA/AllyGreen"]
+scale = Vector2( 3, 3 )
+texture = ExtResource( 21 )
+
+[node name="AllyRed" type="Node2D" parent="TeamA"]
 position = Vector2( 382, 314 )
+script = ExtResource( 12 )
 
-[node name="AllyBlue" parent="TeamA" instance=ExtResource( 12 )]
+[node name="Sprite" type="Sprite" parent="TeamA/AllyRed"]
+scale = Vector2( 3, 3 )
+texture = ExtResource( 23 )
+
+[node name="AllyBlue" type="Node2D" parent="TeamA"]
 position = Vector2( 290, 420 )
+script = ExtResource( 12 )
+
+[node name="Sprite" type="Sprite" parent="TeamA/AllyBlue"]
+scale = Vector2( 3, 3 )
+texture = ExtResource( 24 )
 
 [node name="TeamB" type="Node2D" parent="."]
+position = Vector2( 0, 29 )
 
-[node name="FoeGreen" parent="TeamB" instance=ExtResource( 12 )]
+[node name="FoeGreen" type="Node2D" parent="TeamB"]
 position = Vector2( 720, 230 )
+script = ExtResource( 12 )
 
-[node name="FoeRed" parent="TeamB" instance=ExtResource( 12 )]
+[node name="Sprite" type="Sprite" parent="TeamB/FoeGreen"]
+scale = Vector2( 3, 3 )
+texture = ExtResource( 25 )
+flip_h = true
+
+[node name="FoeRed" type="Node2D" parent="TeamB"]
 position = Vector2( 640, 310 )
+script = ExtResource( 12 )
 
-[node name="FoeBlue" parent="TeamB" instance=ExtResource( 12 )]
+[node name="Sprite" type="Sprite" parent="TeamB/FoeRed"]
+scale = Vector2( 3, 3 )
+texture = ExtResource( 27 )
+flip_h = true
+
+[node name="FoeBlue" type="Node2D" parent="TeamB"]
 position = Vector2( 720, 410 )
+script = ExtResource( 12 )
+
+[node name="Sprite" type="Sprite" parent="TeamB/FoeBlue"]
+scale = Vector2( 3, 3 )
+texture = ExtResource( 26 )
+flip_h = true
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+margin_left = 473.0
+margin_top = 77.0
+margin_right = 543.0
+margin_bottom = 147.0
+custom_styles/panel = SubResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActionPoints" type="Label" parent="PanelContainer"]
+margin_left = 2.0
+margin_top = 12.0
+margin_right = 68.0
+margin_bottom = 58.0
+custom_fonts/font = SubResource( 2 )
+text = "8"
+align = 1
+valign = 1
+script = ExtResource( 19 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActionPoints" type="Node2D" parent="."]

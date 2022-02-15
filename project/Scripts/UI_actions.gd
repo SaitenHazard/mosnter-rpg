@@ -6,12 +6,17 @@ onready var control = get_node('/root/Control')
 onready var action_manager = get_node('/root/Control/ActionManager')
 onready var game_manager = get_node('/root/Control/GameManager')
 
+onready var style_selected = load("res://styles/ActionsSelected.tres")
+onready var style_unselected = load("res://styles/ActionsNotSelected.tres")
+
 var b = false
 
 func _process(delta):
 	for i in 4:
 		panel_controllers[i].get_child(0).visible = false
+		
 	_set_team_a()
+#	_set_stylebox()
 
 func _set_team_a():
 	if not game_manager.get_team_a_turn():
@@ -23,3 +28,23 @@ func _set_team_a():
 	for i in 4:
 		panel_controllers[i].get_child(0).text = actions[i].action_name
 		panel_controllers[i].get_child(0).visible = true
+		
+func _set_stylebox():
+	for panel_controller in panel_controllers:
+		panel_controller.visible = false
+		
+	var input_group = control.get_input_group()
+	
+	for panel_controller in panel_controllers:
+		panel_controller.set('custom_styles/panel', style_unselected)
+		panel_controller.visible = true
+		
+	if input_group == INPUT_GROUP.ALLY:
+		return
+		
+	if not game_manager.is_team_a_turn():
+		return
+		
+		
+	var index_action = control.get_index_action()
+	panel_controllers[index_action].set('custom_styles/panel', style_selected)

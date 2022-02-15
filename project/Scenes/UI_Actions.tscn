@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://font/Font.tres" type="DynamicFont" id=1]
+[ext_resource path="res://styles/ActionPoint.tres" type="DynamicFont" id=1]
 [ext_resource path="res://styles/LifeBarBgSelected.tres" type="StyleBox" id=2]
 
 [node name="Action" type="PanelContainer"]
@@ -14,8 +14,10 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="."]
-margin_right = 126.0
-margin_bottom = 21.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 111.0
+margin_bottom = 20.0
 custom_fonts/font = ExtResource( 1 )
 text = " C to End Turn "
 align = 1
