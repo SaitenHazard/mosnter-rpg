@@ -7,6 +7,7 @@ onready var game_manager = get_node('/root/Control/GameManager')
 onready var selection_arrows : Array = get_node('/root/Control/SelectionArrows').get_children()
 onready var targets_selected_arrows : Array = get_node('/root/Control/TargetsSelectArrows').get_children()
 onready var targets_candidate_arrows : Array = get_node('/root/Control/TargetCandidateArrows').get_children()
+onready var targetstwo_candidate_arrows : Array = get_node('/root/Control/TargetTwoCandidateArrows').get_children()
 
 onready var selection_arrow_ally = selection_arrows[0]
 onready var selection_arrow_action = selection_arrows[1]
@@ -19,6 +20,7 @@ func _process(delta):
 	_set_selected_action()
 	_set_candidate_targets()
 	_set_selected_targets()
+	_set_candidate_targetstwo()
 	_set_selected_targetstwo()
 	
 func _set_selected_action():
@@ -62,7 +64,7 @@ func _set_selected_targetstwo():
 	var targettwo = monster_manager.get_action_swap_target_to()
 	
 	selection_arrow_targettwo.global_position = targettwo.global_position
-	selection_arrow_targettwo.global_position.x = selection_arrow_targettwo.global_position.x + 55
+	selection_arrow_targettwo.global_position.y = selection_arrow_targettwo.global_position.y - 60
 	selection_arrow_targettwo.visible = true
 
 func _set_selected_targets():
@@ -119,7 +121,6 @@ func _set_selected_ally():
 	selection_arrow_ally.global_position = monster_manager.get_selected_team_a().global_position
 	selection_arrow_ally.global_position.y = selection_arrow_ally.global_position.y - 60
 
-	
 func _set_candidate_targets():
 	var input_group = control.get_input_group()
 	
@@ -135,6 +136,11 @@ func _set_candidate_targets():
 	if not game_manager.is_team_a_turn():
 		return
 		
+	if control.get_input_group() != INPUT_GROUP.ACTION:
+		_set_candidate_targets_animation_all(true)
+	else:
+		_set_candidate_targets_animation_all(false)
+		
 	var targets = monster_manager.get_selected_action_targets()
 	
 	for i in targets.indexes:
@@ -142,3 +148,46 @@ func _set_candidate_targets():
 		targets_candidate_arrows[i].visible = true
 		targets_candidate_arrows[i].global_position = target.global_position
 		targets_candidate_arrows[i].global_position.y = targets_candidate_arrows[i].global_position.y - 60
+
+	var index_target = control.get_index_target()
+	
+	if control.get_input_group() == INPUT_GROUP.TARGET:
+		targets_candidate_arrows[index_target].visible = false	
+		
+	if control.get_input_group() == INPUT_GROUP.TARGETTWO:
+		targets_candidate_arrows[index_target].visible = false
+
+func _set_candidate_targets_animation_all(var set):
+	for index in targets_candidate_arrows.size():
+		_set_candidate_targets_animation(set, index)
+			
+func _set_candidate_targets_animation(var set : bool, var index):
+	if set:
+		targets_candidate_arrows[index].get_node('AnimationPlayer').play()
+	if not set:
+		targets_candidate_arrows[index].get_node('AnimationPlayer').seek(0.6)
+
+func _set_candidate_targetstwo():
+	var input_group = control.get_input_group()
+	
+	for arrow in targetstwo_candidate_arrows:
+		arrow.visible = false
+		
+	if input_group != INPUT_GROUP.TARGETTWO:
+		return
+		
+	if not game_manager.is_team_a_turn():
+		return
+		
+	var indexes = monster_manager.get_targettwo_indexes()
+		
+	for i in indexes:
+		var targets = monster_manager.get_action_swap_team()
+		var target = monster_manager.get_monster(targets, i)
+		targetstwo_candidate_arrows[i].visible = true
+		targetstwo_candidate_arrows[i].global_position = target.global_position
+		targetstwo_candidate_arrows[i].global_position.y = targetstwo_candidate_arrows[i].global_position.y - 60
+
+	var index_target = control.get_index_targettwo()
+	
+	targetstwo_candidate_arrows[index_target].visible = false

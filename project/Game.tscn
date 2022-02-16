@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=2]
+[gd_scene load_steps=56 format=2]
 
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
 [ext_resource path="res://sprite/arrows/target_selected.png" type="Texture" id=2]
@@ -33,56 +33,16 @@ size = 18
 font_data = ExtResource( 3 )
 
 [sub_resource type="Animation" id=8]
-length = 0.001
+length = 1.2
 tracks/0/type = "bezier"
-tracks/0/path = NodePath(".:hframes")
+tracks/0/path = NodePath(".:offset:y")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
-}
-tracks/1/type = "bezier"
-tracks/1/path = NodePath(".:position:x")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"points": PoolRealArray( 393.068, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
-}
-tracks/2/type = "bezier"
-tracks/2/path = NodePath(".:position:y")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"points": PoolRealArray( 178.47, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
-}
-tracks/3/type = "bezier"
-tracks/3/path = NodePath(".:offset:x")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
-}
-tracks/4/type = "bezier"
-tracks/4/path = NodePath(".:offset:y")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"points": PoolRealArray( 10, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
 }
 
 [sub_resource type="Animation" id=9]
@@ -115,6 +75,45 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id=11]
+resource_name = "SelectedArrowAlly"
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=24]
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("../SelectionArrowTarget2:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("../SelectionArrowTarget2:offset:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=25]
 resource_name = "SelectedArrowAlly"
 length = 1.2
 loop = true
@@ -211,27 +210,114 @@ tracks/0/keys = {
 length = 1.2
 loop = true
 tracks/0/type = "bezier"
-tracks/0/path = NodePath("../../TargetCandidateArrows/Arrow4:offset:x")
+tracks/0/path = NodePath(".:offset:y")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
-tracks/0/enabled = false
+tracks/0/enabled = true
 tracks/0/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0.6, 1.2 )
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "SelectedArrowAlly"
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=26]
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=27]
+resource_name = "SelectedArrowAlly"
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=28]
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
 }
 tracks/1/type = "bezier"
-tracks/1/path = NodePath("../../TargetCandidateArrows/Arrow4:offset:y")
+tracks/1/path = NodePath(".:offset:y")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"points": PoolRealArray( 5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0.6, 1.2 )
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
 }
 
-[sub_resource type="Animation" id=17]
+[sub_resource type="Animation" id=29]
+resource_name = "SelectedArrowAlly"
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=30]
+length = 1.2
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
+}
+
+[sub_resource type="Animation" id=31]
 resource_name = "SelectedArrowAlly"
 length = 1.2
 loop = true
@@ -256,8 +342,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.6 )
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
 }
 tracks/1/type = "bezier"
 tracks/1/path = NodePath(".:offset:y")
@@ -266,8 +352,8 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.6 )
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 5, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6, 1.2 )
 }
 
 [sub_resource type="Animation" id=19]
@@ -328,7 +414,7 @@ tracks/0/keys = {
 length = 1.2
 loop = true
 tracks/0/type = "bezier"
-tracks/0/path = NodePath("../../TargetsSelectArrows/Arrow3:offset:x")
+tracks/0/path = NodePath("..:offset:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -338,7 +424,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.6, 1.2 )
 }
 tracks/1/type = "bezier"
-tracks/1/path = NodePath("../../TargetsSelectArrows/Arrow3:offset:y")
+tracks/1/path = NodePath("..:offset:y")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -528,7 +614,7 @@ valign = 1
 position = Vector2( 393.068, 178.47 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 32 )
-offset = Vector2( 0, 10 )
+offset = Vector2( 0, 2.5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="SelectionArrows/SelectionArrowAlly"]
 autoplay = "SelectedArrowAlly"
@@ -540,7 +626,6 @@ position = Vector2( 225, 248 )
 rotation = 1.5708
 scale = Vector2( 2, 2 )
 texture = ExtResource( 32 )
-offset = Vector2( 0, 1.16448 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="SelectionArrows/SelectionArrowAction"]
 root_node = NodePath("../../SelectionArrowAlly")
@@ -550,11 +635,17 @@ anims/SelectedArrowAlly = SubResource( 11 )
 
 [node name="SelectionArrowTarget2" type="Sprite" parent="SelectionArrows"]
 position = Vector2( 640, 147 )
-rotation = 3.14159
-scale = Vector2( 0.5, 0.5 )
+scale = Vector2( 2, 2 )
 z_index = 4096
 z_as_relative = false
 texture = ExtResource( 16 )
+offset = Vector2( 0, 0.283707 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SelectionArrows/SelectionArrowTarget2"]
+root_node = NodePath("../../SelectionArrowAlly")
+autoplay = "RESET"
+anims/RESET = SubResource( 24 )
+anims/SelectedArrowAlly = SubResource( 25 )
 
 [node name="TargetCandidateArrows" type="Node2D" parent="."]
 
@@ -562,6 +653,7 @@ texture = ExtResource( 16 )
 position = Vector2( 786.269, 222.387 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 11 )
+offset = Vector2( 0, 0.283707 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TargetCandidateArrows/Arrow2"]
 autoplay = "RESET"
@@ -582,11 +674,44 @@ anims/SelectedArrowAlly = SubResource( 15 )
 position = Vector2( 794.782, 406.798 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 11 )
+offset = Vector2( 0, 1.16448 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TargetCandidateArrows/Arrow4"]
 autoplay = "RESET"
 anims/RESET = SubResource( 16 )
 anims/SelectedArrowAlly = SubResource( 17 )
+
+[node name="TargetTwoCandidateArrows" type="Node2D" parent="."]
+
+[node name="Arrow2" type="Sprite" parent="TargetTwoCandidateArrows"]
+position = Vector2( 786.269, 222.387 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 11 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TargetTwoCandidateArrows/Arrow2"]
+autoplay = "RESET"
+anims/RESET = SubResource( 26 )
+anims/SelectedArrowAlly = SubResource( 27 )
+
+[node name="Arrow3" type="Sprite" parent="TargetTwoCandidateArrows"]
+position = Vector2( 699.435, 309.524 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 11 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TargetTwoCandidateArrows/Arrow3"]
+autoplay = "RESET"
+anims/RESET = SubResource( 28 )
+anims/SelectedArrowAlly = SubResource( 29 )
+
+[node name="Arrow4" type="Sprite" parent="TargetTwoCandidateArrows"]
+position = Vector2( 794.782, 406.798 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 11 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TargetTwoCandidateArrows/Arrow4"]
+autoplay = "RESET"
+anims/RESET = SubResource( 30 )
+anims/SelectedArrowAlly = SubResource( 31 )
 
 [node name="TargetsSelectArrows" type="Node2D" parent="."]
 
@@ -594,6 +719,7 @@ anims/SelectedArrowAlly = SubResource( 17 )
 position = Vector2( 785.872, 222.074 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
+offset = Vector2( 0, 0.306031 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TargetsSelectArrows/Arrow4"]
 autoplay = "RESET"
@@ -615,6 +741,7 @@ anims/SelectedArrowAlly = SubResource( 21 )
 position = Vector2( 794.561, 406.525 )
 scale = Vector2( 2, 2 )
 texture = ExtResource( 2 )
+offset = Vector2( 0, 2.5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TargetsSelectArrows/Arrow3"]
 root_node = NodePath(".")
@@ -808,7 +935,7 @@ __meta__ = {
 }
 
 [node name="TeamA" type="Node2D" parent="."]
-position = Vector2( 0, 29 )
+position = Vector2( 25, 29 )
 
 [node name="AllyGreen" type="Node2D" parent="TeamA"]
 position = Vector2( 290, 230 )
@@ -835,7 +962,7 @@ scale = Vector2( 3, 3 )
 texture = ExtResource( 24 )
 
 [node name="TeamB" type="Node2D" parent="."]
-position = Vector2( 0, 29 )
+position = Vector2( -25, 29 )
 
 [node name="FoeGreen" type="Node2D" parent="TeamB"]
 position = Vector2( 720, 230 )
