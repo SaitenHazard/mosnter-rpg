@@ -21,8 +21,8 @@ var type_name = {
 }
 
 func _ready():
-	label_damage = labels[0]
-	label_cost = labels[1]
+	label_cost = labels[0]
+	label_damage = labels[1]
 	label_type = labels[2]
 	label_swap = labels[3]
 	label_status = labels[4]
@@ -65,7 +65,7 @@ func _set_team_a():
 	if action.damage == 0:
 		label_damage.visible = false
 		
-	if action.elemental_type == 0:
+	if action.elemental_type == null:
 		label_type.visible = false
 		
 	if action.swap == null:
@@ -75,12 +75,12 @@ func _set_team_a():
 	else:
 		label_swap.text = "Force Swap Foe"
 		
-	if action.status_effect == 0:
+	if action.status_effect == null:
 		label_status.visible = false
 	elif action.status_effect == STATUS_EFFECT.BLEED:
-		label_status.text = "Apply Bleed Status"
+		label_status.text = "Apply Bleeding"
 	else:
-		label_status.text = "Apply Paralyze Status"
+		label_status.text = "Apply Paralysis"
 		
 func _set_team_b():
 	if game_manager.get_team_a_turn():

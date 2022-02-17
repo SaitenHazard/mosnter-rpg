@@ -22,11 +22,6 @@ var texture_monster_fire = preload('res://sprite/monster_fire.png')
 var texture_monster_water = preload('res://sprite/monster_water.png')
 var texture_monster_grass = preload('res://sprite/monster_grass.png')
 
-#func _process(delta):
-#	return
-#	if name == 'AllyGreen':
-#		print(position_index)
-
 func set_turn_availabale(var b : bool):
 	turn_available = b
 	
