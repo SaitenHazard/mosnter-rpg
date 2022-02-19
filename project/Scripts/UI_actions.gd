@@ -18,6 +18,37 @@ func _process(delta):
 	_set_team_a()
 #	_set_stylebox()
 
+func get_action_name(var action_name):
+	if action_name == ACTION_NAMES.Fire_Ball:
+		return 'Fire Ball'
+		
+	if action_name == ACTION_NAMES.Fire_Blitz:
+		return 'Fire Blitz'
+		
+	if action_name == ACTION_NAMES.Sticky_Sticks:
+		return 'Sticky Sticks'
+		
+	if action_name == ACTION_NAMES.Bamboo_Bash:
+		return 'Bamboo Bash'
+		
+	if action_name == ACTION_NAMES.Bonfire:
+		return 'Bonfire'
+		
+	if action_name == ACTION_NAMES.Natural_Remedy:
+		return 'Natural Remedy'
+		
+	if action_name == ACTION_NAMES.Healing_Pulse:
+		return 'Healing Pulse'
+		
+	if action_name == ACTION_NAMES.Icicle_Blade:
+		return 'Icicle Blade'
+		
+	if action_name == ACTION_NAMES.Swift_Surf:
+		return 'Swift Surf'
+		
+	if action_name == ACTION_NAMES.Swap:
+		return 'Swap'
+
 func _set_team_a():
 	if not game_manager.get_team_a_turn():
 		return
@@ -26,7 +57,7 @@ func _set_team_a():
 	var actions : Array = action_manager.get_selected_ally_actions()
 
 	for i in 4:
-		panel_controllers[i].get_child(0).text = actions[i].action_name
+		panel_controllers[i].get_child(0).text = get_action_name(actions[i].action_name)
 		panel_controllers[i].get_child(0).visible = true
 		
 func _set_stylebox():

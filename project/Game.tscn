@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=2]
+[gd_scene load_steps=77 format=2]
 
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
 [ext_resource path="res://sprite/arrows/target_selected.png" type="Texture" id=2]
@@ -24,8 +24,8 @@
 [ext_resource path="res://styles/ActionsNeutral.tres" type="StyleBox" id=22]
 [ext_resource path="res://sprite/monsters/Spook/idle2.png" type="Texture" id=23]
 [ext_resource path="res://sprite/monsters/Octopia/idle.png" type="Texture" id=24]
-[ext_resource path="res://sprite/monsters/Peepers/peepers.png" type="Texture" id=25]
-[ext_resource path="res://sprite/monsters/Spook/idle.png" type="Texture" id=26]
+[ext_resource path="res://anim/hit.tres" type="Material" id=25]
+[ext_resource path="res://anim/hit.gdshader" type="Shader" id=26]
 [ext_resource path="res://sprite/monsters/Spook/idle1.png" type="Texture" id=27]
 [ext_resource path="res://sprite/monsters/Amuck/idle2.png" type="Texture" id=28]
 [ext_resource path="res://sprite/monsters/Rigidigy/idle2.png" type="Texture" id=29]
@@ -36,6 +36,7 @@
 [ext_resource path="res://sprite/monsters/Octopia/idle2.png" type="Texture" id=34]
 [ext_resource path="res://sprite/monsters/Peepers/peepers1.png" type="Texture" id=35]
 [ext_resource path="res://sprite/monsters/Peepers/peepers2.png" type="Texture" id=36]
+[ext_resource path="res://sprite/Attack Animations/fireball.png" type="Texture" id=37]
 
 [sub_resource type="DynamicFont" id=7]
 size = 18
@@ -482,6 +483,11 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="ShaderMaterial" id=41]
+shader = ExtResource( 26 )
+shader_param/flash_color = Color( 1, 1, 1, 1 )
+shader_param/flash_modifier = 0.0
+
 [sub_resource type="SpriteFrames" id=37]
 animations = [ {
 "frames": [ ExtResource( 35 ), ExtResource( 36 ) ],
@@ -489,6 +495,54 @@ animations = [ {
 "name": "default",
 "speed": 5.0
 } ]
+
+[sub_resource type="Animation" id=43]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:offset:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 10, 0 ) ]
+}
+
+[sub_resource type="Animation" id=42]
+resource_name = "hit"
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.25, 0.5, 1 )
+}
 
 [sub_resource type="SpriteFrames" id=33]
 animations = [ {
@@ -524,6 +578,147 @@ font_path = "res://font/Comfortaa-Bold.ttf"
 [sub_resource type="DynamicFont" id=2]
 size = 40
 font_data = SubResource( 1 )
+
+[sub_resource type="Animation" id=38]
+resource_name = "New Anim"
+length = 0.7
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:self_modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:scale:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1e-05, -0.25, 0, 0.25, 0, 3, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath(".:offset:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 25, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0.3, 0.6 )
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Animation" id=39]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:self_modulate:r")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:self_modulate:g")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath(".:self_modulate:b")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath(".:self_modulate:a")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath(".:scale:x")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( 1e-05, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/5/type = "bezier"
+tracks/5/path = NodePath(".:scale:y")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"points": PoolRealArray( 3, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/6/type = "bezier"
+tracks/6/path = NodePath(".:offset:x")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/7/type = "bezier"
+tracks/7/path = NodePath(".:offset:y")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath(".:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
 
 [node name="Control" type="Control"]
 margin_right = 70.0
@@ -1033,19 +1228,17 @@ position = Vector2( -25, 29 )
 position = Vector2( 720, 230 )
 script = ExtResource( 12 )
 
-[node name="Sprite" type="Sprite" parent="TeamB/Peepers"]
-visible = false
-scale = Vector2( 3, 3 )
-texture = ExtResource( 25 )
-flip_h = true
-
 [node name="AnimatedSprite" type="AnimatedSprite" parent="TeamB/Peepers"]
+material = SubResource( 41 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 37 )
-frame = 1
 speed_scale = 0.5
 playing = true
 flip_h = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TeamB/Peepers/AnimatedSprite"]
+anims/RESET = SubResource( 43 )
+anims/hit = SubResource( 42 )
 
 [node name="Rigidity" type="Node2D" parent="TeamB"]
 position = Vector2( 640, 310 )
@@ -1062,12 +1255,6 @@ flip_h = true
 [node name="Spook" type="Node2D" parent="TeamB"]
 position = Vector2( 720, 410 )
 script = ExtResource( 12 )
-
-[node name="Sprite" type="Sprite" parent="TeamB/Spook"]
-visible = false
-scale = Vector2( 3, 3 )
-texture = ExtResource( 26 )
-flip_h = true
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="TeamB/Spook"]
 scale = Vector2( 3, 3 )
@@ -1101,3 +1288,16 @@ __meta__ = {
 }
 
 [node name="ActionPoints" type="Node2D" parent="."]
+
+[node name="AttackAnimations" type="Node2D" parent="."]
+
+[node name="Fireball" type="Sprite" parent="AttackAnimations"]
+visible = false
+material = ExtResource( 25 )
+position = Vector2( 604.5, 259 )
+scale = Vector2( 1e-05, 3 )
+texture = ExtResource( 37 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AttackAnimations/Fireball"]
+"anims/New Anim" = SubResource( 38 )
+anims/RESET = SubResource( 39 )

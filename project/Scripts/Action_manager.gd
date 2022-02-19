@@ -4,6 +4,7 @@ onready var control = get_parent()
 
 onready var monster_manager = get_node('/root/Control/MonsterManager')
 onready var game_manager = get_node('/root/Control/GameManager')
+onready var action_animations = get_node('/root/Control/AttackAnimations')
 
 #func _set_targets():
 #	var input_group = control.get_input_group()
@@ -17,7 +18,7 @@ onready var game_manager = get_node('/root/Control/GameManager')
 
 func do_action(var action : Action, var user : Monster, var targets : Array, var target2 : Monster):
 	control.lock_inputs()
-	
+	_do_animations(action, targets)
 	user.set_turn_availabale(false) 
 	
 	game_manager.deduct_action_points(action.cost)
@@ -26,6 +27,26 @@ func do_action(var action : Action, var user : Monster, var targets : Array, var
 	_do_swap(action, user, targets, target2)
 
 	control.reset_inputs()
+	
+func _do_animations(var action, var targets):
+	if action.action_name == ACTION_NAMES.Fire_Ball:
+		_do_animation_fireball(targets)
+	
+func _do_animation_fireball(var targets):
+	var sprite = action_animations.get_node('Fireball')
+	sprite.global_position = targets[0].global_position
+	sprite.global_position.x = sprite.global_position.x - 100
+	sprite.get_node('AnimationPlayer').play('New Anim')
+	sprite.get_node('AnimationPlayer').play('New Anim')
+	targets[0]._do_hit_ani()
+	_do_flast(sprite, 0.5)
+	
+func _do_flast(var animated_sprite, var delay):
+	yield(get_tree().create_timer(delay), "timeout")
+	animated_sprite.material.set_shader_param("flash_color", Color(1,1,1,1))
+	animated_sprite.material.set_shader_param("flash_modifier", 1)
+	yield(get_tree().create_timer(0.5), "timeout")
+	animated_sprite.material.set_shader_param("flash_modifier", 0)
 	
 func enough_points_for_action():
 	var action = get_selected_action()
@@ -109,7 +130,7 @@ func selected_action_has_two_targets():
 	return action_has_two_targets(action)
 
 func action_has_two_targets(var action : Action):
-	if action.action_name == "Bonfire":
+	if action.action_name == ACTION_NAMES.Bonfire:
 		return false
 		
 	if not action.damage == 0 and not action.swap == null:

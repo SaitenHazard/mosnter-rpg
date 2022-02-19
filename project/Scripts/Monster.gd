@@ -22,6 +22,19 @@ var texture_monster_fire = preload('res://sprite/monster_fire.png')
 var texture_monster_water = preload('res://sprite/monster_water.png')
 var texture_monster_grass = preload('res://sprite/monster_grass.png')
 
+func _do_hit_ani():
+	var animation_player = get_child(0).get_child(0)
+	yield(get_tree().create_timer(0.5), "timeout")
+	animation_player.play('hit')
+	_do_flast()
+
+func _do_flast():
+	var animated_sprite = get_child(0)
+	animated_sprite.material.set_shader_param("flash_color", Color(1,1,1,1))
+	animated_sprite.material.set_shader_param("flash_modifier", 1)
+	yield(get_tree().create_timer(0.5), "timeout")
+	animated_sprite.material.set_shader_param("flash_modifier", 0)
+
 func set_turn_availabale(var b : bool):
 	turn_available = b
 	

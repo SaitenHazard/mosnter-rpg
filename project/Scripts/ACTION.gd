@@ -2,7 +2,7 @@ extends Node
 
 class_name Action
 
-var action_name : String
+var action_name
 var status_effect
 var action_range : int
 var cost : int
@@ -11,7 +11,7 @@ var elemental_type
 var swap = null 
 
 func _init(
-	action_name : String, damage : int, cost : int, status_effect, action_range : int, 
+	action_name , damage : int, cost : int, status_effect, action_range : int, 
 	elemental_type, swap):
 	 self.action_name = action_name
 	 self.status_effect = status_effect
