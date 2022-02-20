@@ -51,10 +51,11 @@ func _set_team_a():
 		
 	var action = action_manager.get_selected_action()
 	
-	if action.damage >= 0:
-		label_damage.text = "Damage: " + String(action.damage)
-	else:
-		label_damage.text = "Heal: " + String(action.damage * -1)
+	if not action.damage == null:
+		if action.damage >= 0:
+			label_damage.text = "Damage: " + String(action.damage)
+		else:
+			label_damage.text = "Heal: " + String(action.damage * -1)
 		
 	label_cost.text = "Cost: " + String(action.cost)
 	

@@ -22,7 +22,19 @@ var texture_monster_fire = preload('res://sprite/monster_fire.png')
 var texture_monster_water = preload('res://sprite/monster_water.png')
 var texture_monster_grass = preload('res://sprite/monster_grass.png')
 
-func _do_hit_ani():
+func _process(delta):
+	var animatedSprite = get_child(0)
+	animatedSprite.play('idle')
+
+func do_action_animation():
+	var animatedSprite = get_child(0)
+	animatedSprite.play('attack')
+	animatedSprite.scale = Vector2(4.5,4.5)
+	yield(get_tree().create_timer(0.35), "timeout")
+	animatedSprite.scale = Vector2(3,3)
+	animatedSprite.play('idle')
+
+func do_hit_ani():
 	var animation_player = get_child(0).get_child(0)
 	yield(get_tree().create_timer(0.5), "timeout")
 	animation_player.play('hit')

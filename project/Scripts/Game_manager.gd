@@ -9,7 +9,7 @@ onready var monster_manager = get_node("/root/Control/MonsterManager")
 
 onready var control = get_node('/root/Control')
 
-var action_points_max = 8
+var action_points_max = 100
 var action_points
 
 var team_a_turn = true
@@ -172,4 +172,4 @@ func _set_actions():
 	action = Action.new(ACTION_NAMES.Swift_Surf, 1, 3, null, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER, ACTION_RANGE.ALLY)
 	actions.append(action)
 	
-	action_swap = Action.new(ACTION_NAMES.Swap, 0, 1, null, ACTION_RANGE.ALLY, null, ACTION_RANGE.ALLY)
+	action_swap = Action.new(ACTION_NAMES.Swap, null, 1, null, ACTION_RANGE.ALLY, null, ACTION_RANGE.ALLY)

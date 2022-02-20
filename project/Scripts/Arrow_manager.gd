@@ -152,10 +152,18 @@ func _set_candidate_targets():
 	var index_target = control.get_index_target()
 	
 	if control.get_input_group() == INPUT_GROUP.TARGET:
-		targets_candidate_arrows[index_target].visible = false	
+		if targets.all:
+			_set_candidate_targets_animation_visible(false)
+		else:
+			targets_candidate_arrows[index_target].visible = false
 		
 	if control.get_input_group() == INPUT_GROUP.TARGETTWO:
 		targets_candidate_arrows[index_target].visible = false
+		
+
+func _set_candidate_targets_animation_visible(var visible : bool):
+	for index in targets_candidate_arrows.size():
+		targets_candidate_arrows[index].visible = visible
 
 func _set_candidate_targets_animation_all(var set):
 	for index in targets_candidate_arrows.size():
