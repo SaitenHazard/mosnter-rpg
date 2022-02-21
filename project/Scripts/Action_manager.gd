@@ -26,8 +26,14 @@ func do_action(var action : Action, var user : Monster, var targets : Array, var
 	_do_damage(action, user, targets)
 	_do_status_effect(action, targets)
 	_do_swap(action, user, targets, target2)
+	_reset_inputs(action)
 	
-	yield(get_tree().create_timer(0.75), "timeout")
+func _reset_inputs(var action):
+	if action_has_two_targets(action):
+		yield(get_tree().create_timer(2.5), "timeout")
+	else:
+		yield(get_tree().create_timer(1.5), "timeout")
+		
 	control.reset_inputs()
 	
 func enough_points_for_action():
@@ -39,6 +45,9 @@ func enough_points_for_action():
 	return true
 	
 func _do_swap(var action : Action, var user: Monster, var targets : Array, var target2: Monster):
+	if action_has_two_targets(action):
+		yield(get_tree().create_timer(2), "timeout")
+	
 	var swap_one
 	var swap_two
 	
@@ -54,9 +63,7 @@ func _do_swap(var action : Action, var user: Monster, var targets : Array, var t
 	else:
 		swap_one = user
 		swap_two = targets[0]
-			
-	
-			
+		
 	var position_index_swap_one = swap_one.get_position_index()
 	var position_index_swap_two = swap_two.get_position_index()
 	

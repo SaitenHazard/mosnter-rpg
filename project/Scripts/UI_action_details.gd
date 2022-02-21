@@ -36,7 +36,7 @@ func _process(delta):
 	
 	_set_team_a()
 	_set_team_b()
-		
+	
 func _set_team_a():
 	if not game_manager.get_team_a_turn():
 		return

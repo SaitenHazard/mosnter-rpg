@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/idle.png-86468e029261bbced5dc7f324722c5fc.stex"
+path="res://.import/icicle.png-94547664830f051b663c74622798d762.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprite/Attack Animations/idle.png"
-dest_files=[ "res://.import/idle.png-86468e029261bbced5dc7f324722c5fc.stex" ]
+source_file="res://sprite/Attack Animations/icicle.png"
+dest_files=[ "res://.import/icicle.png-94547664830f051b663c74622798d762.stex" ]
 
 [params]
 
