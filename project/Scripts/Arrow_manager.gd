@@ -41,7 +41,7 @@ func _set_selected_action():
 		
 	var index_action = control.get_index_action()
 		
-	var origin_y = 248
+	var origin_y = 265
 	var y_increment = 43
 		
 	selection_arrow_action.visible = true

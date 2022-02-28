@@ -29,7 +29,7 @@ func do_action(var action : Action, var user : Monster, var targets : Array, var
 	_reset_inputs(action)
 	
 func _reset_inputs(var action):
-	if action_has_two_targets(action):
+	if action_has_two_targets(action) or action.action_name == ACTION_NAMES.Bonfire:
 		yield(get_tree().create_timer(2.5), "timeout")
 	else:
 		yield(get_tree().create_timer(1.5), "timeout")
@@ -45,8 +45,8 @@ func enough_points_for_action():
 	return true
 	
 func _do_swap(var action : Action, var user: Monster, var targets : Array, var target2: Monster):
-	if action_has_two_targets(action):
-		yield(get_tree().create_timer(2), "timeout")
+	if action_has_two_targets(action) or action.action_name == ACTION_NAMES.Bonfire:
+		yield(get_tree().create_timer(1.5), "timeout")
 	
 	var swap_one
 	var swap_two

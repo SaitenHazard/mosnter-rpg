@@ -34,10 +34,10 @@ func _process(delta):
 	label_swap.visible = false
 	label_status.visible = false
 	
-	_set_team_a()
-	_set_team_b()
+	_attack_details()
+	_set_ai_action()
 	
-func _set_team_a():
+func _attack_details():
 	if not game_manager.get_team_a_turn():
 		return
 		
@@ -83,7 +83,7 @@ func _set_team_a():
 	else:
 		label_status.text = "Apply Paralysis"
 		
-func _set_team_b():
+func _set_ai_action():
 	if game_manager.get_team_a_turn():
 		return
 

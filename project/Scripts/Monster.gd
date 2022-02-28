@@ -29,12 +29,12 @@ func _ready():
 	var animatedSprite = get_child(0)
 	animatedSprite.play('idle')
 
-func do_action_animation():
+func do_action_animation(var delay : float):
 	var animatedSprite = get_child(0)
 	animatedSprite.stop()
 	animatedSprite.set_frame(attack_frame)
 	animatedSprite.scale = Vector2(4.5,4.5)
-	yield(get_tree().create_timer(0.5), "timeout")
+	yield(get_tree().create_timer(delay), "timeout")
 	animatedSprite.scale = Vector2(3,3)
 	animatedSprite.play('idle')
 
@@ -45,13 +45,52 @@ func do_hit_ani():
 	animatedSprite.stop()
 	animatedSprite.set_frame(hit_frame)
 	animation_player.play('hit')
-	_do_flast()
+	_do_flast(Vector3(1,1,1))
 	yield(get_tree().create_timer(0.7), "timeout")
 	animatedSprite.play('idle')
-
-func _do_flast():
+	
+func do_bonfire_ani():
+	var color = convert_rgb_to_float(Vector3(239,125,87))
+	color = Color(color.x, color.y, color.z, 1)
 	var animated_sprite = get_child(0)
-	animated_sprite.material.set_shader_param("flash_color", Color(1,1,1,1))
+	animated_sprite.material.set_shader_param("flash_color", color)
+	animated_sprite.material.set_shader_param("flash_modifier", 1)
+	yield(get_tree().create_timer(0.5), "timeout")
+	animated_sprite.material.set_shader_param("flash_modifier", 0)
+	
+func do_natural_remedy_ani():
+	var color = convert_rgb_to_float(Vector3(167,240,112))
+	color = Color(color.x, color.y, color.z, 1)
+	var animated_sprite = get_child(0)
+	animated_sprite.material.set_shader_param("flash_color", color)
+	animated_sprite.material.set_shader_param("flash_modifier", 1)
+	yield(get_tree().create_timer(0.5), "timeout")
+	animated_sprite.material.set_shader_param("flash_modifier", 0)
+	
+func do_healing_pulse_ani():
+	var color = convert_rgb_to_float(Vector3(115,239,247))
+	color = Color(color.x, color.y, color.z, 1)
+	var animated_sprite = get_child(0)
+
+	animated_sprite.material.set_shader_param("flash_color", color)
+	animated_sprite.material.set_shader_param("flash_modifier", 1)
+	yield(get_tree().create_timer(0.25), "timeout")
+	animated_sprite.material.set_shader_param("flash_modifier", 0)
+
+	yield(get_tree().create_timer(0.1), "timeout")
+
+	animated_sprite.material.set_shader_param("flash_modifier", 1)
+	yield(get_tree().create_timer(0.4), "timeout")
+	animated_sprite.material.set_shader_param("flash_modifier", 0)
+	
+func convert_rgb_to_float(var color : Vector3):
+	var denominator = 255
+	return color/denominator
+
+func _do_flast(var color_vec3 : Vector3):
+	var animated_sprite = get_child(0)
+	var color = Color(color_vec3.x, color_vec3.y, color_vec3.z, 1)
+	animated_sprite.material.set_shader_param("flash_color", color)
 	animated_sprite.material.set_shader_param("flash_modifier", 1)
 	yield(get_tree().create_timer(0.5), "timeout")
 	animated_sprite.material.set_shader_param("flash_modifier", 0)
@@ -105,6 +144,7 @@ func set_type(type_weakness):
 		
 func set_health(health : int):
 	health = health * 2
+	health = 1
 	self.health_max = health
 	self.health = health
 	
@@ -131,3 +171,11 @@ func do_damage(var damage : int):
 		
 	if health > health_max:
 		health = health_max
+		
+	if health == 0:
+		do_death_ani()
+		
+func do_death_ani():
+	yield(get_tree().create_timer(1.5), "timeout")
+	var animated_sprite = get_child(0)
+	animated_sprite.play('dead')
