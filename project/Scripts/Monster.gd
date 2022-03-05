@@ -144,7 +144,6 @@ func set_type(type_weakness):
 		
 func set_health(health : int):
 	health = health * 2
-	health = 1
 	self.health_max = health
 	self.health = health
 	

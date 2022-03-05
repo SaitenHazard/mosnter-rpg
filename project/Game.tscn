@@ -1,4 +1,4 @@
-[gd_scene load_steps=120 format=2]
+[gd_scene load_steps=126 format=2]
 
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
 [ext_resource path="res://sprite/arrows/target_selected.png" type="Texture" id=2]
@@ -53,7 +53,6 @@
 [ext_resource path="res://sprite/monsters/Octopia/dead.png" type="Texture" id=51]
 [ext_resource path="res://sprite/monsters/Spook/dead.png" type="Texture" id=52]
 [ext_resource path="res://sprite/monsters/Peepers/dead.png" type="Texture" id=53]
-[ext_resource path="res://Scripts/MonsterDetails.gd" type="Script" id=54]
 
 [sub_resource type="DynamicFont" id=7]
 size = 18
@@ -476,7 +475,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.6, 1.2 )
 }
 
-[sub_resource type="ShaderMaterial" id=64]
+[sub_resource type="ShaderMaterial" id=73]
 shader = ExtResource( 26 )
 shader_param/flash_color = Color( 1, 1, 1, 1 )
 shader_param/flash_modifier = 0.0
@@ -494,7 +493,55 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="ShaderMaterial" id=65]
+[sub_resource type="Animation" id=76]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:offset:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 10, 0 ) ]
+}
+
+[sub_resource type="Animation" id=77]
+resource_name = "hit"
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -10, -0.25, 0, 0.25, 0, -10, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.25, 0.5, 1 )
+}
+
+[sub_resource type="ShaderMaterial" id=74]
 shader = ExtResource( 26 )
 shader_param/flash_color = Color( 1, 1, 1, 1 )
 shader_param/flash_modifier = 0.0
@@ -512,7 +559,55 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="ShaderMaterial" id=66]
+[sub_resource type="Animation" id=78]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:offset:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 10, 0 ) ]
+}
+
+[sub_resource type="Animation" id=79]
+resource_name = "hit"
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -10, -0.25, 0, 0.25, 0, -10, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.25, 0.5, 1 )
+}
+
+[sub_resource type="ShaderMaterial" id=75]
 shader = ExtResource( 26 )
 shader_param/flash_color = Color( 1, 1, 1, 1 )
 shader_param/flash_modifier = 0.0
@@ -529,6 +624,54 @@ animations = [ {
 "name": "dead",
 "speed": 5.0
 } ]
+
+[sub_resource type="Animation" id=80]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:offset:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 10, 0 ) ]
+}
+
+[sub_resource type="Animation" id=81]
+resource_name = "hit"
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -10, -0.25, 0, 0.25, 0, -10, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.25, 0.5, 1 )
+}
 
 [sub_resource type="ShaderMaterial" id=41]
 shader = ExtResource( 26 )
@@ -1659,6 +1802,72 @@ tracks/5/keys = {
 "times": PoolRealArray( 0.3, 0.5 )
 }
 
+[sub_resource type="Animation" id=82]
+resource_name = "New Anim (copy)"
+length = 0.7
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:self_modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:scale:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1e-05, -0.25, 0, 0.25, 0, 3, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3 )
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.7 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath(".:offset:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( -0.5, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath(".:offset:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( -14, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/5/type = "bezier"
+tracks/5/path = NodePath(".:rotation_degrees")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -90, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0.3, 0.5 )
+}
+
 [sub_resource type="Animation" id=56]
 length = 0.001
 tracks/0/type = "bezier"
@@ -2064,9 +2273,9 @@ custom_styles/panel = ExtResource( 22 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 55.0
-margin_top = 537.0
+margin_top = 539.0
 margin_right = 893.0
-margin_bottom = 563.0
+margin_bottom = 574.0
 size_flags_horizontal = 3
 custom_styles/panel = ExtResource( 22 )
 script = ExtResource( 6 )
@@ -2078,7 +2287,7 @@ __meta__ = {
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 906.0
-margin_bottom = 38.0
+margin_bottom = 47.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -2087,7 +2296,7 @@ __meta__ = {
 
 [node name="Label3" type="Label" parent="AttackDetails/HBoxContainer"]
 margin_right = 177.0
-margin_bottom = 36.0
+margin_bottom = 45.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = SubResource( 7 )
@@ -2098,7 +2307,7 @@ valign = 1
 [node name="Label4" type="Label" parent="AttackDetails/HBoxContainer"]
 margin_left = 181.0
 margin_right = 359.0
-margin_bottom = 36.0
+margin_bottom = 45.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = SubResource( 7 )
@@ -2109,7 +2318,7 @@ valign = 1
 [node name="Label5" type="Label" parent="AttackDetails/HBoxContainer"]
 margin_left = 363.0
 margin_right = 540.0
-margin_bottom = 36.0
+margin_bottom = 45.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = SubResource( 7 )
@@ -2120,7 +2329,7 @@ valign = 1
 [node name="Label6" type="Label" parent="AttackDetails/HBoxContainer"]
 margin_left = 544.0
 margin_right = 722.0
-margin_bottom = 36.0
+margin_bottom = 45.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = SubResource( 7 )
@@ -2131,74 +2340,11 @@ valign = 1
 [node name="Label7" type="Label" parent="AttackDetails/HBoxContainer"]
 margin_left = 726.0
 margin_right = 904.0
-margin_bottom = 36.0
+margin_bottom = 45.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_fonts/font = SubResource( 7 )
 text = "asd"
-align = 1
-valign = 1
-
-[node name="MonsterDetails" type="PanelContainer" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 812.0
-margin_top = 252.0
-margin_right = 937.0
-margin_bottom = 408.0
-size_flags_horizontal = 3
-custom_styles/panel = ExtResource( 22 )
-script = ExtResource( 54 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MonsterDetails"]
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 193.0
-margin_bottom = 168.0
-
-[node name="Label3" type="Label" parent="MonsterDetails/VBoxContainer"]
-margin_right = 191.0
-margin_bottom = 38.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_fonts/font = SubResource( 7 )
-text = "BUZZKILL"
-align = 1
-valign = 1
-
-[node name="Label4" type="Label" parent="MonsterDetails/VBoxContainer"]
-margin_top = 42.0
-margin_right = 191.0
-margin_bottom = 81.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_fonts/font = SubResource( 7 )
-text = "Water Type"
-align = 1
-valign = 1
-
-[node name="Label5" type="Label" parent="MonsterDetails/VBoxContainer"]
-margin_top = 85.0
-margin_right = 191.0
-margin_bottom = 123.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_fonts/font = SubResource( 7 )
-text = "Paralzed"
-align = 1
-valign = 1
-
-[node name="Label6" type="Label" parent="MonsterDetails/VBoxContainer"]
-margin_top = 127.0
-margin_right = 191.0
-margin_bottom = 166.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_fonts/font = SubResource( 7 )
-text = "Bleeding"
 align = 1
 valign = 1
 
@@ -2531,19 +2677,23 @@ script = ExtResource( 12 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="TeamA/Amuck"]
 modulate = Color( 0.894118, 0.886275, 0.886275, 1 )
-material = SubResource( 64 )
+material = SubResource( 73 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 32 )
 animation = "dead"
 speed_scale = 0.5
 playing = true
 
+[node name="AnimationPlayer" parent="TeamA/Amuck/AnimatedSprite" instance=ExtResource( 38 )]
+anims/RESET = SubResource( 76 )
+anims/hit = SubResource( 77 )
+
 [node name="Buzzkill" type="Node2D" parent="TeamA"]
 position = Vector2( 382, 314 )
 script = ExtResource( 12 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="TeamA/Buzzkill"]
-material = SubResource( 65 )
+material = SubResource( 74 )
 position = Vector2( 1.99998, -2 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 34 )
@@ -2551,17 +2701,25 @@ animation = "dead"
 speed_scale = 0.5
 playing = true
 
+[node name="AnimationPlayer" parent="TeamA/Buzzkill/AnimatedSprite" instance=ExtResource( 38 )]
+anims/RESET = SubResource( 78 )
+anims/hit = SubResource( 79 )
+
 [node name="Octopia" type="Node2D" parent="TeamA"]
 position = Vector2( 290, 420 )
 script = ExtResource( 12 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="TeamA/Octopia"]
-material = SubResource( 66 )
+material = SubResource( 75 )
 scale = Vector2( 3, 3 )
 frames = SubResource( 36 )
 animation = "dead"
 speed_scale = 0.5
 playing = true
+
+[node name="AnimationPlayer" parent="TeamA/Octopia/AnimatedSprite" instance=ExtResource( 38 )]
+anims/RESET = SubResource( 80 )
+anims/hit = SubResource( 81 )
 
 [node name="TeamB" type="Node2D" parent="."]
 position = Vector2( -25, 29 )
@@ -2719,6 +2877,7 @@ texture = ExtResource( 40 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AttackAnimations/Bamboo"]
 "anims/New Anim" = SubResource( 55 )
+"anims/New Anim (copy)" = SubResource( 82 )
 anims/RESET = SubResource( 56 )
 
 [node name="Pulse" type="Sprite" parent="AttackAnimations"]

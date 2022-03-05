@@ -50,8 +50,14 @@ func do_animations(var action, var targets, var user):
 func _swfit_surf(var target):
 	var sprite = action_animations_gameObject.get_node('Wave')
 	sprite.global_position = target.global_position
-	sprite.global_position.x = sprite.global_position.x - 100
+	
 	sprite.global_position.y = sprite.global_position.y + 25
+	
+	if target.get_team() == TEAM.team_a:
+		sprite.global_position.x = sprite.global_position.x - 100
+	else:
+		sprite.global_position.x = sprite.global_position.x + 100
+	
 	sprite.get_node('AnimationPlayer').play('New Anim')
 	target.do_hit_ani()
 	_do_flast(sprite, 0.5)
@@ -83,8 +89,15 @@ func _healing_pulse(var target):
 func _bamboo_bash(var target):
 	var sprite = action_animations_gameObject.get_node('Bamboo')
 	sprite.global_position = target.global_position
-	sprite.global_position.x = sprite.global_position.x - 100
-	sprite.get_node('AnimationPlayer').play('New Anim')
+	
+	if target.get_team() == TEAM.A:
+		sprite.global_position.x = sprite.global_position.x + 100
+		sprite.get_node('AnimationPlayer').play('New Anim (copy)')
+#		sprite.get_node('AnimationPlayer').play('New Anim')
+	else:
+		sprite.global_position.x = sprite.global_position.x - 100
+		sprite.get_node('AnimationPlayer').play('New Anim')
+	
 	target.do_hit_ani()
 	_do_flast(sprite, 0.5)
 		

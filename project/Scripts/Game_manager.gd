@@ -69,13 +69,8 @@ func _set_monsters():
 	_assign_actions()
 
 func _set_teamAlly():
-#	teamA[0].set_namename('Mon1')
 	team_a[0].set_type(ELEMENTAL_TYPE.FIRE)
-	
-#	teamA[1].set_name('Mon2')
 	team_a[1].set_type(ELEMENTAL_TYPE.WATER)
-	
-#	teamA[2].set_name('Mon3')
 	team_a[2].set_type(ELEMENTAL_TYPE.GRASS)
 	
 	for i in team_a.size():
@@ -83,13 +78,8 @@ func _set_teamAlly():
 		team_a[i].set_team(TEAM.A)
 	
 func _set_teamFoe():
-#	teamB[0].set_name('Mon1')
 	team_b[0].set_type(ELEMENTAL_TYPE.FIRE)
-	
-#	teamB[1].set_name('Mon2')
 	team_b[1].set_type(ELEMENTAL_TYPE.WATER)
-	
-#	teamB[2].set_name('Mon3')
 	team_b[2].set_type(ELEMENTAL_TYPE.GRASS)
 	
 	for i in team_b.size():

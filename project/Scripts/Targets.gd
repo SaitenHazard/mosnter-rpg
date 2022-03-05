@@ -33,24 +33,20 @@ func _debug(action_range):
 func _get_targets(actioner_index : int, action_range):
 	_get_target_candidates(actioner_index, action_range)
 	_remove_actioner_as_target(actioner_index)
-#	_remove_dead_targets()
 	_remove_outofbounds_targets();
+	_remove_dead_targets()
 
 func _remove_outofbounds_targets():
 	for i in range(indexes.size()-1, -1, -1):
 		if indexes[i] < 0 or indexes[i] > 2:
 			indexes.remove(i)
 		
-#func _remove_dead_targets():
-#	if ally == true:
-#		for i in team_user.size():
-#			if team_user[i].get_health() <= 0:
-#				indexes.remove(i)
-#
-#	if ally == false:
-#		for i in team_target.size():
-#			if team_target[i].get_health() <= 0:
-#				indexes.remove(i)
+func _remove_dead_targets():
+	for monster in team_target:
+		for i in range(indexes.size()-1, -1, -1):
+			if monster.get_position_index() == i:
+				if monster.get_health() == 0:
+					indexes.remove(i)
 
 func _remove_actioner_as_target(actioner_index):
 	if all == true:

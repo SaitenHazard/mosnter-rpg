@@ -89,12 +89,10 @@ func _set_selected_targets():
 		
 	if targets.all:
 		for i in targets_selected_arrows.size():
-			targets_selected_arrows[i].visible = true
-			targets_selected_arrows[i].global_position = target_team[i].global_position
-			targets_selected_arrows[i].global_position.y = targets_selected_arrows[i].global_position.y - 60
-			
-		for arrow in targets_selected_arrows:
-			arrow.visible = true
+			if not target_team[i].get_health() == 0:
+				targets_selected_arrows[i].visible = true
+				targets_selected_arrows[i].global_position = target_team[i].global_position
+				targets_selected_arrows[i].global_position.y = targets_selected_arrows[i].global_position.y - 60
 			
 	if not targets.all:
 		var target = monster_manager.get_target()
