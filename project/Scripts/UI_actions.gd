@@ -50,7 +50,7 @@ func get_action_name(var action_name):
 		return 'Swap'
 
 func _set_team_a():
-	if not game_manager.get_team_a_turn():
+	if game_manager.is_team_b_turn():
 		return
 
 	var index : int = control.get_index_ally()

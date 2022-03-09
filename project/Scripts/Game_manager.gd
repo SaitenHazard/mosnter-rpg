@@ -12,46 +12,55 @@ onready var control = get_node('/root/Control')
 var action_points_max = 100
 var action_points
 
-var team_a_turn = true
+var team_turn = TEAM.A
 var turn_has_been_reset = false
 
 func _process(var delta):
 	_manage_turns()
-
+	
 func _manage_turns():
-	if team_a_turn and not monster_manager.is_team_a_turn_available():
-		monster_manager.set_team_b_turn_available()
-		team_a_turn = false
+	if team_turn == TEAM.A and not monster_manager.is_team_a_turn_available():
+		set_team_b_turn()
 		
-	if not team_a_turn and not monster_manager.is_team_b_turn_available():
-		monster_manager.set_team_a_turn_available()
-		team_a_turn = true
-		control.reset_inputs()
+#	if team_turn == TEAM.B and monster_manager.is_team_b_turn_available():
+#		monster_manager.set_team_a_turn_available()
+#		team_turn = TEAM.A
+#		control.reset_inputs()
 		
 func is_team_a_turn():
-	return team_a_turn
+	return team_turn == TEAM.A
 	
 func is_team_b_turn():
-	return not team_a_turn
+	return team_turn == TEAM.B
 
 func _set_team_turn(var team):
 	for monster in team:
 		monster.set_turn_availabale(true)
 
-func _end_all_ally_turns():
+func _set_team_a_monster_turns():
+	var team = monster_manager.get_team_a()
+	_set_team_turn(team)
+	
+func _set_team_b_monster_turns():
+	var team = monster_manager.get_team_b()
+	_set_team_turn(team)
+
+func _end_all_team_a_monster_turns():
 	for monster in team_a:
 		monster.set_turn_availabale(false)
-
+		
+func set_team_a_turn():
+	team_turn = TEAM.A
+	_set_team_a_monster_turns()
+	
+func set_team_b_turn():
+	team_turn = TEAM.B
+	_set_team_b_monster_turns()
+	
 func _ready():
 	_set_action_points()
 	_set_actions()
 	_set_monsters()
-	
-func set_team_a_turn(var b):
-	team_a_turn = b
-	
-func get_team_a_turn():
-	return team_a_turn
 	
 func _set_action_points():
 	action_points = action_points_max

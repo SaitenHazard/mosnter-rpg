@@ -30,7 +30,7 @@ onready var action_manager = get_node('/root/Control/ActionManager')
 
 var cumulative_weight
 
-var ai_action_user_target_object = null
+#var ai_action_user_target_object = null
 
 var rng = RandomNumberGenerator.new()
 		
@@ -43,77 +43,57 @@ var rng = RandomNumberGenerator.new()
 func _ready():
 	rng.randomize()
 	
+var count2 = 0
+var wait_for_action = false
+	
 func _process(var delta):
+	count2 = count2 + 1
+	
+	if game_manager.is_team_a_turn():
+		return
+	
+	if wait_for_action:
+		return
+		
 	_ai_action_manager()
 	
-var count : int = 0 
+var count : int = 0
 	
 func _ai_action_manager():
-	var team_a_turn = game_manager.get_team_a_turn()
-	
-	if team_a_turn:
+	if count == 2:
 		return
-		
-	if not ai_action_user_target_object == null:
-		return
-		
-	if count > 1:
-		return
-	
+
 	count = count + 1
-		
-	_set_action()
-	_do_action()
 	
-func _wait_for_last_action():
-	var last_action_used = action_manager.get_last_action_used()
+	var ai_action_user_target_object = _set_action()
 	
-	if last_action_used.action_name == ACTION_NAMES.Bamboo_Bash: 
-		yield(get_tree().create_timer(3), "timeout")
-		
-	if last_action_used.action_name == ACTION_NAMES.Bonfire: 
-		yield(get_tree().create_timer(2), "timeout")
-		
-	if last_action_used.action_name == ACTION_NAMES.Fire_Ball: 
-		yield(get_tree().create_timer(2), "timeout")
-		
-	if last_action_used.action_name == ACTION_NAMES.Fire_Blitz: 
-		yield(get_tree().create_timer(2), "timeout")
-		
-	if last_action_used.action_name == ACTION_NAMES.Healing_Pulse: 
-		yield(get_tree().create_timer(3), "timeout")
-		
-	if last_action_used.action_name == ACTION_NAMES.Icicle_Blade: 
-		yield(get_tree().create_timer(2), "timeout")
-		
-	if last_action_used.action_name == ACTION_NAMES.Natural_Remedy: 
-		yield(get_tree().create_timer(2), "timeout")
-		
-	if last_action_used.action_name == ACTION_NAMES.Sticky_Sticks: 
-		pass
-		
-	if last_action_used.action_name == ACTION_NAMES.Swift_Surf: 
-		pass
-		
-	if last_action_used.action_name == ACTION_NAMES.Swap: 
-		yield(get_tree().create_timer(1), "timeout")
+	if ai_action_user_target_object == null:
+		game_manager.set_team_a_turn()
+		return
+
+	_do_action(ai_action_user_target_object)
+#	_unset_ai_action_user_target_object()
 	
-func unset_ai_action_user_target_object():
-	ai_action_user_target_object = null
+#func get_ai_action_user_target():
+#	return ai_action_user_target_object
 	
-func get_ai_action_user_target():
-	return ai_action_user_target_object
-	
-func _do_action():
+func _do_action(var ai_action_user_target_object):
 	var action = ai_action_user_target_object.action
 	var user = ai_action_user_target_object.user
 	var targets = ai_action_user_target_object.targets
 	var target2 = _get_random_monster_for_swap(ai_action_user_target_object)
 	
-#	print(targets[0].get_name())
-#	print(target2.get_name())
+	var wait_time = action_manager.get_delay_time()
+	
+#	_unset_ai_action_user_target_object()
+	wait_for_action = true
+	yield(get_tree().create_timer(wait_time + 1), "timeout")
+	wait_for_action = false
 	
 	action_manager.do_action(action, user, targets, target2)
+	
+#func _unset_ai_action_user_target_object():
+#	ai_action_user_target_object = null
 	
 func _get_random_monster_for_swap(var ai_action_user_target):
 	var action = ai_action_user_target.action
@@ -129,25 +109,31 @@ func _get_random_monster_for_swap(var ai_action_user_target):
 	
 	if action.swap == ACTION_RANGE.FOE:
 		team = monster_manager.get_team_a()
-		position_indexes.remove(ai_action_user_target.user.get_position_index())
+		var invalid_index = ai_action_user_target.user.get_position_index()
+		position_indexes.remove(invalid_index)
 		
 	if action.swap == ACTION_RANGE.ALLY:
-		team = monster_manager.get_team_a()
-		position_indexes.remove(ai_action_user_target.targets[0].get_position_index())
+		team = monster_manager.get_team_b()
+		var invalid_index = ai_action_user_target.targets[0].get_position_index()
+		position_indexes.remove(invalid_index)
 		
-	var rand_index : int = rng.randi_range(0,1)
+	var roll = rng.randi_range(0,1)
+	var rand_index : int = position_indexes[roll]
 	
-	return monster_manager.get_monster(team, position_indexes[rand_index])
+	return monster_manager.get_monster(team, rand_index)
 	
 func _set_action():
+	
 	var action_user_objects = _get_action_user_array()
 	var action_user_target_objects = _set_ai_action_user_target(action_user_objects)
 	
-#	0,1
-	ai_action_user_target_object = action_user_target_objects[3]
+#	0,1, 10, 11, 12
+#	ai_action_user_target_object = action_user_target_objects[18]
 	
-#	action_user_target_objects = _set_ai_action_targets_weight(action_user_target_objects)
-#	ai_action_user_target_object = _choose_ai_action_target_user(action_user_target_objects)
+	action_user_target_objects = _set_ai_action_targets_weight(action_user_target_objects)
+	var ai_action_user_target_object = _choose_ai_action_target_user(action_user_target_objects)
+	
+	return ai_action_user_target_object
 	
 func _choose_ai_action_target_user(var action_user_target_objects : Array):
 	var action_user_target_objects_weight = _get_actions_user_targets_with_rand_weight(action_user_target_objects)

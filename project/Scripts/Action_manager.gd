@@ -6,8 +6,10 @@ onready var monster_manager = get_node('/root/Control/MonsterManager')
 onready var game_manager = get_node('/root/Control/GameManager')
 onready var action_animations = get_node('/root/Control/ActionAnimation')
 
-onready var last_action_used
+#onready var last_action_used
 
+#var animation_playing : bool = false
+var delay_time : float
 
 #func _set_targets():
 #	var input_group = control.get_input_group()
@@ -20,8 +22,8 @@ onready var last_action_used
 #		return
 
 func do_action(var action : Action, var user : Monster, var targets : Array, var target2 : Monster):
+#	last_action_used = action
 	control.lock_inputs()
-	last_action_used = action
 	action_animations.do_animations(action, targets, user)
 	user.set_turn_availabale(false) 
 	
@@ -29,41 +31,45 @@ func do_action(var action : Action, var user : Monster, var targets : Array, var
 	_do_damage(action, user, targets)
 	_do_status_effect(action, targets)
 	_do_swap(action, user, targets, target2)
-	_reset_inputs(action)
+	_set_delay_time(action)
 	
-func _reset_inputs(var action):
-	if last_action_used.action_name == ACTION_NAMES.Bamboo_Bash: 
-		yield(get_tree().create_timer(3), "timeout")
-		
-	if last_action_used.action_name == ACTION_NAMES.Bonfire: 
-		yield(get_tree().create_timer(2), "timeout")
-		
-	if last_action_used.action_name == ACTION_NAMES.Fire_Ball: 
-		yield(get_tree().create_timer(2), "timeout")
-		
-	if last_action_used.action_name == ACTION_NAMES.Fire_Blitz: 
-		yield(get_tree().create_timer(2), "timeout")
-		
-	if last_action_used.action_name == ACTION_NAMES.Healing_Pulse: 
-		yield(get_tree().create_timer(3), "timeout")
-		
-	if last_action_used.action_name == ACTION_NAMES.Icicle_Blade: 
-		yield(get_tree().create_timer(2), "timeout")
-		
-	if last_action_used.action_name == ACTION_NAMES.Natural_Remedy: 
-		yield(get_tree().create_timer(1.5), "timeout")
-		
-	if last_action_used.action_name == ACTION_NAMES.Sticky_Sticks: 
-		pass
-		
-	if last_action_used.action_name == ACTION_NAMES.Swift_Surf: 
-		pass
-		
-	if last_action_used.action_name == ACTION_NAMES.Swap: 
-		yield(get_tree().create_timer(1), "timeout")
-		
+	yield(get_tree().create_timer(delay_time), "timeout")
 	control.reset_inputs()
 	
+func get_delay_time():
+	return delay_time
+	
+func _set_delay_time(var action):
+	if action.action_name == ACTION_NAMES.Bamboo_Bash: 
+		delay_time = 3
+		
+	if action.action_name == ACTION_NAMES.Bonfire: 
+		delay_time = 2
+		
+	if action.action_name == ACTION_NAMES.Fire_Ball: 
+		delay_time = 1.5
+		
+	if action.action_name == ACTION_NAMES.Fire_Blitz: 
+		delay_time = 2
+		
+	if action.action_name == ACTION_NAMES.Healing_Pulse: 
+		delay_time = 1.5
+		
+	if action.action_name == ACTION_NAMES.Icicle_Blade: 
+		delay_time = 1
+		
+	if action.action_name == ACTION_NAMES.Natural_Remedy: 
+		delay_time = 1.5
+		
+	if action.action_name == ACTION_NAMES.Sticky_Sticks: 
+		pass
+		
+	if action.action_name == ACTION_NAMES.Swift_Surf: 
+		pass
+		
+	if action.action_name == ACTION_NAMES.Swap: 
+		delay_time = 1
+
 func enough_points_for_action():
 	var action = get_selected_action()
 	
@@ -72,8 +78,8 @@ func enough_points_for_action():
 	
 	return true
 
-func get_last_action_used():
-	return last_action_used
+#func get_last_action_used():
+#	return last_action_used
 	
 func _do_swap(var action : Action, var user: Monster, var targets : Array, var target2: Monster):
 	var swap_one
@@ -82,13 +88,13 @@ func _do_swap(var action : Action, var user: Monster, var targets : Array, var t
 	if action.swap == null:
 		return
 		
-	if last_action_used.action_name == ACTION_NAMES.Bamboo_Bash: 
+	if action.action_name == ACTION_NAMES.Bamboo_Bash: 
 		yield(get_tree().create_timer(3), "timeout")
 		
-	if last_action_used.action_name == ACTION_NAMES.Bonfire: 
+	if action.action_name == ACTION_NAMES.Bonfire: 
 		yield(get_tree().create_timer(2), "timeout")
 		
-	if last_action_used.action_name == ACTION_NAMES.Swift_Surf: 
+	if action.action_name == ACTION_NAMES.Swift_Surf: 
 		pass
 	
 	if not target2 == null:

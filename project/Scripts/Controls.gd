@@ -97,9 +97,9 @@ func _input_reject():
 			
 func _input_accept():
 	if Input.is_action_just_pressed("accept"):
-		if get_input_group() == INPUT_GROUP.AIAction:
-			AI.unset_ai_action_user_target_object()
-			return
+#		if get_input_group() == INPUT_GROUP.AIAction:
+#			AI.unset_ai_action_user_target_object()
+#			return
 		
 		if get_input_group() == INPUT_GROUP.TARGETTWO:
 			if not action_manager.enough_points_for_action():

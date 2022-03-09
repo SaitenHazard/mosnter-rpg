@@ -53,7 +53,7 @@ func _swfit_surf(var target):
 	
 	sprite.global_position.y = sprite.global_position.y + 25
 	
-	if target.get_team() == TEAM.team_a:
+	if target.get_team() == TEAM.A:
 		sprite.global_position.x = sprite.global_position.x - 100
 	else:
 		sprite.global_position.x = sprite.global_position.x + 100
@@ -76,15 +76,28 @@ func _natural_remedy(var target):
 func _bonfire(var target):
 	target.do_bonfire_ani()
 	var sprite = action_animations_gameObject.get_node('Bonfire')
+	
+	if target.get_team() == TEAM.A:
+		sprite.global_position.x = 308
+	else:
+		sprite.global_position.x = 648
+	
 	sprite.visible = true
 	sprite.get_node('AnimationPlayer').play('New Anim')
 	
-func _healing_pulse(var target):
+func _healing_pulse(var targets):
 	var sprite = action_animations_gameObject.get_node('Pulse')
+	sprite.global_position.y = 367
+	
+	if targets[0].get_team() == TEAM.A:
+		sprite.global_position.x = 320
+	else:
+		sprite.global_position.x = 640
+	
 	sprite.get_node('AnimationPlayer').play('New Anim')
-	target[0].do_healing_pulse_ani()
-	target[1].do_healing_pulse_ani()
-	target[2].do_healing_pulse_ani()
+	targets[0].do_healing_pulse_ani()
+	targets[1].do_healing_pulse_ani()
+	targets[2].do_healing_pulse_ani()
 		
 func _bamboo_bash(var target):
 	var sprite = action_animations_gameObject.get_node('Bamboo')
@@ -104,8 +117,14 @@ func _bamboo_bash(var target):
 func _icicle_blade(var target):
 	var sprite = action_animations_gameObject.get_node('Icicle')
 	sprite.global_position = target.global_position
-	sprite.global_position.y = sprite.global_position.y - 80
-	sprite.global_position.x = sprite.global_position.x - 20
+
+	if target.get_team() == TEAM.A:
+		sprite.global_position.y = sprite.global_position.y - 80
+		sprite.global_position.x = sprite.global_position.x + 20
+	else:
+		sprite.global_position.y = sprite.global_position.y - 80
+		sprite.global_position.x = sprite.global_position.x - 20
+		
 	sprite.get_node('AnimationPlayer').play('New Anim')
 	target.do_hit_ani()
 	_do_flast(sprite, 0.5)
@@ -120,8 +139,14 @@ func _fireblitz(var targets):
 	
 func _fireball(var sprite, var target):
 	sprite.global_position = target.global_position
-	sprite.global_position.x = sprite.global_position.x - 100
-	sprite.get_node('AnimationPlayer').play('New Anim')
+	
+	if target.get_team() == TEAM.A:
+		sprite.get_node('AnimationPlayer').play('New Anim (copy)')
+		sprite.global_position.x = sprite.global_position.x + 100
+	else:
+		sprite.global_position.x = sprite.global_position.x - 100
+		sprite.get_node('AnimationPlayer').play('New Anim')
+	
 	target.do_hit_ani()
 	_do_flast(sprite, 0.5)
 	

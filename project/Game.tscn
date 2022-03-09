@@ -1,4 +1,4 @@
-[gd_scene load_steps=126 format=2]
+[gd_scene load_steps=127 format=2]
 
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
 [ext_resource path="res://sprite/arrows/target_selected.png" type="Texture" id=2]
@@ -876,6 +876,52 @@ tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
 "points": PoolRealArray( 1e-05, -0.25, 0, 0.25, 0, 3, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath(".:offset:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 25, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0.3, 0.6 )
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Animation" id=83]
+resource_name = "New Anim (copy)"
+length = 0.7
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:self_modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:scale:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1e-05, -0.25, 0, 0.25, 0, -3, -0.25, 0, 0.25, 0 ),
 "times": PoolRealArray( 0, 0.3 )
 }
 tracks/2/type = "bezier"
@@ -2269,7 +2315,7 @@ margin_right = 177.0
 margin_bottom = 159.0
 custom_styles/panel = ExtResource( 22 )
 
-[node name="AttackDetails" type="PanelContainer" parent="."]
+[node name="ActionDetails" type="PanelContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 55.0
@@ -2283,7 +2329,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="AttackDetails"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ActionDetails"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 906.0
@@ -2294,7 +2340,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label3" type="Label" parent="AttackDetails/HBoxContainer"]
+[node name="Label3" type="Label" parent="ActionDetails/HBoxContainer"]
 margin_right = 177.0
 margin_bottom = 45.0
 size_flags_horizontal = 3
@@ -2304,7 +2350,7 @@ text = "asd"
 align = 1
 valign = 1
 
-[node name="Label4" type="Label" parent="AttackDetails/HBoxContainer"]
+[node name="Label4" type="Label" parent="ActionDetails/HBoxContainer"]
 margin_left = 181.0
 margin_right = 359.0
 margin_bottom = 45.0
@@ -2315,7 +2361,7 @@ text = "asd"
 align = 1
 valign = 1
 
-[node name="Label5" type="Label" parent="AttackDetails/HBoxContainer"]
+[node name="Label5" type="Label" parent="ActionDetails/HBoxContainer"]
 margin_left = 363.0
 margin_right = 540.0
 margin_bottom = 45.0
@@ -2326,7 +2372,7 @@ text = "asd"
 align = 1
 valign = 1
 
-[node name="Label6" type="Label" parent="AttackDetails/HBoxContainer"]
+[node name="Label6" type="Label" parent="ActionDetails/HBoxContainer"]
 margin_left = 544.0
 margin_right = 722.0
 margin_bottom = 45.0
@@ -2337,7 +2383,7 @@ text = "asd"
 align = 1
 valign = 1
 
-[node name="Label7" type="Label" parent="AttackDetails/HBoxContainer"]
+[node name="Label7" type="Label" parent="ActionDetails/HBoxContainer"]
 margin_left = 726.0
 margin_right = 904.0
 margin_bottom = 45.0
@@ -2811,6 +2857,7 @@ texture = ExtResource( 37 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AttackAnimations/Fireball"]
 "anims/New Anim" = SubResource( 38 )
+"anims/New Anim (copy)" = SubResource( 83 )
 anims/RESET = SubResource( 39 )
 
 [node name="Wave" type="Sprite" parent="AttackAnimations"]
@@ -2833,6 +2880,7 @@ texture = ExtResource( 37 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AttackAnimations/Fireball2"]
 "anims/New Anim" = SubResource( 47 )
+"anims/New Anim (copy)" = SubResource( 83 )
 anims/RESET = SubResource( 48 )
 
 [node name="Fireball3" type="Sprite" parent="AttackAnimations"]
@@ -2844,6 +2892,7 @@ texture = ExtResource( 37 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AttackAnimations/Fireball3"]
 "anims/New Anim" = SubResource( 49 )
+"anims/New Anim (copy)" = SubResource( 83 )
 anims/RESET = SubResource( 50 )
 
 [node name="Icicle" type="Sprite" parent="AttackAnimations"]

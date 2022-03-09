@@ -74,7 +74,7 @@ func _set_details(var monster):
 	label_two.text = 'Weakness: ' + type_name[monster.type_weakness]
 	
 func _attack_details():
-	if not game_manager.get_team_a_turn():
+	if game_manager.is_team_b_turn():
 		return
 		
 	if control.get_input_group() == INPUT_GROUP.ALLY:
