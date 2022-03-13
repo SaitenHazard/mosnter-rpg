@@ -1,4 +1,4 @@
-[gd_scene load_steps=127 format=2]
+[gd_scene load_steps=132 format=2]
 
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
 [ext_resource path="res://sprite/arrows/target_selected.png" type="Texture" id=2]
@@ -53,6 +53,7 @@
 [ext_resource path="res://sprite/monsters/Octopia/dead.png" type="Texture" id=51]
 [ext_resource path="res://sprite/monsters/Spook/dead.png" type="Texture" id=52]
 [ext_resource path="res://sprite/monsters/Peepers/dead.png" type="Texture" id=53]
+[ext_resource path="res://sprite/Attack Animations/seed.png" type="Texture" id=54]
 
 [sub_resource type="DynamicFont" id=7]
 size = 18
@@ -1042,6 +1043,193 @@ tracks/8/keys = {
 "values": [ false ]
 }
 
+[sub_resource type="Animation" id=85]
+resource_name = "New Anim"
+length = 0.7
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:self_modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:scale:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1e-05, -0.25, 0, 0.25, 0, 3, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath(".:offset:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 25, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0.3, 0.6 )
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Animation" id=86]
+resource_name = "New Anim (copy)"
+length = 0.7
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:self_modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:scale:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1e-05, -0.25, 0, 0.25, 0, -3, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath(".:offset:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 25, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0.3, 0.6 )
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath(".:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Animation" id=87]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:self_modulate:r")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:self_modulate:g")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath(".:self_modulate:b")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath(".:self_modulate:a")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/4/type = "bezier"
+tracks/4/path = NodePath(".:scale:x")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( 1e-05, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/5/type = "bezier"
+tracks/5/path = NodePath(".:scale:y")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"points": PoolRealArray( 3, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/6/type = "bezier"
+tracks/6/path = NodePath(".:offset:x")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/7/type = "bezier"
+tracks/7/path = NodePath(".:offset:y")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath(".:visible")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+
 [sub_resource type="Animation" id=70]
 resource_name = "New Anim"
 length = 0.6
@@ -1083,6 +1271,62 @@ tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
 "points": PoolRealArray( -4, -0.25, 0, 0.25, 0, -4, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5 )
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath(".:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Animation" id=84]
+resource_name = "New Anim (copy)"
+length = 0.6
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:scale:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( -4, -0.25, 0, 0.25, 0, -4, -0.25, 0, 0.25, 0, -6, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.5 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 4, -0.25, 0, 0.25, 0, 6, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.2, 0.5 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath(".:offset:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 15, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath(".:offset:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 4, -0.25, 0, 0.25, 0, 4, -0.25, 0, 0.25, 0 ),
 "times": PoolRealArray( 0, 0.5 )
 }
 tracks/4/type = "value"
@@ -2315,7 +2559,7 @@ margin_right = 177.0
 margin_bottom = 159.0
 custom_styles/panel = ExtResource( 22 )
 
-[node name="ActionDetails" type="PanelContainer" parent="."]
+[node name="Details" type="PanelContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 55.0
@@ -2329,7 +2573,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ActionDetails"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Details"]
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 906.0
@@ -2340,7 +2584,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label3" type="Label" parent="ActionDetails/HBoxContainer"]
+[node name="Label3" type="Label" parent="Details/HBoxContainer"]
 margin_right = 177.0
 margin_bottom = 45.0
 size_flags_horizontal = 3
@@ -2350,7 +2594,7 @@ text = "asd"
 align = 1
 valign = 1
 
-[node name="Label4" type="Label" parent="ActionDetails/HBoxContainer"]
+[node name="Label4" type="Label" parent="Details/HBoxContainer"]
 margin_left = 181.0
 margin_right = 359.0
 margin_bottom = 45.0
@@ -2361,7 +2605,7 @@ text = "asd"
 align = 1
 valign = 1
 
-[node name="Label5" type="Label" parent="ActionDetails/HBoxContainer"]
+[node name="Label5" type="Label" parent="Details/HBoxContainer"]
 margin_left = 363.0
 margin_right = 540.0
 margin_bottom = 45.0
@@ -2372,7 +2616,7 @@ text = "asd"
 align = 1
 valign = 1
 
-[node name="Label6" type="Label" parent="ActionDetails/HBoxContainer"]
+[node name="Label6" type="Label" parent="Details/HBoxContainer"]
 margin_left = 544.0
 margin_right = 722.0
 margin_bottom = 45.0
@@ -2383,7 +2627,7 @@ text = "asd"
 align = 1
 valign = 1
 
-[node name="Label7" type="Label" parent="ActionDetails/HBoxContainer"]
+[node name="Label7" type="Label" parent="Details/HBoxContainer"]
 margin_left = 726.0
 margin_right = 904.0
 margin_bottom = 45.0
@@ -2860,6 +3104,18 @@ texture = ExtResource( 37 )
 "anims/New Anim (copy)" = SubResource( 83 )
 anims/RESET = SubResource( 39 )
 
+[node name="Seed" type="Sprite" parent="AttackAnimations"]
+visible = false
+material = ExtResource( 25 )
+position = Vector2( 604.5, 259 )
+scale = Vector2( 1e-05, 3 )
+texture = ExtResource( 54 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AttackAnimations/Seed"]
+"anims/New Anim" = SubResource( 85 )
+"anims/New Anim (copy)" = SubResource( 86 )
+anims/RESET = SubResource( 87 )
+
 [node name="Wave" type="Sprite" parent="AttackAnimations"]
 visible = false
 material = ExtResource( 25 )
@@ -2869,6 +3125,7 @@ texture = ExtResource( 48 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AttackAnimations/Wave"]
 "anims/New Anim" = SubResource( 70 )
+"anims/New Anim (copy)" = SubResource( 84 )
 anims/RESET = SubResource( 71 )
 
 [node name="Fireball2" type="Sprite" parent="AttackAnimations"]

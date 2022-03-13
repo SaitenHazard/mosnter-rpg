@@ -7,16 +7,20 @@ onready var control = get_node('/root/Control')
 onready var action_manager = get_node('/root/Control/ActionManager')
 
 var team_a_positions : Array = [Vector2(290,230), Vector2(380,312), Vector2(290,420)]
-var team_b_positions : Array = [Vector2(660,230), Vector2(580,312), Vector2(660,420)]
+var team_b_positions : Array = [Vector2(720,230), Vector2(640,310), Vector2(720,410)]
 	
 func _process(var delta):
 	_set_position_()
 	
-func set_team_a_turn_available():
-	set_team_turn_available(team_a)
+func _initiate_turn_team_a():
+	for monster in team_a:
+		monster.initiate_turn()
 	
-func set_team_b_turn_available():
-	set_team_turn_available(team_b)
+#func set_team_a_turn_available():
+#	set_team_turn_available(team_a)
+#
+#func set_team_b_turn_available():
+#	set_team_turn_available(team_b)
 	
 func set_team_turn_available(team):
 	for monster in team:

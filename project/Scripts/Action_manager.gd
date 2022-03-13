@@ -25,7 +25,8 @@ func do_action(var action : Action, var user : Monster, var targets : Array, var
 #	last_action_used = action
 	control.lock_inputs()
 	action_animations.do_animations(action, targets, user)
-	user.set_turn_availabale(false) 
+	user.set_turn_availabale(false)
+	targets[0].set_status(action.status_effect)
 	
 	game_manager.deduct_action_points(action.cost)
 	_do_damage(action, user, targets)
@@ -55,13 +56,13 @@ func _set_delay_time(var action):
 	if action.action_name == ACTION_NAMES.Healing_Pulse: 
 		delay_time = 1.5
 		
-	if action.action_name == ACTION_NAMES.Icicle_Blade: 
+	if action.action_name == ACTION_NAMES.Icicle_Drop: 
 		delay_time = 1
 		
 	if action.action_name == ACTION_NAMES.Natural_Remedy: 
 		delay_time = 1.5
 		
-	if action.action_name == ACTION_NAMES.Sticky_Sticks: 
+	if action.action_name == ACTION_NAMES.Sticky_Seeds: 
 		pass
 		
 	if action.action_name == ACTION_NAMES.Swift_Surf: 

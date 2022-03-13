@@ -50,7 +50,7 @@ func _monster_details():
 	
 	if input_group == INPUT_GROUP.TARGETTWO:
 		var monster = monster_manager.get_action_swap_target_to()
-		_set_details(monster)
+		_set_details_monster(monster)
 		return
 		
 	if input_group == INPUT_GROUP.TARGET:
@@ -59,19 +59,30 @@ func _monster_details():
 			return
 			
 		var monster = monster_manager.get_target()
-		_set_details(monster)
+		_set_details_monster(monster)
 		return
 		
 	if input_group == INPUT_GROUP.ALLY:
 		var monster = monster_manager.get_selected_team_a()
-		_set_details(monster)
+		_set_details_monster(monster)
 		return
 		
-func _set_details(var monster):
+func _set_details_monster(var monster):
 	label_one.visible = true
 	label_two.visible = true
 	label_one.text = monster.name
 	label_two.text = 'Weakness: ' + type_name[monster.type_weakness]
+	
+	var bleed = monster.get_status_bleed()
+	var paralyze = monster.get_status_paralyze()
+	
+	if not bleed == 0:
+		label_three.visible = true
+		label_three.text = 'Bleed (' + str(bleed) +')'
+		
+	if not paralyze == 0:
+		label_four.visible = true
+		label_four.text = 'Bleed (' + str(paralyze) +')'
 	
 func _attack_details():
 	if game_manager.is_team_b_turn():

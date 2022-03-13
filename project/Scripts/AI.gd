@@ -33,7 +33,9 @@ var cumulative_weight
 #var ai_action_user_target_object = null
 
 var rng = RandomNumberGenerator.new()
-		
+var wait_for_action = false
+var count : int = 0
+
 #class ActionUserTargetSorter:
 #	static func sort_ascending(a, b):
 #		if a.weight < b.weight:
@@ -43,11 +45,7 @@ var rng = RandomNumberGenerator.new()
 func _ready():
 	rng.randomize()
 	
-var count2 = 0
-var wait_for_action = false
-	
 func _process(var delta):
-	count2 = count2 + 1
 	
 	if game_manager.is_team_a_turn():
 		return
@@ -57,14 +55,7 @@ func _process(var delta):
 		
 	_ai_action_manager()
 	
-var count : int = 0
-	
 func _ai_action_manager():
-	if count == 2:
-		return
-
-	count = count + 1
-	
 	var ai_action_user_target_object = _set_action()
 	
 	if ai_action_user_target_object == null:
@@ -72,10 +63,6 @@ func _ai_action_manager():
 		return
 
 	_do_action(ai_action_user_target_object)
-#	_unset_ai_action_user_target_object()
-	
-#func get_ai_action_user_target():
-#	return ai_action_user_target_object
 	
 func _do_action(var ai_action_user_target_object):
 	var action = ai_action_user_target_object.action
@@ -85,15 +72,11 @@ func _do_action(var ai_action_user_target_object):
 	
 	var wait_time = action_manager.get_delay_time()
 	
-#	_unset_ai_action_user_target_object()
 	wait_for_action = true
 	yield(get_tree().create_timer(wait_time + 1), "timeout")
 	wait_for_action = false
 	
 	action_manager.do_action(action, user, targets, target2)
-	
-#func _unset_ai_action_user_target_object():
-#	ai_action_user_target_object = null
 	
 func _get_random_monster_for_swap(var ai_action_user_target):
 	var action = ai_action_user_target.action
@@ -123,7 +106,6 @@ func _get_random_monster_for_swap(var ai_action_user_target):
 	return monster_manager.get_monster(team, rand_index)
 	
 func _set_action():
-	
 	var action_user_objects = _get_action_user_array()
 	var action_user_target_objects = _set_ai_action_user_target(action_user_objects)
 	
@@ -131,11 +113,15 @@ func _set_action():
 #	ai_action_user_target_object = action_user_target_objects[18]
 	
 	action_user_target_objects = _set_ai_action_targets_weight(action_user_target_objects)
+	
 	var ai_action_user_target_object = _choose_ai_action_target_user(action_user_target_objects)
 	
 	return ai_action_user_target_object
 	
 func _choose_ai_action_target_user(var action_user_target_objects : Array):
+	if action_user_target_objects.empty():
+		return null
+	
 	var action_user_target_objects_weight = _get_actions_user_targets_with_rand_weight(action_user_target_objects)
 	var roll = rng.randi_range(0, action_user_target_objects_weight.size()-1)
 	return action_user_target_objects_weight[roll]
@@ -182,21 +168,6 @@ func _set_weight_status(var ai_action_target_users):
 			ai_action_target.weight_reasons = ai_action_target.weight_reasons + 'status |'
 			
 	return ai_action_target_users
-	
-#func _set_cumulative_weight(var ai_action_targets):
-#
-#	var last_weight : int = 0
-#	var cumulative_weight : int = 0
-#	var mutiplicy : int = 0
-#
-#	for ai_action_target in ai_action_targets:
-#		if last_weight < ai_action_target.weight:
-#			last_weight = last_weight + 2
-#		cumulative_weight = cumulative_weight + (ai_action_target.weight * last_weight) 
-#		ai_action_target.cumulative_weight = cumulative_weight
-#
-#	return ai_action_targets
-	
 	
 func _set_ai_action_targets_multitarget(var ai_action_target_users):
 	for ai_action_target in ai_action_target_users:

@@ -21,13 +21,39 @@ var team
 var texture_monster_fire = preload('res://sprite/monster_fire.png')
 var texture_monster_water = preload('res://sprite/monster_water.png')
 var texture_monster_grass = preload('res://sprite/monster_grass.png')
+var FCT = preload("res://Scenes/FloatingText.tscn")
 
 var attack_frame = 0
 var hit_frame = 1
 
+export var travel = Vector2(0, -80)
+export var duration = 2
+export var spread = PI/2
+
+func show_value(value, crit=false):
+	var fct = FCT.instance()
+	add_child(fct)
+	fct.show_value(str(value), travel, duration, spread, crit)
+
+func initiate_turn():
+	_do_bleed_damage()
+	_decrease_status_count()
+	set_turn_availabale(true)
+	
+func _do_bleed_damage():
+	if not status.BLEED == 0:
+		do_damage(1)
+
 func _ready():
 	var animatedSprite = get_child(0)
 	animatedSprite.play('idle')
+	
+func _decrease_status_count():
+	if not status.BLEED == 0:
+		 status.BLEED = status.BLEED - 1
+		
+	if not status.PARALYZE == 0:
+		 status.PARALYZE = status.PARALYZE - 1
 
 func do_action_animation(var delay : float):
 	var animatedSprite = get_child(0)
@@ -106,6 +132,11 @@ func get_position_index() -> int:
 
 func set_position_index(var index):
 	self.position_index = index
+	_do_paralyze_damage()
+	
+func _do_paralyze_damage():
+	if not status.PARALYZE == 0:
+		do_damage(1) 
 	
 func set_team(var team):
 	self.team = team
@@ -119,13 +150,22 @@ func _manage_status():
 		
 	if status.PARALYZE != 0:
 		status.PARALYZE = status.PARALYZE - 1
+		
+func get_status_bleed() -> int:
+	return status.BLEED
+	
+func get_status_paralyze()  -> int:
+	return status.PARALYZE
 
 func set_status(var status):
+	if status == Status_effect.NULL:
+		return
+		
 	if status == Status_effect.BLEED:
-		self.status.BLEED = 4
+		self.status.BLEED = 3
 		
 	if status == Status_effect.PARALYZE:
-		self.status.PARALYZE = 2
+		self.status.PARALYZE = 3
 
 func get_type_weakness():
 	return type_weakness
@@ -170,6 +210,8 @@ func do_damage(var damage : int):
 		
 	if health > health_max:
 		health = health_max
+		
+	show_value(damage)
 		
 	if health == 0:
 		do_death_ani()

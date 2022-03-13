@@ -57,6 +57,8 @@ func set_team_b_turn():
 	team_turn = TEAM.B
 	_set_team_b_monster_turns()
 	
+
+	
 func _ready():
 	_set_action_points()
 	_set_actions()
@@ -149,26 +151,26 @@ func _assign_actions():
 func _set_actions():
 	var action
 	
-	action = Action.new(ACTION_NAMES.Fire_Ball, 3, 3, null, ACTION_RANGE.FOE, ELEMENTAL_TYPE.FIRE, null)
+	action = Action.new(ACTION_NAMES.Fire_Ball, 3, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.FIRE, null)
 	actions.append(action)
-	action = Action.new(ACTION_NAMES.Fire_Blitz, 1, 6, null, ACTION_RANGE.FOE_ALL, ELEMENTAL_TYPE.FIRE, null)
-	actions.append(action)
-	
-	action = Action.new(ACTION_NAMES.Sticky_Sticks, 1, 3, Status_effect.PARALYZE, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS, null)
-	actions.append(action)
-	action = Action.new(ACTION_NAMES.Bamboo_Bash, 1, 3, null, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS, ACTION_RANGE.FOE)
+	action = Action.new(ACTION_NAMES.Fire_Blitz, 1, 6, Status_effect.NULL, ACTION_RANGE.FOE_ALL, ELEMENTAL_TYPE.FIRE, null)
 	actions.append(action)
 	
-	action = Action.new(ACTION_NAMES.Bonfire, -1, 2, null, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.FIRE, ACTION_RANGE.ALLY)
+	action = Action.new(ACTION_NAMES.Sticky_Seeds, 1, 3, Status_effect.PARALYZE, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS, null)
 	actions.append(action)
-	action = Action.new(ACTION_NAMES.Natural_Remedy, -5, 5, null, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.GRASS, null)
-	actions.append(action)
-	action = Action.new(ACTION_NAMES.Healing_Pulse, -2, 6, null, ACTION_RANGE.ALLY_ALL, ELEMENTAL_TYPE.WATER, null)
+	action = Action.new(ACTION_NAMES.Bamboo_Bash, 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS, ACTION_RANGE.FOE)
 	actions.append(action)
 	
-	action = Action.new(ACTION_NAMES.Icicle_Blade, 1, 3, null, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER, null)
+	action = Action.new(ACTION_NAMES.Bonfire, -1, 2, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.FIRE, ACTION_RANGE.ALLY)
 	actions.append(action)
-	action = Action.new(ACTION_NAMES.Swift_Surf, 1, 3, null, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER, ACTION_RANGE.ALLY)
+	action = Action.new(ACTION_NAMES.Natural_Remedy, -5, 5, Status_effect.NULL, ACTION_RANGE.ALLY, ELEMENTAL_TYPE.GRASS, null)
+	actions.append(action)
+	action = Action.new(ACTION_NAMES.Healing_Pulse, -2, 6, Status_effect.NULL, ACTION_RANGE.ALLY_ALL, ELEMENTAL_TYPE.WATER, null)
 	actions.append(action)
 	
-	action_swap = Action.new(ACTION_NAMES.Swap, null, 1, null, ACTION_RANGE.ALLY, null, ACTION_RANGE.ALLY)
+	action = Action.new(ACTION_NAMES.Icicle_Drop, 1, 3, Status_effect.BLEED, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER, null)
+	actions.append(action)
+	action = Action.new(ACTION_NAMES.Swift_Surf, 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.WATER, ACTION_RANGE.ALLY)
+	actions.append(action)
+	
+	action_swap = Action.new(ACTION_NAMES.Swap, null, 1, Status_effect.NULL, ACTION_RANGE.ALLY, null, ACTION_RANGE.ALLY)

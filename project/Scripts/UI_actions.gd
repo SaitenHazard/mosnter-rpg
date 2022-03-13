@@ -25,8 +25,8 @@ func get_action_name(var action_name):
 	if action_name == ACTION_NAMES.Fire_Blitz:
 		return 'Fire Blitz'
 		
-	if action_name == ACTION_NAMES.Sticky_Sticks:
-		return 'Sticky Sticks'
+	if action_name == ACTION_NAMES.Sticky_Seeds:
+		return 'Sticky Seeds'
 		
 	if action_name == ACTION_NAMES.Bamboo_Bash:
 		return 'Bamboo Bash'
@@ -40,8 +40,8 @@ func get_action_name(var action_name):
 	if action_name == ACTION_NAMES.Healing_Pulse:
 		return 'Healing Pulse'
 		
-	if action_name == ACTION_NAMES.Icicle_Blade:
-		return 'Icicle Blade'
+	if action_name == ACTION_NAMES.Icicle_Drop:
+		return 'Icicle Drop'
 		
 	if action_name == ACTION_NAMES.Swift_Surf:
 		return 'Swift Surf'

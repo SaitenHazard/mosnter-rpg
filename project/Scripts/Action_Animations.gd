@@ -2,6 +2,8 @@ extends Node
 
 onready var action_animations_gameObject = get_node('/root/Control/AttackAnimations')
 
+
+
 func do_swap_animations(var target1, var target2):
 	target1.do_action_animation(0.5)
 	target2.do_action_animation(0.5)
@@ -17,7 +19,7 @@ func do_animations(var action, var targets, var user):
 		user_ani_delay = 1
 		_fireball(fireball, targets[0])
 		
-	if action.action_name == ACTION_NAMES.Icicle_Blade:
+	if action.action_name == ACTION_NAMES.Icicle_Drop:
 		user_ani_delay = 1
 		_icicle_blade(targets[0])
 		
@@ -43,22 +45,41 @@ func do_animations(var action, var targets, var user):
 		
 	if action.action_name == ACTION_NAMES.Swift_Surf:
 		user_ani_delay = 1
-		_swfit_surf(targets[0])
+		_swfit_surf(targets[0])	
+		
+	if action.action_name == ACTION_NAMES.Sticky_Seeds:
+		user_ani_delay = 1
+		_sticky_seeds(targets[0])
 		
 	user.do_action_animation(user_ani_delay)
+	
+func _sticky_seeds(var target):
+	var sprite = action_animations_gameObject.get_node('Seed')
+	sprite.global_position = target.global_position
+	
+	if target.get_team() == TEAM.A:
+		sprite.get_node('AnimationPlayer').play('New Anim (copy)')
+		sprite.global_position.x = sprite.global_position.x + 100
+	else:
+		sprite.global_position.x = sprite.global_position.x - 100
+		sprite.get_node('AnimationPlayer').play('New Anim')
+	
+	target.do_hit_ani()
+	_do_flast(sprite, 0.5)
 	
 func _swfit_surf(var target):
 	var sprite = action_animations_gameObject.get_node('Wave')
 	sprite.global_position = target.global_position
 	
 	sprite.global_position.y = sprite.global_position.y + 25
-	
+
 	if target.get_team() == TEAM.A:
-		sprite.global_position.x = sprite.global_position.x - 100
-	else:
 		sprite.global_position.x = sprite.global_position.x + 100
+		sprite.get_node('AnimationPlayer').play('New Anim (copy)')
+	else:
+		sprite.global_position.x = sprite.global_position.x - 100
+		sprite.get_node('AnimationPlayer').play('New Anim')
 	
-	sprite.get_node('AnimationPlayer').play('New Anim')
 	target.do_hit_ani()
 	_do_flast(sprite, 0.5)
 	
@@ -80,7 +101,7 @@ func _bonfire(var target):
 	if target.get_team() == TEAM.A:
 		sprite.global_position.x = 308
 	else:
-		sprite.global_position.x = 648
+		sprite.global_position.x = 748
 	
 	sprite.visible = true
 	sprite.get_node('AnimationPlayer').play('New Anim')
@@ -92,7 +113,7 @@ func _healing_pulse(var targets):
 	if targets[0].get_team() == TEAM.A:
 		sprite.global_position.x = 320
 	else:
-		sprite.global_position.x = 640
+		sprite.global_position.x = 740
 	
 	sprite.get_node('AnimationPlayer').play('New Anim')
 	targets[0].do_healing_pulse_ani()
