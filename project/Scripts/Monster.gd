@@ -26,14 +26,11 @@ var FCT = preload("res://Scenes/FloatingText.tscn")
 var attack_frame = 0
 var hit_frame = 1
 
-export var travel = Vector2(0, -80)
-export var duration = 2
-export var spread = PI/2
-
-func show_value(value, crit=false):
+func _do_floating_damage(value, crit=false):
+	yield(get_tree().create_timer(0.5), "timeout")
 	var fct = FCT.instance()
 	add_child(fct)
-	fct.show_value(str(value), travel, duration, spread, crit)
+	fct.show_value(value)
 
 func initiate_turn():
 	_do_bleed_damage()
@@ -211,7 +208,7 @@ func do_damage(var damage : int):
 	if health > health_max:
 		health = health_max
 		
-	show_value(damage)
+	_do_floating_damage(damage)
 		
 	if health == 0:
 		do_death_ani()
