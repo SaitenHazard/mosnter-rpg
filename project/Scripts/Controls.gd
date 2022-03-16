@@ -8,6 +8,7 @@ onready var monster_manager = get_node('/root/Control/MonsterManager')
 onready var action_manager = get_node('/root/Control/ActionManager')
 onready var game_manager = get_node('/root/Control/GameManager')
 onready var AI = get_node('/root/Control/AI')
+onready var action_points = get_node('/root/Control/ActionPoints/Label')
 
 var input_group
 
@@ -103,6 +104,7 @@ func _input_accept():
 		
 		if get_input_group() == INPUT_GROUP.TARGETTWO:
 			if not action_manager.enough_points_for_action():
+				action_points.get_child(0).play('New Anim')
 				return
 			
 			_do_action()
@@ -111,6 +113,7 @@ func _input_accept():
 		if get_input_group() == INPUT_GROUP.TARGET:
 			if not action_manager.selected_action_has_two_targets():
 				if not action_manager.enough_points_for_action():
+					action_points.get_child(0).play('New Anim')
 					return
 					
 				_do_action()

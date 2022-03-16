@@ -26,12 +26,6 @@ var FCT = preload("res://Scenes/FloatingText.tscn")
 var attack_frame = 0
 var hit_frame = 1
 
-func _do_floating_damage(value, crit=false):
-	yield(get_tree().create_timer(0.5), "timeout")
-	var fct = FCT.instance()
-	add_child(fct)
-	fct.show_value(value)
-
 func initiate_turn():
 	_do_bleed_damage()
 	_decrease_status_count()
@@ -199,7 +193,8 @@ func get_actions() -> Array :
 func get_action(i : int) :
 	return actions[i]
 	
-func do_damage(var damage : int):
+func do_damage(var damage : int, var type_advantage : bool = false, position_advantage : bool = false, ciritical : bool = false):
+	yield(get_tree().create_timer(0.5), "timeout")
 	health = health - damage
 	
 	if health < 0:
@@ -208,11 +203,40 @@ func do_damage(var damage : int):
 	if health > health_max:
 		health = health_max
 		
-	_do_floating_damage(damage)
+	_do_floating_damage(damage, type_advantage, position_advantage, ciritical)
 		
 	if health == 0:
 		do_death_ani()
 		
+func _do_floating_damage(damage, type_advantage, position_advantage, critical):
+	if damage < 0:
+		do_do_floating(damage, true)
+	else:
+		do_do_floating(damage, false)
+	
+	if type_advantage:
+		yield(get_tree().create_timer(0.5), "timeout")
+		if damage < 0:
+			do_do_floating('type+', true)
+		else:
+			do_do_floating('type+', false)
+		
+	if position_advantage:
+		yield(get_tree().create_timer(0.5), "timeout")
+		do_do_floating('pos+')
+		
+	if critical:
+		yield(get_tree().create_timer(0.5), "timeout")
+		if damage < 0:
+			do_do_floating('crit+', true)
+		else:
+			do_do_floating('crit+', false)
+		
+func do_do_floating(var text, var is_green = false):
+	var fct = FCT.instance()
+	add_child(fct)
+	fct.show_value(text, is_green)
+	
 func do_death_ani():
 	yield(get_tree().create_timer(1.5), "timeout")
 	var animated_sprite = get_child(0)

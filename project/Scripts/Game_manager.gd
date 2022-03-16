@@ -9,7 +9,7 @@ onready var monster_manager = get_node("/root/Control/MonsterManager")
 
 onready var control = get_node('/root/Control')
 
-var action_points_max = 100
+var action_points_max = 10
 var action_points
 
 var team_turn = TEAM.A
@@ -57,8 +57,6 @@ func set_team_b_turn():
 	team_turn = TEAM.B
 	_set_team_b_monster_turns()
 	
-
-	
 func _ready():
 	_set_action_points()
 	_set_actions()
@@ -100,10 +98,10 @@ func _set_teamFoe():
 		
 func _assign_health():
 	for monster in team_a:
-		monster.set_health(10)
+		monster.set_health(5)
 		
 	for monster in team_b:
-		monster.set_health(10)
+		monster.set_health(5)
 
 func _assign_actions():
 	var action1 : Action

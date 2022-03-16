@@ -1,13 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scripts/FloatingDamage.gd" type="Script" id=1]
-[ext_resource path="res://font/Montserrat-Bold.ttf" type="DynamicFontData" id=2]
-
-[sub_resource type="DynamicFont" id=1]
-size = 40
-outline_size = 1
-outline_color = Color( 0.101961, 0.109804, 0.172549, 1 )
-font_data = ExtResource( 2 )
+[ext_resource path="res://font/Font20.tres" type="DynamicFont" id=2]
 
 [node name="FloatingDamage" type="Label"]
 modulate = Color( 0.956863, 0.956863, 0.956863, 1 )
@@ -21,7 +15,7 @@ margin_right = 27.0
 margin_bottom = 29.0
 grow_horizontal = 2
 grow_vertical = 2
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = ExtResource( 2 )
 text = "2"
 align = 1
 valign = 1

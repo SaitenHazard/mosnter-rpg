@@ -1,4 +1,4 @@
-[gd_scene load_steps=132 format=2]
+[gd_scene load_steps=134 format=2]
 
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
 [ext_resource path="res://sprite/arrows/target_selected.png" type="Texture" id=2]
@@ -853,8 +853,35 @@ corner_radius_bottom_left = 50
 font_path = "res://font/Comfortaa-Bold.ttf"
 
 [sub_resource type="DynamicFont" id=2]
-size = 40
+size = 0
 font_data = SubResource( 1 )
+
+[sub_resource type="Animation" id=88]
+resource_name = "New Anim"
+length = 0.6
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:custom_fonts/font:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 40, -0.25, 0, 0.25, 0, 80, -0.25, 0, 0.25, 0, 40, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.3, 0.6 )
+}
+
+[sub_resource type="Animation" id=89]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:custom_fonts/font:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0 )
+}
 
 [sub_resource type="Animation" id=38]
 resource_name = "New Anim"
@@ -3064,23 +3091,30 @@ flip_h = true
 anims/RESET = SubResource( 44 )
 anims/hit = SubResource( 45 )
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
-margin_left = 473.0
-margin_top = 77.0
-margin_right = 543.0
-margin_bottom = 147.0
+[node name="ActionPoints" type="PanelContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 438.0
+margin_top = 70.0
+margin_right = 508.0
+margin_bottom = 140.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_pivot_offset = Vector2( 35, 35 )
 custom_styles/panel = SubResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ActionPoints" type="Label" parent="PanelContainer"]
+[node name="Label" type="Label" parent="ActionPoints"]
 margin_left = 2.0
-margin_top = 12.0
+margin_top = 34.0
 margin_right = 68.0
-margin_bottom = 58.0
+margin_bottom = 35.0
 custom_fonts/font = SubResource( 2 )
-text = "8"
+text = "10"
 align = 1
 valign = 1
 script = ExtResource( 19 )
@@ -3088,7 +3122,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ActionPoints" type="Node2D" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ActionPoints/Label"]
+"anims/New Anim" = SubResource( 88 )
+anims/RESET = SubResource( 89 )
 
 [node name="AttackAnimations" type="Node2D" parent="."]
 
@@ -3202,7 +3238,6 @@ visible = false
 position = Vector2( 308, 339 )
 scale = Vector2( 1e-05, 3 )
 frames = SubResource( 61 )
-frame = 1
 speed_scale = 0.5
 playing = true
 

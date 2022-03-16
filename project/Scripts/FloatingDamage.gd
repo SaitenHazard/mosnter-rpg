@@ -7,12 +7,23 @@ export var spread = PI/2
 export (Color, RGBA) var color_damage
 export (Color, RGBA) var color_heal
 
-func show_value(value):
-	if value == 0:
-		return
-	elif value < 0:
+onready var font_style_int = load('res://font/Font40.tres')
+onready var font_style_string = load('res://font/Font20.tres')
+
+func show_value(value, is_green : bool):
+	if typeof(value) == TYPE_INT:
+		add_font_override('font', font_style_int)
+		if value == 0:
+			return
+			
+		elif value < 0:
+			value = value * -1
+	else:
+		add_font_override('font', font_style_string)
+		self.modulate = color_damage
+		
+	if is_green:
 		self.modulate = color_heal
-		value = value * -1
 	else:
 		self.modulate = color_damage
 	

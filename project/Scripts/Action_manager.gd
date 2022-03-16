@@ -6,6 +6,10 @@ onready var monster_manager = get_node('/root/Control/MonsterManager')
 onready var game_manager = get_node('/root/Control/GameManager')
 onready var action_animations = get_node('/root/Control/ActionAnimation')
 
+var type_advantage : bool = false
+var position_advantage : bool = false
+var critical : bool = true
+
 #onready var last_action_used
 
 #var animation_playing : bool = false
@@ -137,9 +141,9 @@ func _do_damage(var action : Action, var user : Monster, var targets : Array):
 	if action.damage == null:
 		return
 		
-	for target in targets:
-		var damage = _get_damage(action, user, target)
-		target.do_damage(damage)
+	for monster in targets:
+		var damage = _get_damage(action, user, monster)
+		monster.do_damage(damage, type_advantage, position_advantage, critical)
 		
 func _do_status_effect(var action : Action, var targets : Array):
 	var status_effect = action.status_effect
@@ -150,20 +154,41 @@ func _do_status_effect(var action : Action, var targets : Array):
 			
 func _get_damage(var action : Action, var user : Monster, var target : Monster):
 	var damage = action.damage
+	type_advantage = false
+	position_advantage = false
+	critical = false
 	
 	if damage == 0:
 		return damage
 		
 	if is_type_advantage(action, target):
+		type_advantage = true
 		if is_action_healing(action):
 			damage = damage - 2
 		else:
 			damage = damage + 1
 		
 	if is_position_advantage(action, user, target):
+		position_advantage = true
 		damage = damage + 1
 		
+	if _is_critical():
+		critical = true
+		if is_action_healing(action):
+			damage = damage - 1
+		else:
+			damage = damage + 1
+		
 	return damage
+	
+var rng = RandomNumberGenerator.new()
+	
+func _is_critical():
+	var roll = rng.randi_range(0,3)
+	if roll == 0:
+		return true
+	else:
+		return false
 	
 func selected_action_has_two_targets():
 	var action = get_selected_action()
