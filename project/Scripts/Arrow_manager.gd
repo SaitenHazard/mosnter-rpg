@@ -33,6 +33,9 @@ func _set_selected_action():
 	if not game_manager.is_team_a_turn():
 		return
 		
+	if control.get_lock_inputs():
+		return
+		
 	if control.get_input_group() != INPUT_GROUP.ACTION:
 		selection_arrow_action.get_node('AnimationPlayer').seek(0.6)
 	else:
@@ -41,11 +44,15 @@ func _set_selected_action():
 		
 	var index_action = control.get_index_action()
 		
-	var origin_y = 265
-	var y_increment = 43
+	var origin_y = 264
+	var y_increment = 48
+#	var y_increment_index_5 = y_increment - 20
 		
 	selection_arrow_action.visible = true
 	selection_arrow_action.position.y = origin_y + (index_action * y_increment)
+	
+#	if index_action == 4:
+#		selection_arrow_action.position.y = selection_arrow_action.position.y + y_increment_index_5
 	
 func _set_selected_targetstwo():
 	selection_arrow_targettwo.visible = false
@@ -59,6 +66,9 @@ func _set_selected_targetstwo():
 	var input_group = control.get_input_group()
 	
 	if not input_group == INPUT_GROUP.TARGETTWO:
+		return
+		
+	if control.get_lock_inputs():
 		return
 		
 	var targettwo = monster_manager.get_action_swap_target_to()
@@ -109,6 +119,9 @@ func _set_selected_ally():
 	if not game_manager.is_team_a_turn():
 		return
 		
+	if control.get_lock_inputs():
+		return
+		
 	if control.get_input_group() != INPUT_GROUP.ALLY:
 		selection_arrow_ally.get_node('AnimationPlayer').seek(0)
 	else:
@@ -132,6 +145,9 @@ func _set_candidate_targets():
 		return
 		
 	if not game_manager.is_team_a_turn():
+		return
+		
+	if control.get_lock_inputs():
 		return
 		
 	if control.get_input_group() != INPUT_GROUP.ACTION:
@@ -183,6 +199,9 @@ func _set_candidate_targetstwo():
 		return
 		
 	if not game_manager.is_team_a_turn():
+		return
+		
+	if control.get_lock_inputs():
 		return
 		
 	var indexes = monster_manager.get_targettwo_indexes()

@@ -1,6 +1,7 @@
 extends Node2D
 
 var action_swap : Action
+var action_skip : Action
 var actions : Array
 
 onready var team_a : Array = get_node("/root/Control/TeamA").get_children()
@@ -51,11 +52,16 @@ func _end_all_team_a_monster_turns():
 		
 func set_team_a_turn():
 	team_turn = TEAM.A
+	_reset_action_points_max()
 	_set_team_a_monster_turns()
 	
 func set_team_b_turn():
 	team_turn = TEAM.B
+	_reset_action_points_max()
 	_set_team_b_monster_turns()
+	
+func _reset_action_points_max():
+	action_points = action_points_max
 	
 func _ready():
 	_set_action_points()
@@ -98,10 +104,10 @@ func _set_teamFoe():
 		
 func _assign_health():
 	for monster in team_a:
-		monster.set_health(5)
+		monster.set_health(10)
 		
 	for monster in team_b:
-		monster.set_health(5)
+		monster.set_health(15)
 
 func _assign_actions():
 	var action1 : Action
@@ -127,7 +133,7 @@ func _assign_actions():
 		action3 = action_left[rand_index]
 		action_left.remove(rand_index)
 		
-		monster.set_actions(action1, action2, action3, action_swap)
+		monster.set_actions(action1, action2, action3, action_swap, action_skip)
 		
 	action_left = actions.duplicate()
 	
@@ -144,7 +150,7 @@ func _assign_actions():
 		action3 = action_left[rand_index]
 		action_left.remove(rand_index)
 		
-		monster.set_actions(action1, action2, action3, action_swap)
+		monster.set_actions(action1, action2, action3, action_swap, action_skip)
 		
 func _set_actions():
 	var action
@@ -172,3 +178,4 @@ func _set_actions():
 	actions.append(action)
 	
 	action_swap = Action.new(ACTION_NAMES.Swap, null, 1, Status_effect.NULL, ACTION_RANGE.ALLY, null, ACTION_RANGE.ALLY)
+	action_skip = Action.new(ACTION_NAMES.Skip, null, 0, Status_effect.NULL, ACTION_RANGE.ALLY, null, ACTION_RANGE.ALLY)

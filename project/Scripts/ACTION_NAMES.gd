@@ -10,5 +10,6 @@ enum {
 	Healing_Pulse,
 	Icicle_Drop,
 	Swift_Surf,
-	Swap
+	Swap,
+	Skip
 	}

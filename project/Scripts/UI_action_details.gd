@@ -40,11 +40,14 @@ func _process(delta):
 	_monster_details()
 	
 func _monster_details():
+	self.visible = false
 	if not game_manager.is_team_a_turn():
 		return
 	
 	if control.get_lock_inputs():
 		return
+		
+	self.visible = true
 	
 	var input_group = control.get_input_group()
 	
@@ -92,17 +95,21 @@ func _attack_details():
 		return
 		
 	if control.input_group == INPUT_GROUP.TARGETTWO:
-		return	
+		return
 		
 	if control.input_group == INPUT_GROUP.TARGET:
 		return
 		
+		
+	var action = action_manager.get_selected_action()
+	
+	if action.action_name == ACTION_NAMES.Skip:
+		return
+	
 	label_one.visible = true
 	label_two.visible = true
 	label_three.visible = true
 	label_four.visible = true
-		
-	var action = action_manager.get_selected_action()
 	
 	if not action.damage == null:
 		if action.damage >= 0:

@@ -16,9 +16,9 @@ __meta__ = {
 [node name="Label2" type="Label" parent="."]
 margin_left = 2.0
 margin_top = 2.0
-margin_right = 111.0
+margin_right = 70.0
 margin_bottom = 20.0
 custom_fonts/font = ExtResource( 1 )
-text = " C to End Turn "
+text = "End Turn"
 align = 1
 valign = 1

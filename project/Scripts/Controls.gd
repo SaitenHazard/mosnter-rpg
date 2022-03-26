@@ -40,6 +40,7 @@ func get_input_group():
 	return input_group
 
 func reset_inputs():
+	index_action = 0
 	if monster_manager.is_team_a_turn_available():
 		input_group = INPUT_GROUP.ALLY
 		input_allies_increment(true)
@@ -96,11 +97,22 @@ func _input_reject():
 			input_group = INPUT_GROUP.TARGET
 			return
 			
+func _action_skip():
+	lock_inputs()
+	var user = monster_manager.get_selected_team_a().set_turn_availabale(false)
+	yield(get_tree().create_timer(0.5), "timeout")
+	reset_inputs()
+			
 func _input_accept():
 	if Input.is_action_just_pressed("accept"):
 #		if get_input_group() == INPUT_GROUP.AIAction:
 #			AI.unset_ai_action_user_target_object()
 #			return
+
+		if not action_manager.selected_action_has_two_targets():
+			if action_manager.get_selected_action().action_name == ACTION_NAMES.Skip:
+				_action_skip()
+				return
 		
 		if get_input_group() == INPUT_GROUP.TARGETTWO:
 			if not action_manager.enough_points_for_action():
@@ -215,7 +227,9 @@ func input_allies_increment(var increment):
 		if candidate_index > max_index:
 			candidate_index = min_index
 			
-		if monster_manager.get_team_a_monster(candidate_index).is_turn_available():
+		var candidate_monster =  monster_manager.get_team_a_monster(candidate_index)
+			
+		if candidate_monster.is_turn_available() and not candidate_monster.is_dead():
 			index_is_valid = true
 		else:
 			number_monsters_turn_not_available = number_monsters_turn_not_available +1
@@ -227,7 +241,7 @@ func input_allies_increment(var increment):
 
 func _input_actions_increment(var increment):
 	var min_index = 0
-	var max_index = 3
+	var max_index = 4
 	
 	var candidate_index = index_action
 	

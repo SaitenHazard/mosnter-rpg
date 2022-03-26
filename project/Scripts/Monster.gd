@@ -18,6 +18,8 @@ var status = {
 
 var team
 
+onready var monster_manager = get_node('/root/Control/MonsterManager')
+
 var texture_monster_fire = preload('res://sprite/monster_fire.png')
 var texture_monster_water = preload('res://sprite/monster_water.png')
 var texture_monster_grass = preload('res://sprite/monster_grass.png')
@@ -30,6 +32,10 @@ func initiate_turn():
 	_do_bleed_damage()
 	_decrease_status_count()
 	set_turn_availabale(true)
+	
+#func _process(delta):
+#	if name == 'Spook':
+#		print(position_index)
 	
 func _do_bleed_damage():
 	if not status.BLEED == 0:
@@ -174,12 +180,12 @@ func set_type(type_weakness):
 #		get_node('Sprite').texture = texture_monster_water
 		
 func set_health(health : int):
-	health = health * 2
 	self.health_max = health
 	self.health = health
+	self.health = 1
 	
-func set_actions(action1, action2, action3, action4):
-	actions = [action1, action2, action3, action4]
+func set_actions(action1, action2, action3, action4, action5):
+	actions = [action1, action2, action3, action4, action5]
 	
 func get_health_max() -> int :
 	return health_max
@@ -205,6 +211,7 @@ func do_damage(var damage : int, var type_advantage : bool = false, position_adv
 		
 	_do_floating_damage(damage, type_advantage, position_advantage, ciritical)
 		
+func _process(delta):
 	if health == 0:
 		do_death_ani()
 		
@@ -241,3 +248,6 @@ func do_death_ani():
 	yield(get_tree().create_timer(1.5), "timeout")
 	var animated_sprite = get_child(0)
 	animated_sprite.play('dead')
+	
+func is_dead():
+	return health <= 0

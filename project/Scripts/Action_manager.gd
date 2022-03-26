@@ -39,6 +39,12 @@ func do_action(var action : Action, var user : Monster, var targets : Array, var
 	_set_delay_time(action)
 	
 	yield(get_tree().create_timer(delay_time), "timeout")
+	
+	var force_swaped = monster_manager.manage_forced_pos_change(targets[0].team)
+	
+	if force_swaped:
+		yield(get_tree().create_timer(2.5), "timeout")
+	
 	control.reset_inputs()
 	
 func get_delay_time():
@@ -238,6 +244,9 @@ func is_type_advantage(var action : Action, var target : Monster):
 	return false
 	
 func is_action_healing(var action : Action):
+	if action.damage == null:
+		return false
+		
 	if action.damage < 0:
 		return true
 		

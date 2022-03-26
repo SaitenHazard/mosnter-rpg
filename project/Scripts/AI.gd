@@ -46,7 +46,7 @@ func _ready():
 	rng.randomize()
 	
 func _process(var delta):
-	
+	return
 	if game_manager.is_team_a_turn():
 		return
 	
@@ -92,12 +92,12 @@ func _get_random_monster_for_swap(var ai_action_user_target):
 	
 	if action.swap == ACTION_RANGE.FOE:
 		team = monster_manager.get_team_a()
-		var invalid_index = ai_action_user_target.user.get_position_index()
+		var invalid_index = ai_action_user_target.targets[0].get_position_index()
 		position_indexes.remove(invalid_index)
 		
 	if action.swap == ACTION_RANGE.ALLY:
 		team = monster_manager.get_team_b()
-		var invalid_index = ai_action_user_target.targets[0].get_position_index()
+		var invalid_index = ai_action_user_target.user.get_position_index()
 		position_indexes.remove(invalid_index)
 		
 	var roll = rng.randi_range(0,1)
@@ -271,6 +271,9 @@ func _get_action_user_array():
 	var team_b = monster_manager.get_team_b_monsters_with_turn_remaining()
 	
 	for monster in team_b:
+		if monster.is_dead():
+			continue
+			
 		var monster_actions = monster.get_actions()
 		monster_actions = _remove_action_swap(monster_actions)
 		for action in monster_actions:

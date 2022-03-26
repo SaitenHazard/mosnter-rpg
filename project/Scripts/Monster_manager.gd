@@ -1,10 +1,11 @@
 extends Node2D
 
-onready var team_a = get_node('/root/Control/TeamA').get_children()
-onready var team_b = get_node('/root/Control/TeamB').get_children()
+onready var monsters_team_a = get_node('/root/Control/TeamA').get_children()
+onready var monsters_team_b = get_node('/root/Control/TeamB').get_children()
 
 onready var control = get_node('/root/Control')
 onready var action_manager = get_node('/root/Control/ActionManager')
+onready var action_animations = get_node('/root/Control/ActionAnimation')
 
 var team_a_positions : Array = [Vector2(290,230), Vector2(380,312), Vector2(290,420)]
 var team_b_positions : Array = [Vector2(720,230), Vector2(640,310), Vector2(720,410)]
@@ -13,7 +14,7 @@ func _process(var delta):
 	_set_position_()
 	
 func _initiate_turn_team_a():
-	for monster in team_a:
+	for monster in monsters_team_a:
 		monster.initiate_turn()
 	
 #func set_team_a_turn_available():
@@ -22,15 +23,95 @@ func _initiate_turn_team_a():
 #func set_team_b_turn_available():
 #	set_team_turn_available(team_b)
 	
+func manage_forced_pos_change(var team):
+	var solo_survivor : Monster
+	
+	if team == TEAM.A:
+		solo_survivor = _get_solo_survivor_teamA()
+	else:
+		solo_survivor = _get_solo_survivaor_teamB()
+		
+	if solo_survivor == null:
+		return false
+		
+#	print(solo_survivor.get_health())
+		
+	if solo_survivor.get_position_index() == 1:
+		return false
+		
+	yield(get_tree().create_timer(1.5), "timeout")
+	
+	if team == TEAM.A:
+		_force_swap_team_a(solo_survivor)
+	else:
+		_force_swap_team_b(solo_survivor)
+		
+	return true
+		
+func _force_swap_team_a(var survivor : Monster):
+	var center_mon : Monster = _get_center_monster_team_a()
+	force_swap(survivor, center_mon)
+	
+func _force_swap_team_b(var survivor : Monster):
+	var center_mon : Monster = _get_center_monster_team_b()
+	force_swap(survivor, center_mon)
+	
+func force_swap(var survivor, var center_mon):
+	var position_index_swap_one = survivor.get_position_index()
+	var position_index_swap_two = center_mon.get_position_index()
+	
+	action_animations.do_swap_animations(survivor, center_mon)
+	
+	survivor.set_position_index(position_index_swap_two)
+	center_mon.set_position_index(position_index_swap_one)
+	
+func _get_center_monster_team_a():
+	return get_monster(monsters_team_a, 1)
+	
+func _get_center_monster_team_b():
+	return get_monster(monsters_team_b, 1)
+	
+func only_one_survivor_teamB():
+	if _get_solo_survivaor_teamB() == null:
+		return false
+	else:
+		return true
+	
+func only_one_survivor_teamA():
+	if _get_solo_survivor_teamA() == null:
+		return false
+	else:
+		return true
+		
+func _get_solo_survivor_teamA():
+	return _get_solo_survivor(monsters_team_a)
+	
+func _get_solo_survivaor_teamB():
+	return _get_solo_survivor(monsters_team_b)
+	
+func _get_solo_survivor(var team):
+	var survivor : Monster
+	var number_of_survivors : int = 0
+	
+	for monster in team:
+		if monster.health > 0:
+			survivor = monster
+			number_of_survivors = number_of_survivors + 1
+	
+	if number_of_survivors == 1:
+		return survivor
+	else:
+		return null
+	
 func set_team_turn_available(team):
 	for monster in team:
 		monster.set_turn_availabale(true)
 
 func is_team_a_turn_available():
-	return _is_team_turn_available(team_a)
+	return _is_team_turn_available(monsters_team_a)
 	
 func is_team_b_turn_available():
-	return _is_team_turn_available(team_b)
+	return _is_team_turn_available(monsters_team_b)
 	
 func _is_team_turn_available(var team):
 	for monster in team:
@@ -70,20 +151,14 @@ func get_action_swap_team():
 func get_action_target_team(var action, var user):
 	if action.action_range == ACTION_RANGE.ALLY or action.action_range == ACTION_RANGE.ALLY_ALL:
 		if user.get_team() == TEAM.B:
-#			print('team B1')
 			return get_team_b()
 		else:
-#			print('team A1')
 			return get_team_a()
 	else:
 		if user.get_team() == TEAM.B:
-#			print('team A2')
 			return get_team_a()
 		else:
-#			print('team B2')
 			return get_team_b()
-			
-#	print('*****************')
 			
 func get_action_target_team_monster(var action, var user, var index):
 	var team = get_action_target_team(action, user)
@@ -105,12 +180,14 @@ func get_targettwo_indexes():
 	return targets
 		
 func get_action_swap_targets():
-	if get_target_team() == team_a:
+	if get_target_team() == monsters_team_a:
 		var index_ally = control.get_index_ally()
-		return Targets.new(index_ally, ACTION_RANGE.ALLY, team_a, team_b)
+		return Targets.new(
+			index_ally, ACTION_RANGE.ALLY, monsters_team_a, monsters_team_b)
 	else:
 		var index_target = control.get_index_target()
-		return Targets.new(index_target, ACTION_RANGE.ALLY, team_a, team_b)
+		return Targets.new(
+			index_target, ACTION_RANGE.ALLY, monsters_team_a, monsters_team_b)
 		
 func get_action_swap_target_to():
 	var team = get_action_swap_team()
@@ -127,14 +204,14 @@ func get_target_team():
 		return get_team_b()
 	
 func get_team_a():
-	return team_a
+	return monsters_team_a
 	
 func get_team_b():
-	return team_b
+	return monsters_team_b
 	
 func get_selected_b():
 	var index_target = control.get_index_target()
-	return team_b[index_target]
+	return monsters_team_b[index_target]
 	
 func get_selected_team_a():
 	var index_ally = control.get_index_ally()
@@ -147,17 +224,17 @@ func get_monster(var team, var index):
 			return monster
 
 func get_team_a_monster(var index : int):
-	return get_monster(team_a, index)
+	return get_monster(monsters_team_a, index)
 	
 func get_team_b_monster(var index : int):
-	return get_monster(team_b, index)
+	return get_monster(monsters_team_b, index)
 	
 func _set_position_():
-	for monster in team_a:
+	for monster in monsters_team_a:
 		var index = monster.get_position_index()
 		monster.position = team_a_positions[index]
 		
-	for monster in team_b:
+	for monster in monsters_team_b:
 		var index = monster.get_position_index()
 		monster.position = team_b_positions[index]
 		
