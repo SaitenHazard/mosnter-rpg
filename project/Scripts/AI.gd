@@ -46,7 +46,6 @@ func _ready():
 	rng.randomize()
 	
 func _process(var delta):
-	return
 	if game_manager.is_team_a_turn():
 		return
 	
@@ -80,11 +79,12 @@ func _do_action(var ai_action_user_target_object):
 	
 func _get_random_monster_for_swap(var ai_action_user_target):
 	var action = ai_action_user_target.action
+	var user = ai_action_user_target.user
 	
 	if action.swap == null:
 		return null
 		
-	if not action_manager.action_has_two_targets(action):
+	if not action_manager.action_has_two_targets(action, user):
 		return null
 		
 	var position_indexes : Array = [0,1,2]

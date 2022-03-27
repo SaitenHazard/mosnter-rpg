@@ -30,6 +30,11 @@ _global_script_classes=[ {
 "path": "res://Scripts/ELEMENTAL_TYPE.gd"
 }, {
 "base": "Reference",
+"class": "FLOATING_COLORS",
+"language": "GDScript",
+"path": "res://Scripts/FLOATING_COLORS.gd"
+}, {
+"base": "Reference",
 "class": "INPUT_GROUP",
 "language": "GDScript",
 "path": "res://Scripts/INPUT_GROUP.gd"
@@ -59,6 +64,7 @@ _global_script_class_icons={
 "ACTION_RANGE": "",
 "Action": "",
 "ELEMENTAL_TYPE": "",
+"FLOATING_COLORS": "",
 "INPUT_GROUP": "",
 "Monster": "",
 "Status_effect": "",

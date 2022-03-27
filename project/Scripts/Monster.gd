@@ -40,6 +40,7 @@ func initiate_turn():
 func _do_bleed_damage():
 	if not status.BLEED == 0:
 		do_damage(1)
+		do_do_floating('Bleed', FLOATING_COLORS.yellow)
 
 func _ready():
 	var animatedSprite = get_child(0)
@@ -47,11 +48,15 @@ func _ready():
 	
 func _decrease_status_count():
 	if not status.BLEED == 0:
-		 status.BLEED = status.BLEED - 1
+		status.BLEED = status.BLEED - 1
+		if status.BLEED == 0:
+			do_do_floating('Bleed', FLOATING_COLORS.red)
 		
-	if not status.PARALYZE == 0:
-		 status.PARALYZE = status.PARALYZE - 1
-
+	if not status.CRAMP == 0:
+		status.CRAMP = status.CRAMP - 1
+		if status.CRAMP == 0:
+			do_do_floating('Cramp', FLOATING_COLORS.red)
+		
 func do_action_animation(var delay : float):
 	var animatedSprite = get_child(0)
 	animatedSprite.stop()
@@ -129,11 +134,12 @@ func get_position_index() -> int:
 
 func set_position_index(var index):
 	self.position_index = index
-	_do_paralyze_damage()
+	_do_cramp_damage()
 	
-func _do_paralyze_damage():
+func _do_cramp_damage():
 	if not status.PARALYZE == 0:
-		do_damage(1) 
+		do_damage(1)
+		do_do_floating('Cramp', FLOATING_COLORS.red)
 	
 func set_team(var team):
 	self.team = team
@@ -161,7 +167,7 @@ func set_status(var status):
 	if status == Status_effect.BLEED:
 		self.status.BLEED = 3
 		
-	if status == Status_effect.PARALYZE:
+	if status == Status_effect.CRAMP:
 		self.status.PARALYZE = 3
 
 func get_type_weakness():
@@ -182,7 +188,7 @@ func set_type(type_weakness):
 func set_health(health : int):
 	self.health_max = health
 	self.health = health
-	self.health = 1
+#	self.health = 1
 	
 func set_actions(action1, action2, action3, action4, action5):
 	actions = [action1, action2, action3, action4, action5]
@@ -199,7 +205,10 @@ func get_actions() -> Array :
 func get_action(i : int) :
 	return actions[i]
 	
-func do_damage(var damage : int, var type_advantage : bool = false, position_advantage : bool = false, ciritical : bool = false):
+func test(damage : int = 0):
+	pass
+	
+func do_damage(damage):
 	yield(get_tree().create_timer(0.5), "timeout")
 	health = health - damage
 	
@@ -209,37 +218,43 @@ func do_damage(var damage : int, var type_advantage : bool = false, position_adv
 	if health > health_max:
 		health = health_max
 		
-	_do_floating_damage(damage, type_advantage, position_advantage, ciritical)
-		
 func _process(delta):
 	if health == 0:
 		do_death_ani()
 		
-func _do_floating_damage(damage, type_advantage, position_advantage, critical):
+func do_floating_damage(damage, type_advantage, position_advantage, critical, status):
+	yield(get_tree().create_timer(0.5), "timeout")
 	if damage < 0:
-		do_do_floating(damage, true)
-	else:
-		do_do_floating(damage, false)
+		do_do_floating(damage, FLOATING_COLORS.green)
+	elif damage > 0:
+		do_do_floating(damage, FLOATING_COLORS.red)
 	
 	if type_advantage:
 		yield(get_tree().create_timer(0.5), "timeout")
 		if damage < 0:
-			do_do_floating('type+', true)
+			do_do_floating('type+', FLOATING_COLORS.green)
 		else:
-			do_do_floating('type+', false)
+			do_do_floating('type+', FLOATING_COLORS.red)
 		
 	if position_advantage:
 		yield(get_tree().create_timer(0.5), "timeout")
-		do_do_floating('pos+')
+		do_do_floating('pos+', FLOATING_COLORS.red)
 		
 	if critical:
 		yield(get_tree().create_timer(0.5), "timeout")
 		if damage < 0:
-			do_do_floating('crit+', true)
+			do_do_floating('crit+', FLOATING_COLORS.green)
 		else:
-			do_do_floating('crit+', false)
-		
-func do_do_floating(var text, var is_green = false):
+			do_do_floating('crit+', FLOATING_COLORS.red)
+			
+	if status == Status_effect.BLEED:
+		yield(get_tree().create_timer(0.5), "timeout")
+		do_do_floating('bleed+', FLOATING_COLORS.yellow)
+	elif status == Status_effect.CRAMP:
+		yield(get_tree().create_timer(0.5), "timeout")
+		do_do_floating('cramp+', FLOATING_COLORS.yellow)
+			
+func do_do_floating(var text, var is_green):
 	var fct = FCT.instance()
 	add_child(fct)
 	fct.show_value(text, is_green)

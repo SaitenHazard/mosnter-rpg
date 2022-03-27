@@ -160,7 +160,7 @@ func _set_actions():
 	action = Action.new(ACTION_NAMES.Fire_Blitz, 1, 6, Status_effect.NULL, ACTION_RANGE.FOE_ALL, ELEMENTAL_TYPE.FIRE, null)
 	actions.append(action)
 	
-	action = Action.new(ACTION_NAMES.Sticky_Seeds, 1, 3, Status_effect.PARALYZE, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS, null)
+	action = Action.new(ACTION_NAMES.Sticky_Seeds, 1, 3, Status_effect.CRAMP, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS, null)
 	actions.append(action)
 	action = Action.new(ACTION_NAMES.Bamboo_Bash, 1, 3, Status_effect.NULL, ACTION_RANGE.FOE, ELEMENTAL_TYPE.GRASS, ACTION_RANGE.FOE)
 	actions.append(action)

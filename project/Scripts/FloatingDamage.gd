@@ -6,11 +6,12 @@ export var spread = PI/2
 
 export (Color, RGBA) var color_damage
 export (Color, RGBA) var color_heal
+export (Color, RGBA) var color_status_inflict
 
 onready var font_style_int = load('res://font/Font40.tres')
 onready var font_style_string = load('res://font/Font20.tres')
 
-func show_value(value, is_green : bool):
+func show_value(value, color):
 	if typeof(value) == TYPE_INT:
 		add_font_override('font', font_style_int)
 		if value == 0:
@@ -22,10 +23,12 @@ func show_value(value, is_green : bool):
 		add_font_override('font', font_style_string)
 		self.modulate = color_damage
 		
-	if is_green:
+	if color == FLOATING_COLORS.red:
+		self.modulate = color_damage
+	elif color == FLOATING_COLORS.green:
 		self.modulate = color_heal
 	else:
-		self.modulate = color_damage
+		self.modulate = color_status_inflict
 	
 	self.rect_global_position.y = self.rect_global_position.y - 50
 	text = str(value)

@@ -1,3 +1,3 @@
 class_name Status_effect
 
-enum {NULL, BLEED, PARALYZE}
+enum {NULL, BLEED, CRAMP}

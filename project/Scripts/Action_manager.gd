@@ -9,6 +9,7 @@ onready var action_animations = get_node('/root/Control/ActionAnimation')
 var type_advantage : bool = false
 var position_advantage : bool = false
 var critical : bool = true
+var status_effect = Status_effect.NULL
 
 #onready var last_action_used
 
@@ -25,16 +26,21 @@ var delay_time : float
 #		targets = null
 #		return
 
+func _reset_attributes():
+	type_advantage = false
+	position_advantage = false
+	critical = false
+	status_effect = Status_effect.NULL
+
 func do_action(var action : Action, var user : Monster, var targets : Array, var target2 : Monster):
-#	last_action_used = action
 	control.lock_inputs()
 	action_animations.do_animations(action, targets, user)
 	user.set_turn_availabale(false)
 	targets[0].set_status(action.status_effect)
 	
 	game_manager.deduct_action_points(action.cost)
-	_do_damage(action, user, targets)
 	_do_status_effect(action, targets)
+	_do_damage(action, user, targets)
 	_do_swap(action, user, targets, target2)
 	_set_delay_time(action)
 	
@@ -148,11 +154,13 @@ func _do_damage(var action : Action, var user : Monster, var targets : Array):
 		return
 		
 	for monster in targets:
+		_reset_attributes()
 		var damage = _get_damage(action, user, monster)
-		monster.do_damage(damage, type_advantage, position_advantage, critical)
+		monster.do_damage(damage)
+		monster.do_floating_damage(damage, type_advantage, position_advantage, critical, status_effect)
 		
 func _do_status_effect(var action : Action, var targets : Array):
-	var status_effect = action.status_effect
+	status_effect = action.status_effect
 	
 	if status_effect != Status_effect.NULL:
 		for target in targets:
@@ -160,9 +168,6 @@ func _do_status_effect(var action : Action, var targets : Array):
 			
 func _get_damage(var action : Action, var user : Monster, var target : Monster):
 	var damage = action.damage
-	type_advantage = false
-	position_advantage = false
-	critical = false
 	
 	if damage == 0:
 		return damage
@@ -198,16 +203,33 @@ func _is_critical():
 	
 func selected_action_has_two_targets():
 	var action = get_selected_action()
-	return action_has_two_targets(action)
+	var user = monster_manager.get_selected_team_a()
+	return action_has_two_targets(action, user)
 
-func action_has_two_targets(var action : Action):
+func action_has_two_targets(var action : Action, var user : Monster):
 	if action.action_name == ACTION_NAMES.Bonfire:
 		return false
 		
-	if not action.damage == null and not action.swap == null:
-		return true
+	if action.damage == null or action.swap == null:
+		return false
+		
+	var only_survivor : bool
+		
+	if user.team == TEAM.A:
+		if action.action_range == ACTION_RANGE.ALLY:
+			only_survivor = monster_manager.only_one_survivor_teamA()
+		else:
+			only_survivor = monster_manager.only_one_survivor_teamB()
+	else:
+		if action.action_range == ACTION_RANGE.ALLY:
+			only_survivor = monster_manager.only_one_survivor_teamB()
+		else:
+			only_survivor = monster_manager.only_one_survivor_teamA()
+			
+	if only_survivor:
+		return false
 	
-	return false
+	return true
 
 func is_position_advantage(var action : Action, var user : Monster, var target : Monster):
 	if _is_action_range_ally(action):

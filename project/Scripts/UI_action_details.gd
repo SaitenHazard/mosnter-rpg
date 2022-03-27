@@ -85,7 +85,7 @@ func _set_details_monster(var monster):
 		
 	if not paralyze == 0:
 		label_four.visible = true
-		label_four.text = 'Bleed (' + str(paralyze) +')'
+		label_four.text = 'Cramp (' + str(paralyze) +')'
 	
 func _attack_details():
 	if game_manager.is_team_b_turn():
