@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/stickyseeds.wav-6cb7fc7c2280ff6e1da6eb236b9d5c8e.sample"
+
+[deps]
+
+source_file="res://souneffects/stickyseeds.wav"
+dest_files=[ "res://.import/stickyseeds.wav-6cb7fc7c2280ff6e1da6eb236b9d5c8e.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/swap.wav-9700e821cebd56b64ad8b88f2df9b682.sample"
+
+[deps]
+
+source_file="res://souneffects/swap.wav"
+dest_files=[ "res://.import/swap.wav-9700e821cebd56b64ad8b88f2df9b682.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

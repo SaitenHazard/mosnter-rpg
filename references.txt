@@ -1,2 +1,6 @@
 https://lospec.com/palette-list/punolite-plus-plus
 https://kidscancode.org/godot_recipes/ui/floating_text/
+https://www.zapsplat.com/sound-effect-category/game-music-and-loops/
+font
+pallete
+https://sfxr.me/

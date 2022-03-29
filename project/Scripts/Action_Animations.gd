@@ -1,10 +1,12 @@
 extends Node
 
 onready var action_animations_gameObject = get_node('/root/Control/AttackAnimations')
+onready var sound_manager = get_node('/root/Control/SoundManager')
 
 func do_swap_animations(var target1, var target2):
 	target1.do_action_animation(0.5)
 	target2.do_action_animation(0.5)
+	sound_manager.play_swap()
 
 func do_animations(var action, var targets, var user):
 	if action.damage == null:

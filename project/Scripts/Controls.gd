@@ -9,6 +9,7 @@ onready var action_manager = get_node('/root/Control/ActionManager')
 onready var game_manager = get_node('/root/Control/GameManager')
 onready var AI = get_node('/root/Control/AI')
 onready var action_points = get_node('/root/Control/ActionPoints/Label')
+onready var sound_manager = get_node('/root/Control/SoundManager')
 
 var input_group
 
@@ -86,14 +87,17 @@ func _input_groups():
 func _input_reject():
 	if Input.is_action_just_pressed("reject"):
 		if get_input_group() == INPUT_GROUP.ACTION:
+			sound_manager.play_cancel()
 			input_group = INPUT_GROUP.ALLY
 			return
 			
 		if get_input_group() == INPUT_GROUP.TARGET:
+			sound_manager.play_cancel()
 			input_group = INPUT_GROUP.ACTION
 			return
 			
 		if get_input_group() == INPUT_GROUP.TARGETTWO:
+			sound_manager.play_cancel()
 			input_group = INPUT_GROUP.TARGET
 			return
 			
@@ -111,14 +115,17 @@ func _input_accept():
 
 		if not action_manager.selected_action_has_two_targets():
 			if action_manager.get_selected_action().action_name == ACTION_NAMES.Skip:
+				sound_manager.play_accept()
 				_action_skip()
 				return
 		
 		if get_input_group() == INPUT_GROUP.TARGETTWO:
 			if not action_manager.enough_points_for_action():
 				action_points.get_child(0).play('New Anim')
+				sound_manager.play_not_allowed()
 				return
-			
+				
+			sound_manager.play_accept()
 			_do_action()
 			return
 		
@@ -126,20 +133,25 @@ func _input_accept():
 			if not action_manager.selected_action_has_two_targets():
 				if not action_manager.enough_points_for_action():
 					action_points.get_child(0).play('New Anim')
+					sound_manager.play_not_allowed()
 					return
 					
+				sound_manager.play_accept()
 				_do_action()
 				return
 			else:
+				sound_manager.play_accept()
 				input_group = INPUT_GROUP.TARGETTWO
 				return
 			
 		if get_input_group() == INPUT_GROUP.ACTION:
+			sound_manager.play_accept()
 			input_group = INPUT_GROUP.TARGET
 			_input_targets_increment(true)
 			return
 			
 		if get_input_group() == INPUT_GROUP.ALLY:
+			sound_manager.play_accept()
 			input_group = INPUT_GROUP.ACTION
 			return
 			
@@ -181,6 +193,7 @@ func _input_targetstwo():
 		_input_targetstwo_increment(false)
 		
 func _input_targetstwo_increment(var increment):
+	sound_manager.play_select()
 	var min_index = 0
 	var max_index = 2
 	
@@ -208,6 +221,7 @@ func _input_targetstwo_increment(var increment):
 	index_targettwo = candidate_index
 	
 func input_allies_increment(var increment):
+	sound_manager.play_select()
 	var min_index = 0
 	var max_index = 2
 	
@@ -259,6 +273,7 @@ func _input_actions_increment(var increment):
 	index_action = candidate_index
 	
 func _input_targets_increment(var increment):
+	sound_manager.play_select()
 	var min_index = 0
 	var max_index = 2
 	

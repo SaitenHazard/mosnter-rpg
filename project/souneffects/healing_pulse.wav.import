@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/healing_pulse.wav-d8b1ae52ff73c0834f84c18cb4f44b11.sample"
+
+[deps]
+
+source_file="res://souneffects/healing_pulse.wav"
+dest_files=[ "res://.import/healing_pulse.wav-d8b1ae52ff73c0834f84c18cb4f44b11.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

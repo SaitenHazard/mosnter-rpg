@@ -1,4 +1,4 @@
-[gd_scene load_steps=134 format=2]
+[gd_scene load_steps=151 format=2]
 
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
 [ext_resource path="res://sprite/arrows/target_selected.png" type="Texture" id=2]
@@ -54,6 +54,23 @@
 [ext_resource path="res://sprite/monsters/Spook/dead.png" type="Texture" id=52]
 [ext_resource path="res://sprite/monsters/Peepers/dead.png" type="Texture" id=53]
 [ext_resource path="res://sprite/Attack Animations/seed.png" type="Texture" id=54]
+[ext_resource path="res://souneffects/bg.mp3" type="AudioStream" id=55]
+[ext_resource path="res://souneffects/fireball.wav" type="AudioStream" id=56]
+[ext_resource path="res://Scripts/SoundManager.gd" type="Script" id=57]
+[ext_resource path="res://souneffects/fireblitz.wav" type="AudioStream" id=58]
+[ext_resource path="res://souneffects/swap.wav" type="AudioStream" id=59]
+[ext_resource path="res://souneffects/select.wav" type="AudioStream" id=60]
+[ext_resource path="res://souneffects/accept.wav" type="AudioStream" id=61]
+[ext_resource path="res://souneffects/stickyseeds.wav" type="AudioStream" id=62]
+[ext_resource path="res://souneffects/icicle_drop.wav" type="AudioStream" id=63]
+[ext_resource path="res://souneffects/cancel.wav" type="AudioStream" id=64]
+[ext_resource path="res://souneffects/natural_remedy.wav" type="AudioStream" id=65]
+[ext_resource path="res://souneffects/healing_pulse.wav" type="AudioStream" id=66]
+[ext_resource path="res://souneffects/swift_surf.wav" type="AudioStream" id=67]
+[ext_resource path="res://souneffects/bonfire.wav" type="AudioStream" id=68]
+[ext_resource path="res://souneffects/bamboo.wav" type="AudioStream" id=69]
+[ext_resource path="res://souneffects/hit.wav" type="AudioStream" id=70]
+[ext_resource path="res://souneffects/not_allowed.wav" type="AudioStream" id=71]
 
 [sub_resource type="DynamicFont" id=7]
 size = 18
@@ -3251,3 +3268,71 @@ playing = true
 [node name="AnimationPlayer" type="AnimationPlayer" parent="AttackAnimations/Bonfire"]
 "anims/New Anim" = SubResource( 62 )
 anims/RESET = SubResource( 63 )
+
+[node name="SoundManager" type="Node2D" parent="."]
+script = ExtResource( 57 )
+
+[node name="Accept" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource( 61 )
+volume_db = -15.0
+
+[node name="Select" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource( 60 )
+volume_db = -15.0
+
+[node name="NotAllowed" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource( 71 )
+volume_db = -15.0
+
+[node name="Cancel" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource( 64 )
+volume_db = -15.0
+
+[node name="HIt" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource( 70 )
+volume_db = -15.0
+
+[node name="Swap" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource( 59 )
+volume_db = -15.0
+
+[node name="Fireball" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource( 56 )
+volume_db = -15.0
+
+[node name="Fireblitz" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource( 58 )
+volume_db = -15.0
+
+[node name="Bonfire" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource( 68 )
+volume_db = -15.0
+
+[node name="NaturalRemedy" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource( 65 )
+volume_db = -15.0
+
+[node name="StickySeeds" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource( 62 )
+volume_db = -15.0
+
+[node name="BambooBash" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource( 69 )
+volume_db = -15.0
+
+[node name="IcicleDrop" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource( 63 )
+volume_db = -15.0
+
+[node name="HealingPulse" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource( 66 )
+volume_db = -15.0
+
+[node name="SwiftSurf" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource( 67 )
+volume_db = -15.0
+
+[node name="BG" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource( 55 )
+volume_db = -20.0
+autoplay = true
