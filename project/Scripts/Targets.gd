@@ -46,7 +46,19 @@ func _remove_dead_targets():
 		for i in range(indexes.size()-1, -1, -1):
 			if monster.get_position_index() == i:
 				if monster.get_health() == 0:
-					indexes.remove(i)
+					print(monster.name)
+					print('before ')
+					print(indexes)
+					indexes.erase(i)
+					print('after')
+					print(indexes)
+					
+func _is_mon_dead(var position_index):
+	for monster in team_target:
+		if monster.get_position_index() == position_index && monster.get_health() == 0:
+			return true
+			
+	return false
 
 func _remove_actioner_as_target(actioner_index):
 	if all == true:

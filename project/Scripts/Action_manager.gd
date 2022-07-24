@@ -8,7 +8,8 @@ onready var action_animations = get_node('/root/Control/ActionAnimation')
 
 var type_advantage : bool = false
 var position_advantage : bool = false
-var critical : bool = true
+var critical : bool = false
+var boosted : bool = false
 var status_effect = Status_effect.NULL
 
 #onready var last_action_used
@@ -30,6 +31,7 @@ func _reset_attributes():
 	type_advantage = false
 	position_advantage = false
 	critical = false
+	boosted = false
 	status_effect = Status_effect.NULL
 
 func do_action(var action : Action, var user : Monster, var targets : Array, var target2 : Monster):
@@ -157,7 +159,7 @@ func _do_damage(var action : Action, var user : Monster, var targets : Array):
 		_reset_attributes()
 		var damage = _get_damage(action, user, monster)
 		monster.do_damage(damage)
-		monster.do_floating_damage(damage, type_advantage, position_advantage, critical, status_effect)
+		monster.do_floating_damage(damage, type_advantage, position_advantage, critical, status_effect, boosted)
 		
 func _do_status_effect(var action : Action, var targets : Array):
 	status_effect = action.status_effect
@@ -189,12 +191,40 @@ func _get_damage(var action : Action, var user : Monster, var target : Monster):
 			damage = damage - 1
 		else:
 			damage = damage + 1
+			
+	if _is_boosted(action, user, target):
+		boosted = true
+		if is_action_healing(action):
+			damage = damage - 1
+		else:
+			damage = damage + 1
 		
 	return damage
 	
-var rng = RandomNumberGenerator.new()
+func _is_boosted(var action : Action, var user : Monster, var target : Monster):
+	var user_team = user.get_team()
+	var target_team = target.get_team()
+	
+	if action_has_two_targets(action):
+		if user_team == TEAM.A:
+			if is_action_healing(action):
+				if monster_manager.only_one_survivor_teamA():
+					return true
+			else:
+				if monster_manager.only_one_survivor_teamB():
+					return true
+		else:
+			if is_action_healing(action):
+				if monster_manager.only_one_survivor_teamB():
+					return true
+			else:
+				if monster_manager.only_one_survivor_teamA():
+					return true
+			
+	return true
 	
 func _is_critical():
+	var rng = game_manager.get_randomizer()
 	var roll = rng.randi_range(0,3)
 	if roll == 0:
 		return true
@@ -203,34 +233,34 @@ func _is_critical():
 	
 func selected_action_has_two_targets():
 	var action = get_selected_action()
-	var user = monster_manager.get_selected_team_a()
-	return action_has_two_targets(action, user)
+#	var user = monster_manager.get_selected_team_a()
+	return action_has_two_targets(action)
 
-func action_has_two_targets(var action : Action, var user : Monster):
+func action_has_two_targets(var action : Action):
 	if action.action_name == ACTION_NAMES.Bonfire:
 		return false
 		
 	if action.damage == null or action.swap == null:
 		return false
 		
-	var only_survivor : bool
-		
-	if user.team == TEAM.A:
-		if action.action_range == ACTION_RANGE.ALLY:
-			only_survivor = monster_manager.only_one_survivor_teamA()
-		else:
-			only_survivor = monster_manager.only_one_survivor_teamB()
-	else:
-		if action.action_range == ACTION_RANGE.ALLY:
-			only_survivor = monster_manager.only_one_survivor_teamB()
-		else:
-			only_survivor = monster_manager.only_one_survivor_teamA()
-			
-	if only_survivor:
-		return false
+#	var only_survivor : bool
+#
+#	if user.team == TEAM.A:
+#		if action.action_range == ACTION_RANGE.ALLY:
+#			only_survivor = monster_manager.only_one_survivor_teamA()
+#		else:
+#			only_survivor = monster_manager.only_one_survivor_teamB()
+#	else:
+#		if action.action_range == ACTION_RANGE.ALLY:
+#			only_survivor = monster_manager.only_one_survivor_teamB()
+#		else:
+#			only_survivor = monster_manager.only_one_survivor_teamA()
+#
+#	if only_survivor:
+#		return false
 	
 	return true
-
+	
 func is_position_advantage(var action : Action, var user : Monster, var target : Monster):
 	if _is_action_range_ally(action):
 		return false

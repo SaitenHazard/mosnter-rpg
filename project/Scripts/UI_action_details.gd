@@ -76,16 +76,16 @@ func _set_details_monster(var monster):
 	label_one.text = monster.name
 	label_two.text = 'Weakness: ' + type_name[monster.type_weakness]
 	
-	var bleed = monster.get_status_bleed()
-	var paralyze = monster.get_status_paralyze()
-	
-	if not bleed == 0:
-		label_three.visible = true
-		label_three.text = 'Bleed (' + str(bleed) +')'
-		
-	if not paralyze == 0:
-		label_four.visible = true
-		label_four.text = 'Cramp (' + str(paralyze) +')'
+#	var bleed = monster.get_status_bleed()
+#	var paralyze = monster.get_status_paralyze()
+#
+#	if not bleed == 0:
+#		label_three.visible = true
+#		label_three.text = 'Bleed (' + str(bleed) +')'
+#
+#	if not paralyze == 0:
+#		label_four.visible = true
+#		label_four.text = 'Cramp (' + str(paralyze) +')'
 	
 func _attack_details():
 	if game_manager.is_team_b_turn():
@@ -100,7 +100,6 @@ func _attack_details():
 	if control.input_group == INPUT_GROUP.TARGET:
 		return
 		
-		
 	var action = action_manager.get_selected_action()
 	
 	if action.action_name == ACTION_NAMES.Skip:
@@ -110,6 +109,7 @@ func _attack_details():
 	label_two.visible = true
 	label_three.visible = true
 	label_four.visible = true
+	label_five.visible = true
 	
 	if not action.damage == null:
 		if action.damage >= 0:
@@ -136,12 +136,12 @@ func _attack_details():
 	else:
 		label_four.text = "Force Swap Foe"
 		
-	if action.status_effect == null:
+	if action.status_effect == STATUS_EFFECT.BLEED:
+		label_five.text = "Apply Bleed"
+	elif action.status_effect == STATUS_EFFECT.CRAMP:
+		label_five.text = "Apply Cramp"
+	else: 
 		label_five.visible = false
-	elif action.status_effect == STATUS_EFFECT.BLEED:
-		label_five.text = "Apply Bleeding"
-	else:
-		label_five.text = "Apply Paralysis"
 		
 #func _set_ai_action():
 #	if game_manager.get_team_a_turn():

@@ -13,25 +13,51 @@ var actions : Array
 
 var status = {
 	BLEED = 0,
-	PARALYZE = 0,
+	CRAMP = 0,
 }
 
 var team
 
 onready var monster_manager = get_node('/root/Control/MonsterManager')
+onready var sound_manager = get_node('/root/Control/SoundManager')
 
-var texture_monster_fire = preload('res://sprite/monster_fire.png')
-var texture_monster_water = preload('res://sprite/monster_water.png')
-var texture_monster_grass = preload('res://sprite/monster_grass.png')
+onready var texture_bleed = preload('res://sprite/badges/bleed.png')
+onready var texture_cramp = preload('res://sprite/badges/cramp.png')
+onready var texture_crampbleed = preload('res://sprite/badges/crampbleed.png')
+
 var FCT = preload("res://Scenes/FloatingText.tscn")
 
 var attack_frame = 0
 var hit_frame = 1
 
+#var showing_status : bool
+
 func initiate_turn():
 	_do_bleed_damage()
 	_decrease_status_count()
 	set_turn_availabale(true)
+	
+func _manage_status_show():
+	var StatusSprite = get_node('StatusSprite')
+	
+	while(true):
+		StatusSprite.visible = false
+		yield(get_tree().create_timer(0.5), "timeout")
+		
+		if is_dead():
+			break
+		
+		if is_bleed() and is_cramp():
+			StatusSprite.visible = true
+			StatusSprite.texture = texture_crampbleed
+		elif is_bleed():
+			StatusSprite.visible = true
+			StatusSprite.texture = texture_bleed
+		elif is_cramp():
+			StatusSprite.visible = true
+			StatusSprite.texture = texture_cramp
+		
+		yield(get_tree().create_timer(1.0), "timeout")
 	
 #func _process(delta):
 #	if name == 'Spook':
@@ -43,8 +69,16 @@ func _do_bleed_damage():
 		do_do_floating('Bleed', FLOATING_COLORS.yellow)
 
 func _ready():
-	var animatedSprite = get_child(0)
+	var animatedSprite = get_node('AnimatedSprite')
 	animatedSprite.play('idle')
+	_set_status_position()
+	_manage_status_show()
+	
+func _set_status_position():
+	if team == TEAM.B:
+		get_node('StatusSprite').set_position(Vector2(-29, 34))
+	else:
+		get_node('StatusSprite').set_position(Vector2(29, 34))
 	
 func _decrease_status_count():
 	if not status.BLEED == 0:
@@ -58,7 +92,7 @@ func _decrease_status_count():
 			do_do_floating('Cramp', FLOATING_COLORS.red)
 		
 func do_action_animation(var delay : float):
-	var animatedSprite = get_child(0)
+	var animatedSprite = get_node('AnimatedSprite')
 	animatedSprite.stop()
 	animatedSprite.set_frame(attack_frame)
 	animatedSprite.scale = Vector2(4.5,4.5)
@@ -67,9 +101,10 @@ func do_action_animation(var delay : float):
 	animatedSprite.play('idle')
 
 func do_hit_ani():
-	var animatedSprite = get_child(0)
-	var animation_player = get_child(0).get_child(0)
+	var animatedSprite = get_node('AnimatedSprite')
+	var animation_player = animatedSprite.get_child(0)
 	yield(get_tree().create_timer(0.5), "timeout")
+	sound_manager.play_hit()
 	animatedSprite.stop()
 	animatedSprite.set_frame(hit_frame)
 	animation_player.play('hit')
@@ -89,7 +124,7 @@ func do_bonfire_ani():
 func do_natural_remedy_ani():
 	var color = convert_rgb_to_float(Vector3(167,240,112))
 	color = Color(color.x, color.y, color.z, 1)
-	var animated_sprite = get_child(0)
+	var animated_sprite = get_node('AnimatedSprite')
 	animated_sprite.material.set_shader_param("flash_color", color)
 	animated_sprite.material.set_shader_param("flash_modifier", 1)
 	yield(get_tree().create_timer(0.5), "timeout")
@@ -98,7 +133,7 @@ func do_natural_remedy_ani():
 func do_healing_pulse_ani():
 	var color = convert_rgb_to_float(Vector3(115,239,247))
 	color = Color(color.x, color.y, color.z, 1)
-	var animated_sprite = get_child(0)
+	var animated_sprite = get_node('AnimatedSprite')
 
 	animated_sprite.material.set_shader_param("flash_color", color)
 	animated_sprite.material.set_shader_param("flash_modifier", 1)
@@ -116,7 +151,7 @@ func convert_rgb_to_float(var color : Vector3):
 	return color/denominator
 
 func _do_flast(var color_vec3 : Vector3):
-	var animated_sprite = get_child(0)
+	var animated_sprite = get_node('AnimatedSprite')
 	var color = Color(color_vec3.x, color_vec3.y, color_vec3.z, 1)
 	animated_sprite.material.set_shader_param("flash_color", color)
 	animated_sprite.material.set_shader_param("flash_modifier", 1)
@@ -137,7 +172,7 @@ func set_position_index(var index):
 	_do_cramp_damage()
 	
 func _do_cramp_damage():
-	if not status.PARALYZE == 0:
+	if status.CRAMP < 0:
 		do_damage(1)
 		do_do_floating('Cramp', FLOATING_COLORS.red)
 	
@@ -154,13 +189,15 @@ func _manage_status():
 	if status.PARALYZE != 0:
 		status.PARALYZE = status.PARALYZE - 1
 		
-func get_status_bleed() -> int:
-	return status.BLEED
+func is_bleed() -> int:
+	return status.BLEED > 0
 	
-func get_status_paralyze()  -> int:
-	return status.PARALYZE
+func is_cramp()  -> int:
+	return status.CRAMP > 0
 
 func set_status(var status):
+	yield(get_tree().create_timer(0.5), "timeout")
+	
 	if status == Status_effect.NULL:
 		return
 		
@@ -168,7 +205,7 @@ func set_status(var status):
 		self.status.BLEED = 3
 		
 	if status == Status_effect.CRAMP:
-		self.status.PARALYZE = 3
+		self.status.CRAMP = 3
 
 func get_type_weakness():
 	return type_weakness
@@ -188,7 +225,7 @@ func set_type(type_weakness):
 func set_health(health : int):
 	self.health_max = health
 	self.health = health
-#	self.health = 1
+	self.health = 1
 	
 func set_actions(action1, action2, action3, action4, action5):
 	actions = [action1, action2, action3, action4, action5]
@@ -222,7 +259,7 @@ func _process(delta):
 	if health == 0:
 		do_death_ani()
 		
-func do_floating_damage(damage, type_advantage, position_advantage, critical, status):
+func do_floating_damage(damage, type_advantage, position_advantage, critical, status, boosted):
 	yield(get_tree().create_timer(0.5), "timeout")
 	if damage < 0:
 		do_do_floating(damage, FLOATING_COLORS.green)
@@ -247,6 +284,13 @@ func do_floating_damage(damage, type_advantage, position_advantage, critical, st
 		else:
 			do_do_floating('crit+', FLOATING_COLORS.red)
 			
+	if boosted:
+		yield(get_tree().create_timer(0.5), "timeout")
+		if damage < 0:
+			do_do_floating('boost+', FLOATING_COLORS.green)
+		else:
+			do_do_floating('boost+', FLOATING_COLORS.red)
+			
 	if status == Status_effect.BLEED:
 		yield(get_tree().create_timer(0.5), "timeout")
 		do_do_floating('bleed+', FLOATING_COLORS.yellow)
@@ -261,7 +305,7 @@ func do_do_floating(var text, var is_green):
 	
 func do_death_ani():
 	yield(get_tree().create_timer(1.5), "timeout")
-	var animated_sprite = get_child(0)
+	var animated_sprite = get_node('AnimatedSprite')
 	animated_sprite.play('dead')
 	
 func is_dead():

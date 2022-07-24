@@ -24,7 +24,7 @@ func _ready():
 	select = get_node("Select")
 	cancel = get_node("Cancel")
 	not_allowed = get_node("NotAllowed")
-	hit = get_node("HIt")
+	hit = get_node("Hit")
 	swap = get_node("Swap")
 	
 	fireball = get_node("Fireball")

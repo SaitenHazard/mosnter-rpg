@@ -32,7 +32,6 @@ var cumulative_weight
 
 #var ai_action_user_target_object = null
 
-var rng = RandomNumberGenerator.new()
 var wait_for_action = false
 var count : int = 0
 
@@ -41,9 +40,6 @@ var count : int = 0
 #		if a.weight < b.weight:
 #			return true
 #		return false
-	
-func _ready():
-	rng.randomize()
 	
 func _process(var delta):
 	if game_manager.is_team_a_turn():
@@ -99,6 +95,8 @@ func _get_random_monster_for_swap(var ai_action_user_target):
 		team = monster_manager.get_team_b()
 		var invalid_index = ai_action_user_target.user.get_position_index()
 		position_indexes.remove(invalid_index)
+	
+	var rng = game_manager.get_randomizer()
 		
 	var roll = rng.randi_range(0,1)
 	var rand_index : int = position_indexes[roll]
@@ -123,11 +121,15 @@ func _choose_ai_action_target_user(var action_user_target_objects : Array):
 		return null
 	
 	var action_user_target_objects_weight = _get_actions_user_targets_with_rand_weight(action_user_target_objects)
+	
+	var rng = game_manager.get_randomizer()
 	var roll = rng.randi_range(0, action_user_target_objects_weight.size()-1)
 	return action_user_target_objects_weight[roll]
 	
 func _get_actions_user_targets_with_rand_weight(var action_user_target_objects : Array):
 	var action_user_target_objects_weight : Array
+	
+	var rng = game_manager.get_randomizer()
 	
 	while(action_user_target_objects_weight.empty()):
 		var roll = rng.randi_range(1, 100)

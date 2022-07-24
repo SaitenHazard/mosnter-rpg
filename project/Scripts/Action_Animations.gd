@@ -67,6 +67,9 @@ func _sticky_seeds(var target):
 	target.do_hit_ani()
 	_do_flast(sprite, 0.5)
 	
+	yield(get_tree().create_timer(0.1), "timeout")
+	sound_manager.play_sticky_seeds()
+	
 func _swfit_surf(var target):
 	var sprite = action_animations_gameObject.get_node('Wave')
 	sprite.global_position = target.global_position
@@ -83,6 +86,9 @@ func _swfit_surf(var target):
 	target.do_hit_ani()
 	_do_flast(sprite, 0.5)
 	
+	yield(get_tree().create_timer(0.1), "timeout")
+	sound_manager.play_swift_surf()
+	
 func _natural_remedy(var target):
 	var sprite = action_animations_gameObject.get_node('Leaf')
 	sprite.global_position = target.global_position
@@ -93,6 +99,9 @@ func _natural_remedy(var target):
 	
 	yield(get_tree().create_timer(0.5), "timeout")
 	target.do_natural_remedy_ani()
+	
+#	yield(get_tree().create_timer(0.1), "timeout")
+	sound_manager.play_natural_remedy()
 	
 func _bonfire(var target):
 	target.do_bonfire_ani()
@@ -105,6 +114,9 @@ func _bonfire(var target):
 	
 	sprite.visible = true
 	sprite.get_node('AnimationPlayer').play('New Anim')
+	
+	yield(get_tree().create_timer(0.1), "timeout")
+	sound_manager.play_bonfire()
 	
 func _healing_pulse(var targets):
 	var sprite = action_animations_gameObject.get_node('Pulse')
@@ -119,6 +131,9 @@ func _healing_pulse(var targets):
 	targets[0].do_healing_pulse_ani()
 	targets[1].do_healing_pulse_ani()
 	targets[2].do_healing_pulse_ani()
+	
+	yield(get_tree().create_timer(0.1), "timeout")
+	sound_manager.play_healing_pulse()
 		
 func _bamboo_bash(var target):
 	var sprite = action_animations_gameObject.get_node('Bamboo')
@@ -134,6 +149,9 @@ func _bamboo_bash(var target):
 	
 	target.do_hit_ani()
 	_do_flast(sprite, 0.5)
+	
+	yield(get_tree().create_timer(0.38), "timeout")
+	sound_manager.play_bamboo_bash()
 		
 func _icicle_blade(var target):
 	var sprite = action_animations_gameObject.get_node('Icicle')
@@ -149,16 +167,19 @@ func _icicle_blade(var target):
 	sprite.get_node('AnimationPlayer').play('New Anim')
 	target.do_hit_ani()
 	_do_flast(sprite, 0.5)
-		
+	
+	yield(get_tree().create_timer(0.15), "timeout")
+	sound_manager.play_icicle_drop()
+	
 func _fireblitz(var targets):
 	var fireball = action_animations_gameObject.get_node('Fireball')
 	var fireball2 = action_animations_gameObject.get_node('Fireball2')
 	var fireball3 = action_animations_gameObject.get_node('Fireball3')
-	_fireball(fireball, targets[0])
-	_fireball(fireball2, targets[1])
-	_fireball(fireball3, targets[2])
+	_fireball(fireball, targets[0], true)
+	_fireball(fireball2, targets[1], true)
+	_fireball(fireball3, targets[2], true)
 	
-func _fireball(var sprite, var target):
+func _fireball(var sprite, var target, var sound_one = false):
 	sprite.global_position = target.global_position
 	
 	if target.get_team() == TEAM.A:
@@ -169,7 +190,16 @@ func _fireball(var sprite, var target):
 		sprite.get_node('AnimationPlayer').play('New Anim')
 	
 	target.do_hit_ani()
+	
+	yield(get_tree().create_timer(0.25), "timeout")
+	
 	_do_flast(sprite, 0.5)
+	
+	if not sound_one:
+		sound_manager.play_fireball()
+	else:
+		sound_manager.play_fireblitz()
+		
 	
 func _do_flast(var animated_sprite, var delay):
 	yield(get_tree().create_timer(delay), "timeout")

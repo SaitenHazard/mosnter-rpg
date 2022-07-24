@@ -1,4 +1,4 @@
-[gd_scene load_steps=151 format=2]
+[gd_scene load_steps=152 format=2]
 
 [ext_resource path="res://Scripts/Controls.gd" type="Script" id=1]
 [ext_resource path="res://sprite/arrows/target_selected.png" type="Texture" id=2]
@@ -71,6 +71,7 @@
 [ext_resource path="res://souneffects/bamboo.wav" type="AudioStream" id=69]
 [ext_resource path="res://souneffects/hit.wav" type="AudioStream" id=70]
 [ext_resource path="res://souneffects/not_allowed.wav" type="AudioStream" id=71]
+[ext_resource path="res://sprite/badges/bleed.png" type="Texture" id=72]
 
 [sub_resource type="DynamicFont" id=7]
 size = 18
@@ -2896,6 +2897,9 @@ custom_styles/fg = ExtResource( 4 )
 custom_styles/bg = ExtResource( 5 )
 value = 50.0
 percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HealthText" type="Label" parent="LifeBarTeamA/LifeBar3"]
 anchor_right = 1.0
@@ -3028,6 +3032,11 @@ playing = true
 anims/RESET = SubResource( 76 )
 anims/hit = SubResource( 77 )
 
+[node name="StatusSprite" type="Sprite" parent="TeamA/Amuck"]
+position = Vector2( 340, 225 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 72 )
+
 [node name="Buzzkill" type="Node2D" parent="TeamA"]
 position = Vector2( 382, 314 )
 script = ExtResource( 12 )
@@ -3045,6 +3054,11 @@ playing = true
 anims/RESET = SubResource( 78 )
 anims/hit = SubResource( 79 )
 
+[node name="StatusSprite" type="Sprite" parent="TeamA/Buzzkill"]
+position = Vector2( 248, 141 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 72 )
+
 [node name="Octopia" type="Node2D" parent="TeamA"]
 position = Vector2( 290, 420 )
 script = ExtResource( 12 )
@@ -3060,6 +3074,11 @@ playing = true
 [node name="AnimationPlayer" parent="TeamA/Octopia/AnimatedSprite" instance=ExtResource( 38 )]
 anims/RESET = SubResource( 80 )
 anims/hit = SubResource( 81 )
+
+[node name="StatusSprite" type="Sprite" parent="TeamA/Octopia"]
+position = Vector2( 340, 35 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 72 )
 
 [node name="TeamB" type="Node2D" parent="."]
 position = Vector2( -25, 29 )
@@ -3079,6 +3098,11 @@ flip_h = true
 
 [node name="AnimationPlayer" parent="TeamB/Peepers/AnimatedSprite" instance=ExtResource( 38 )]
 
+[node name="StatusSprite" type="Sprite" parent="TeamB/Peepers"]
+position = Vector2( -40, 225 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 72 )
+
 [node name="Rigidity" type="Node2D" parent="TeamB"]
 position = Vector2( 640, 310 )
 script = ExtResource( 12 )
@@ -3097,9 +3121,19 @@ anims/RESET = SubResource( 42 )
 anims/hit = SubResource( 43 )
 "anims/hit (copy)" = SubResource( 69 )
 
+[node name="StatusSprite" type="Sprite" parent="TeamB/Rigidity"]
+position = Vector2( -29, 34 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 72 )
+
 [node name="Spook" type="Node2D" parent="TeamB"]
 position = Vector2( 720, 410 )
 script = ExtResource( 12 )
+
+[node name="StatusSprite" type="Sprite" parent="TeamB/Spook"]
+position = Vector2( -40, 45 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 72 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="TeamB/Spook"]
 material = SubResource( 51 )
@@ -3261,7 +3295,7 @@ visible = false
 position = Vector2( 308, 339 )
 scale = Vector2( 1e-05, 3 )
 frames = SubResource( 61 )
-frame = 1
+frame = 2
 speed_scale = 0.5
 playing = true
 
@@ -3288,9 +3322,9 @@ volume_db = -15.0
 stream = ExtResource( 64 )
 volume_db = -15.0
 
-[node name="HIt" type="AudioStreamPlayer" parent="SoundManager"]
+[node name="Hit" type="AudioStreamPlayer" parent="SoundManager"]
 stream = ExtResource( 70 )
-volume_db = -15.0
+volume_db = -10.0
 
 [node name="Swap" type="AudioStreamPlayer" parent="SoundManager"]
 stream = ExtResource( 59 )
@@ -3314,11 +3348,12 @@ volume_db = -15.0
 
 [node name="StickySeeds" type="AudioStreamPlayer" parent="SoundManager"]
 stream = ExtResource( 62 )
-volume_db = -15.0
+volume_db = -10.0
 
 [node name="BambooBash" type="AudioStreamPlayer" parent="SoundManager"]
 stream = ExtResource( 69 )
-volume_db = -15.0
+volume_db = -10.0
+pitch_scale = 2.0
 
 [node name="IcicleDrop" type="AudioStreamPlayer" parent="SoundManager"]
 stream = ExtResource( 63 )
@@ -3335,4 +3370,3 @@ volume_db = -15.0
 [node name="BG" type="AudioStreamPlayer" parent="SoundManager"]
 stream = ExtResource( 55 )
 volume_db = -20.0
-autoplay = true

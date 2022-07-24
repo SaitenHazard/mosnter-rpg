@@ -15,6 +15,10 @@ onready var selection_arrow_targettwo = selection_arrows[2]
 
 onready var actions : Array = get_node('/root/Control/Actions').get_children()
 
+const arrow_offset_y = -60
+const arrow_offset_x_team_a = 4
+const arrow_offset_x_team_b = -4
+
 func _process(delta):
 	_set_selected_ally()
 	_set_selected_action()
@@ -74,7 +78,13 @@ func _set_selected_targetstwo():
 	var targettwo = monster_manager.get_action_swap_target_to()
 	
 	selection_arrow_targettwo.global_position = targettwo.global_position
-	selection_arrow_targettwo.global_position.y = selection_arrow_targettwo.global_position.y - 60
+	selection_arrow_targettwo.global_position.y = selection_arrow_targettwo.global_position.y + arrow_offset_y
+	
+	if targettwo.team == TEAM.B:
+		selection_arrow_targettwo.global_position.x = selection_arrow_targettwo.global_position.x + arrow_offset_x_team_b
+	else:
+		selection_arrow_targettwo.global_position.x = selection_arrow_targettwo.global_position.x + arrow_offset_x_team_a
+	
 	selection_arrow_targettwo.visible = true
 
 func _set_selected_targets():
@@ -102,13 +112,23 @@ func _set_selected_targets():
 			if not target_team[i].get_health() == 0:
 				targets_selected_arrows[i].visible = true
 				targets_selected_arrows[i].global_position = target_team[i].global_position
-				targets_selected_arrows[i].global_position.y = targets_selected_arrows[i].global_position.y - 60
+				targets_selected_arrows[i].global_position.y = targets_selected_arrows[i].global_position.y + arrow_offset_y
+				
+				if target_team[i].team == TEAM.B:
+					targets_selected_arrows[i].global_position.x = targets_selected_arrows[i].global_position.x + arrow_offset_x_team_b
+				else:
+					targets_selected_arrows[i].global_position.x = targets_selected_arrows[i].global_position.x + arrow_offset_x_team_a
 			
 	if not targets.all:
 		var target = monster_manager.get_target()
 		targets_selected_arrows[index_target].visible = true
 		targets_selected_arrows[index_target].global_position = target.global_position
-		targets_selected_arrows[index_target].global_position.y = targets_selected_arrows[index_target].global_position.y - 60
+		targets_selected_arrows[index_target].global_position.y = targets_selected_arrows[index_target].global_position.y + arrow_offset_y
+		
+		if target.team == TEAM.B:
+			targets_selected_arrows[index_target].global_position.x = targets_selected_arrows[index_target].global_position.x + arrow_offset_x_team_b
+		else:
+			targets_selected_arrows[index_target].global_position.x = targets_selected_arrows[index_target].global_position.x + arrow_offset_x_team_a
 	
 func _set_selected_ally():
 	selection_arrow_ally.visible = false
@@ -130,7 +150,8 @@ func _set_selected_ally():
 	selection_arrow_ally.visible = true
 	
 	selection_arrow_ally.global_position = monster_manager.get_selected_team_a().global_position
-	selection_arrow_ally.global_position.y = selection_arrow_ally.global_position.y - 60
+	selection_arrow_ally.global_position.y = selection_arrow_ally.global_position.y + arrow_offset_y
+	selection_arrow_ally.global_position.x = selection_arrow_ally.global_position.x + arrow_offset_x_team_a
 
 func _set_candidate_targets():
 	var input_group = control.get_input_group()
@@ -161,7 +182,13 @@ func _set_candidate_targets():
 		var target = monster_manager.get_target_team_monster(i)
 		targets_candidate_arrows[i].visible = true
 		targets_candidate_arrows[i].global_position = target.global_position
-		targets_candidate_arrows[i].global_position.y = targets_candidate_arrows[i].global_position.y - 60
+		targets_candidate_arrows[i].global_position.y = targets_candidate_arrows[i].global_position.y + arrow_offset_y
+		
+		if target.team == TEAM.B:
+			targets_candidate_arrows[i].global_position.x = targets_candidate_arrows[i].global_position.x + arrow_offset_x_team_b
+		else:
+			targets_candidate_arrows[i].global_position.x = targets_candidate_arrows[i].global_position.x + arrow_offset_x_team_a
+			
 
 	var index_target = control.get_index_target()
 	
@@ -211,7 +238,12 @@ func _set_candidate_targetstwo():
 		var target = monster_manager.get_monster(targets, i)
 		targetstwo_candidate_arrows[i].visible = true
 		targetstwo_candidate_arrows[i].global_position = target.global_position
-		targetstwo_candidate_arrows[i].global_position.y = targetstwo_candidate_arrows[i].global_position.y - 60
+		targetstwo_candidate_arrows[i].global_position.y = targetstwo_candidate_arrows[i].global_position.y + arrow_offset_y
+		
+		if target.team == TEAM.B:
+			targets_candidate_arrows[i].global_position.x = targets_candidate_arrows[i].global_position.x + arrow_offset_x_team_b
+		else:
+			targets_candidate_arrows[i].global_position.x = targets_candidate_arrows[i].global_position.x + arrow_offset_x_team_a
 
 	var index_target = control.get_index_targettwo()
 	

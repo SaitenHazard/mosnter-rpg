@@ -16,6 +16,17 @@ var action_points
 var team_turn = TEAM.A
 var turn_has_been_reset = false
 
+var rng = RandomNumberGenerator.new()
+
+func _ready():
+	rng.randomize()
+	_set_action_points()
+	_set_actions()
+	_set_monsters()
+	
+func get_randomizer():
+	return rng
+
 func _process(var delta):
 	_manage_turns()
 	
@@ -63,11 +74,6 @@ func set_team_b_turn():
 func _reset_action_points_max():
 	action_points = action_points_max
 	
-func _ready():
-	_set_action_points()
-	_set_actions()
-	_set_monsters()
-	
 func _set_action_points():
 	action_points = action_points_max
 	
@@ -113,8 +119,6 @@ func _assign_actions():
 	var action1 : Action
 	var action2 : Action
 	var action3 : Action
-	
-	var rng = RandomNumberGenerator.new()
 	
 	var action_left = actions.duplicate()
 	
